@@ -7,9 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07F5C7325369CABB4927727B /* TimerPickerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC93E96AF1D27B0599A76F03 /* TimerPickerViewModelTests.swift */; };
+		231032A13E1DF3AC2E88A471 /* CountdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8250B78CA3D2581CC6330996 /* CountdownView.swift */; };
+		2DD179E8C276CB5B83348699 /* PermissionGuardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F175155719238B1F282C46 /* PermissionGuardTests.swift */; };
+		56BDA646D0637CE69524B938 /* LockSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E14C28844CDFE6FDB51D8F /* LockSettings.swift */; };
+		60A226845773371D7045988C /* MenuBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E8A05E890CBF138C2A4AC65 /* MenuBarController.swift */; };
+		633285CEA0075F805CD88236 /* LockManagerStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC324F48F8185C10CE879A57 /* LockManagerStateTests.swift */; };
 		7298DE3F45835C0E1254CDCB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCA7467367ECB02679B2C630 /* Assets.xcassets */; };
 		83E5E1144110029D0DD56E8B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6128E0350AE5CC8C4460DD97 /* AppDelegate.swift */; };
+		865E13739A14CAC3C8187EA5 /* PermissionGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CC7E8FDC5F76689D248C30 /* PermissionGuard.swift */; };
+		952D3D3732FAAAB892C52B85 /* TimerPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BCECD8C451C9AF2C559FF41 /* TimerPickerView.swift */; };
+		95A79BF65EA57AEE92BB7A9F /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E82E6A629CD2F4B5CB08B9 /* TestHelpers.swift */; };
+		9C849849619FA5A581FE260C /* WatchdogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F21590769C32479A8C1D47 /* WatchdogTests.swift */; };
+		C02504E55A534CD795C28E2F /* LockState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423766F7D16736B68811E4B1 /* LockState.swift */; };
 		C2B794348E950834CB53BC20 /* CleanKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D4E4FF0FB0F11BD29EA517 /* CleanKeyTests.swift */; };
+		D3617B87F638F39CA8BB5450 /* RealEventTapController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8E5D0F68F1459581F954B7 /* RealEventTapController.swift */; };
+		E2982E4009C15D18C770B796 /* LockSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD39292472DAF6A911615771 /* LockSettingsTests.swift */; };
+		E5C1909C9051795D3C94C390 /* LockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB50C58D1D5CDD85ED95F93 /* LockManager.swift */; };
+		E82CB40CE609213945274554 /* LockOverlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD631A543B43998363DD8CD /* LockOverlayController.swift */; };
+		F41149DBA10D00D3E3F69BD2 /* LockManagerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E531B51B612AAD37588596A /* LockManagerProtocols.swift */; };
+		FBA9A8B20D16001A3BA77BB7 /* RealTrustChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464E14750DE2AEA9C591E20A /* RealTrustChecker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -25,10 +42,27 @@
 /* Begin PBXFileReference section */
 		04D1275CA2CDC05A38B7E317 /* CleanKeyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CleanKeyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C7FFFFE0F678343F65ABFC7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		1A8E5D0F68F1459581F954B7 /* RealEventTapController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealEventTapController.swift; sourceTree = "<group>"; };
+		1E531B51B612AAD37588596A /* LockManagerProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockManagerProtocols.swift; sourceTree = "<group>"; };
 		33D4E4FF0FB0F11BD29EA517 /* CleanKeyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanKeyTests.swift; sourceTree = "<group>"; };
+		35E14C28844CDFE6FDB51D8F /* LockSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockSettings.swift; sourceTree = "<group>"; };
+		423766F7D16736B68811E4B1 /* LockState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockState.swift; sourceTree = "<group>"; };
+		44E82E6A629CD2F4B5CB08B9 /* TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
+		464E14750DE2AEA9C591E20A /* RealTrustChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealTrustChecker.swift; sourceTree = "<group>"; };
 		51269EC3F81C2C345B9781CD /* CleanKey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CleanKey.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		57CC7E8FDC5F76689D248C30 /* PermissionGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionGuard.swift; sourceTree = "<group>"; };
 		6128E0350AE5CC8C4460DD97 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		7BCECD8C451C9AF2C559FF41 /* TimerPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerPickerView.swift; sourceTree = "<group>"; };
+		7EB50C58D1D5CDD85ED95F93 /* LockManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockManager.swift; sourceTree = "<group>"; };
+		8250B78CA3D2581CC6330996 /* CountdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownView.swift; sourceTree = "<group>"; };
+		82F21590769C32479A8C1D47 /* WatchdogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchdogTests.swift; sourceTree = "<group>"; };
+		8E8A05E890CBF138C2A4AC65 /* MenuBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarController.swift; sourceTree = "<group>"; };
+		AC93E96AF1D27B0599A76F03 /* TimerPickerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerPickerViewModelTests.swift; sourceTree = "<group>"; };
+		B6F175155719238B1F282C46 /* PermissionGuardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionGuardTests.swift; sourceTree = "<group>"; };
+		BAD631A543B43998363DD8CD /* LockOverlayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockOverlayController.swift; sourceTree = "<group>"; };
+		BD39292472DAF6A911615771 /* LockSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockSettingsTests.swift; sourceTree = "<group>"; };
 		CCA7467367ECB02679B2C630 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DC324F48F8185C10CE879A57 /* LockManagerStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockManagerStateTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -38,6 +72,15 @@
 				6128E0350AE5CC8C4460DD97 /* AppDelegate.swift */,
 				CCA7467367ECB02679B2C630 /* Assets.xcassets */,
 				0C7FFFFE0F678343F65ABFC7 /* Info.plist */,
+				7EB50C58D1D5CDD85ED95F93 /* LockManager.swift */,
+				1E531B51B612AAD37588596A /* LockManagerProtocols.swift */,
+				BAD631A543B43998363DD8CD /* LockOverlayController.swift */,
+				35E14C28844CDFE6FDB51D8F /* LockSettings.swift */,
+				423766F7D16736B68811E4B1 /* LockState.swift */,
+				8E8A05E890CBF138C2A4AC65 /* MenuBarController.swift */,
+				57CC7E8FDC5F76689D248C30 /* PermissionGuard.swift */,
+				1A8E5D0F68F1459581F954B7 /* RealEventTapController.swift */,
+				464E14750DE2AEA9C591E20A /* RealTrustChecker.swift */,
 				BC3E3A290D07F1B457BB1568 /* Views */,
 			);
 			path = CleanKey;
@@ -47,6 +90,12 @@
 			isa = PBXGroup;
 			children = (
 				33D4E4FF0FB0F11BD29EA517 /* CleanKeyTests.swift */,
+				DC324F48F8185C10CE879A57 /* LockManagerStateTests.swift */,
+				BD39292472DAF6A911615771 /* LockSettingsTests.swift */,
+				B6F175155719238B1F282C46 /* PermissionGuardTests.swift */,
+				44E82E6A629CD2F4B5CB08B9 /* TestHelpers.swift */,
+				AC93E96AF1D27B0599A76F03 /* TimerPickerViewModelTests.swift */,
+				82F21590769C32479A8C1D47 /* WatchdogTests.swift */,
 			);
 			path = CleanKeyTests;
 			sourceTree = "<group>";
@@ -72,6 +121,8 @@
 		BC3E3A290D07F1B457BB1568 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				8250B78CA3D2581CC6330996 /* CountdownView.swift */,
+				7BCECD8C451C9AF2C559FF41 /* TimerPickerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -171,6 +222,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				83E5E1144110029D0DD56E8B /* AppDelegate.swift in Sources */,
+				231032A13E1DF3AC2E88A471 /* CountdownView.swift in Sources */,
+				E5C1909C9051795D3C94C390 /* LockManager.swift in Sources */,
+				F41149DBA10D00D3E3F69BD2 /* LockManagerProtocols.swift in Sources */,
+				E82CB40CE609213945274554 /* LockOverlayController.swift in Sources */,
+				56BDA646D0637CE69524B938 /* LockSettings.swift in Sources */,
+				C02504E55A534CD795C28E2F /* LockState.swift in Sources */,
+				60A226845773371D7045988C /* MenuBarController.swift in Sources */,
+				865E13739A14CAC3C8187EA5 /* PermissionGuard.swift in Sources */,
+				D3617B87F638F39CA8BB5450 /* RealEventTapController.swift in Sources */,
+				FBA9A8B20D16001A3BA77BB7 /* RealTrustChecker.swift in Sources */,
+				952D3D3732FAAAB892C52B85 /* TimerPickerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,6 +241,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2B794348E950834CB53BC20 /* CleanKeyTests.swift in Sources */,
+				633285CEA0075F805CD88236 /* LockManagerStateTests.swift in Sources */,
+				E2982E4009C15D18C770B796 /* LockSettingsTests.swift in Sources */,
+				2DD179E8C276CB5B83348699 /* PermissionGuardTests.swift in Sources */,
+				95A79BF65EA57AEE92BB7A9F /* TestHelpers.swift in Sources */,
+				07F5C7325369CABB4927727B /* TimerPickerViewModelTests.swift in Sources */,
+				9C849849619FA5A581FE260C /* WatchdogTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

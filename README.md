@@ -33,16 +33,19 @@ Download the latest DMG from [Releases](../../releases), open it, drag CleanKey 
 
 1. Click the CleanKey icon in the menu bar
 2. Drag the slider to set your cleaning duration
-3. Click **Start Lock** — the screen goes dark and input is blocked
+3. Click **Start** — the screen goes dark and input is blocked
 4. Clean your keyboard and trackpad
 5. The lock lifts automatically when the timer expires
 6. **Need out early?** Press Escape three times quickly (within 1.5 s)
 
 ## Build from source
 
+Requires Xcode 16+, macOS 14 SDK, and [XcodeGen](https://github.com/yonaskolb/XcodeGen).
+
 ```bash
 git clone https://github.com/stefer/CleanKey.git
 cd CleanKey
+xcodegen generate
 xcodebuild build -scheme CleanKey -destination 'platform=macOS'
 ```
 
@@ -52,7 +55,33 @@ Run tests:
 xcodebuild test -scheme CleanKey -destination 'platform=macOS'
 ```
 
-Requires Xcode 16+ and macOS 14 SDK.
+Verify code signature after build:
+
+```bash
+codesign --verify --deep --strict CleanKey.app
+spctl --assess --verbose CleanKey.app
+```
+
+## Troubleshooting
+
+**Menu bar icon does not appear after launch.**
+CleanKey requires Accessibility permission before it shows the icon. Open
+System Settings → Privacy & Security → Accessibility and ensure CleanKey is
+toggled on. The icon appears immediately after the permission is granted
+without requiring a restart.
+
+**Keyboard or trackpad is not blocked during a lock.**
+Accessibility permission may have been revoked since launch. CleanKey posts a
+notification and restores input within ~5 seconds if it detects this. Re-grant
+permission in System Settings, then start a new lock.
+
+**Overlay does not appear but input is blocked.**
+This should not occur in normal operation. If it does, triple-press Escape
+quickly (within 1.5 s) to trigger the emergency unlock, then re-launch the app.
+
+**Lock does not release after the timer expires.**
+Press Escape three times quickly (within 1.5 s) to force an emergency unlock.
+The triple-Escape combo is always available while the tap is active.
 
 ## License
 

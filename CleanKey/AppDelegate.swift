@@ -3,11 +3,10 @@ import AppKit
 @main
 final class AppDelegate: NSObject, NSApplicationDelegate {
 
-  private var statusItem: NSStatusItem?
+  private var menuBarController: MenuBarController?
 
   func applicationDidFinishLaunching(_ notification: Notification) {
     NSApp.setActivationPolicy(.accessory)
-    statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-    statusItem?.button?.title = "⌨"
+    menuBarController = MenuBarController()
   }
 }
