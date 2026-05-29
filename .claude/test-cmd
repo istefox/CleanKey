@@ -1,0 +1,1 @@
+xcodebuild test -scheme CleanKey -destination 'platform=macOS'

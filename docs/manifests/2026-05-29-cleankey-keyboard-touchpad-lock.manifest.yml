@@ -1,0 +1,73 @@
+manifest_schema_version: "1.2"
+topic: "cleankey-keyboard-touchpad-lock"
+topic_full_title: "CleanKey — Keyboard and Touchpad Lock for Cleaning"
+project_root: "/Users/stefanoferri/Developer/Apple/CleanKey"
+mode: "greenfield"
+anonymize: false
+created_at: "2026-05-29T10:30:59+00:00"
+last_updated_at: "2026-05-29T12:05:48+00:00"
+current_step: "ready_for_implementation"
+status: "in_progress"
+
+# Gate 0 triage result
+gate0:
+  decision: null
+  criteria_spec_adr_exist: false
+  decided_at: null
+
+# test-cmd tracking (ADR-0014)
+test_cmd_placeholder: false
+test_cmd_candidate: "xcodebuild test -scheme CleanKey -destination 'platform=macOS'"
+test_cmd_provisional: true
+
+# Dynamic Workflows Step 5 tracking (ADR-0016)
+hook_verified: true
+step5_mode: null
+
+# Artifacts (absolute paths, populated as steps complete)
+artifacts:
+  spec: "/Users/stefanoferri/Developer/Apple/CleanKey/SPEC.md"
+  brainstorm: "/Users/stefanoferri/Developer/Apple/CleanKey/BRAINSTORM.md"
+  adr: "/Users/stefanoferri/Developer/Apple/CleanKey/docs/architecture/ADR-001-cleankey-keyboard-touchpad-lock.md"
+  arch: "/Users/stefanoferri/Developer/Apple/CleanKey/ARCH.md"
+  plan: "/Users/stefanoferri/Developer/Apple/CleanKey/docs/superpowers/plans/2026-05-29-cleankey-keyboard-touchpad-lock.md"
+  project_claude_md: "/Users/stefanoferri/Developer/Apple/CleanKey/CLAUDE.md"
+
+# HITL gates audit trail
+hitl_gates:
+  - gate: 1
+    label: "spec_review"
+    status: "pending"
+    approved_at: null
+    notes: null
+  - gate: 2
+    label: "architecture_review"
+    status: "approved"
+    approved_at: "2026-05-29T11:41:22+00:00"
+    notes: "Architecture + TOFU approved 2026-05-29"
+  - gate: 3
+    label: "project_memory_review"
+    status: "approved"
+    approved_at: "2026-05-29T11:47:26+00:00"
+    notes: "CLAUDE.md approved and applied 2026-05-29"
+  - gate: 5
+    label: "review_cycle_decision"
+    status: "pending"
+    approved_at: null
+    notes: null
+
+# Session boundary tracking
+session_boundary:
+  pre_step_4_session_id: null
+  fresh_session_started_at: null
+  resumed_at: null
+
+# Failure tracking (populated only on status=failed)
+failure:
+  failed_at: null
+  failed_step: null
+  failure_reason: null
+  partial_artifacts: []
+
+# Hint for next action (UX)
+next_action: "Run /skill concept-to-code cleankey-keyboard-touchpad-lock to start Step 1 interview"

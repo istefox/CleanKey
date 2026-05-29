@@ -1,0 +1,35 @@
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.xccheckout
+*.moved-aside
+*.xcscmblueprint
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Distribution
+*.dmg
+*.pkg
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# CocoaPods (not used, but just in case)
+Pods/
+Podfile.lock
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# Harness anchors — do not ignore
+!.remember/
+!.claude/

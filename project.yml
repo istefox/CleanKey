@@ -1,0 +1,60 @@
+name: CleanKey
+options:
+  bundleIdPrefix: it.stefer
+  deploymentTarget:
+    macOS: "14.0"
+  defaultConfig: Debug
+  xcodeVersion: "16"
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+    ENABLE_HARDENED_RUNTIME: YES
+    CODE_SIGN_STYLE: Automatic
+    DEVELOPMENT_TEAM: ""
+
+targets:
+  CleanKey:
+    type: application
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - path: CleanKey
+        excludes:
+          - "**/*.entitlements"
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: it.stefer.CleanKey
+        INFOPLIST_FILE: CleanKey/Info.plist
+        CODE_SIGN_ENTITLEMENTS: CleanKey/CleanKey.entitlements
+        ENABLE_APP_SANDBOX: NO
+        SWIFT_VERSION: "6.0"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+
+  CleanKeyTests:
+    type: bundle.unit-test
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - CleanKeyTests
+    dependencies:
+      - target: CleanKey
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: it.stefer.CleanKeyTests
+        SWIFT_VERSION: "6.0"
+        GENERATE_INFOPLIST_FILE: YES
+
+schemes:
+  CleanKey:
+    build:
+      targets:
+        CleanKey: all
+        CleanKeyTests: [test]
+    test:
+      targets:
+        - CleanKeyTests
+    run:
+      config: Debug
