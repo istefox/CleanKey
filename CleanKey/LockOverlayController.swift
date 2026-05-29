@@ -8,7 +8,6 @@ import SwiftUI
 public final class LockOverlayController: LockPresenting {
 
   private var windows: [NSWindow] = []
-  private var refreshTimer: Timer?
   private weak var lockManager: LockManager?
 
   public init(lockManager: LockManager) {
@@ -27,13 +26,19 @@ public final class LockOverlayController: LockPresenting {
 
   public func present() {
     buildWindows()
-    startRefreshTimer()
   }
 
   public func dismiss() {
-    stopRefreshTimer()
     windows.forEach { $0.orderOut(nil) }
     windows.removeAll()
+  }
+
+  public func tick(remainingTime: TimeInterval) {
+    for window in windows {
+      guard let hostingView = window.contentView?.subviews.first as? NSHostingView<CountdownView>
+      else { continue }
+      hostingView.rootView = CountdownView(remainingTime: remainingTime)
+    }
   }
 
   @objc private func screensChanged() {
@@ -77,26 +82,4 @@ public final class LockOverlayController: LockPresenting {
     return window
   }
 
-  private func startRefreshTimer() {
-    stopRefreshTimer()
-    refreshTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-      MainActor.assumeIsolated {
-        self?.refreshOverlay()
-      }
-    }
-  }
-
-  private func stopRefreshTimer() {
-    refreshTimer?.invalidate()
-    refreshTimer = nil
-  }
-
-  private func refreshOverlay() {
-    let remaining = lockManager?.remainingTime ?? 0
-    for window in windows {
-      guard let hostingView = window.contentView?.subviews.first as? NSHostingView<CountdownView>
-      else { continue }
-      hostingView.rootView = CountdownView(remainingTime: remaining)
-    }
-  }
 }

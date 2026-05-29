@@ -130,14 +130,13 @@ public final class RealEventTapController: EventTapControlling {
   }
 
   public func remove() {
+    guard let currentTap = tap else { return }
     defer {
       if let rawPtr = contextPtr {
         Unmanaged<TapContext>.fromOpaque(rawPtr).release()
         contextPtr = nil
       }
     }
-
-    guard let currentTap = tap else { return }
     CGEvent.tapEnable(tap: currentTap, enable: false)
 
     if let src = runLoopSource {

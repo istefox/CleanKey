@@ -155,6 +155,9 @@ public final class LockManager {
       unlock()
       return
     }
+
+    // Drive overlay countdown — single source of truth for remaining time.
+    presenter.tick(remainingTime: remainingTime)
   }
 
   // MARK: - Private helpers

@@ -5,6 +5,13 @@ import Foundation
 public protocol LockPresenting: AnyObject {
   func present()
   func dismiss()
+  /// Called by LockManager on each watchdog tick while the lock is active.
+  /// Default no-op — only overlays that render countdown need to implement it.
+  func tick(remainingTime: TimeInterval)
+}
+
+extension LockPresenting {
+  public func tick(remainingTime: TimeInterval) {}
 }
 
 /// Injected event-tap lifecycle seam. All calls happen on the main actor.

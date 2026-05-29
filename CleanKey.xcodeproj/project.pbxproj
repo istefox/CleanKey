@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		07F5C7325369CABB4927727B /* TimerPickerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC93E96AF1D27B0599A76F03 /* TimerPickerViewModelTests.swift */; };
 		231032A13E1DF3AC2E88A471 /* CountdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8250B78CA3D2581CC6330996 /* CountdownView.swift */; };
+		26E017D8774AA2DD7C502229 /* AccessibilitySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E02A4461D2ECBD4C5D05BE7 /* AccessibilitySettings.swift */; };
 		2DD179E8C276CB5B83348699 /* PermissionGuardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F175155719238B1F282C46 /* PermissionGuardTests.swift */; };
 		56BDA646D0637CE69524B938 /* LockSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E14C28844CDFE6FDB51D8F /* LockSettings.swift */; };
 		60A226845773371D7045988C /* MenuBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E8A05E890CBF138C2A4AC65 /* MenuBarController.swift */; };
@@ -51,6 +52,7 @@
 		464E14750DE2AEA9C591E20A /* RealTrustChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealTrustChecker.swift; sourceTree = "<group>"; };
 		51269EC3F81C2C345B9781CD /* CleanKey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CleanKey.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		57CC7E8FDC5F76689D248C30 /* PermissionGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionGuard.swift; sourceTree = "<group>"; };
+		5E02A4461D2ECBD4C5D05BE7 /* AccessibilitySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilitySettings.swift; sourceTree = "<group>"; };
 		6128E0350AE5CC8C4460DD97 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7BCECD8C451C9AF2C559FF41 /* TimerPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerPickerView.swift; sourceTree = "<group>"; };
 		7EB50C58D1D5CDD85ED95F93 /* LockManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockManager.swift; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 		2B7C3405AF1D1BE2684D902F /* CleanKey */ = {
 			isa = PBXGroup;
 			children = (
+				5E02A4461D2ECBD4C5D05BE7 /* AccessibilitySettings.swift */,
 				6128E0350AE5CC8C4460DD97 /* AppDelegate.swift */,
 				CCA7467367ECB02679B2C630 /* Assets.xcassets */,
 				0C7FFFFE0F678343F65ABFC7 /* Info.plist */,
@@ -221,6 +224,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				26E017D8774AA2DD7C502229 /* AccessibilitySettings.swift in Sources */,
 				83E5E1144110029D0DD56E8B /* AppDelegate.swift in Sources */,
 				231032A13E1DF3AC2E88A471 /* CountdownView.swift in Sources */,
 				E5C1909C9051795D3C94C390 /* LockManager.swift in Sources */,

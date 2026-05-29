@@ -89,6 +89,26 @@ final class LockManagerStateTests: XCTestCase {
     XCTAssertEqual(sut.remainingTime, 40, accuracy: 0.01)
   }
 
+  func testRemainingTimeIsZeroAtExactExpiry() {
+    let clock = ClockBox(Date(timeIntervalSince1970: 0))
+    let (sut, _, _, _) = makeSUT(clock: clock)
+
+    sut.startLock(duration: 30)
+    clock.now = clock.now.addingTimeInterval(30)  // exactly at endsAt
+
+    XCTAssertEqual(sut.remainingTime, 0, accuracy: 0.001)
+  }
+
+  func testRemainingTimeDoesNotGoNegative() {
+    let clock = ClockBox(Date(timeIntervalSince1970: 0))
+    let (sut, _, _, _) = makeSUT(clock: clock)
+
+    sut.startLock(duration: 30)
+    clock.now = clock.now.addingTimeInterval(60)  // well past endsAt
+
+    XCTAssertEqual(sut.remainingTime, 0, accuracy: 0.001)
+  }
+
   // MARK: - unlock()
 
   func testUnlockFromLockedReturnsToIdle() {
@@ -196,17 +216,5 @@ final class LockManagerStateTests: XCTestCase {
     let result = sut.evaluateEscapeCombo(keyCode: 53, timestamp: 0)
     XCTAssertFalse(result)
     XCTAssertEqual(sut.state, .idle)
-  }
-}
-
-// MARK: - LockState Equatable (test-only conformance)
-
-extension LockState: Equatable {
-  public static func == (lhs: LockState, rhs: LockState) -> Bool {
-    switch (lhs, rhs) {
-    case (.idle, .idle): return true
-    case (.locked(let la, _), .locked(let ra, _)): return la == ra
-    default: return false
-    }
   }
 }

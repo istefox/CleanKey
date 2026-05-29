@@ -130,6 +130,27 @@ final class WatchdogTests: XCTestCase {
     XCTAssertNotEqual(sut.state, .idle, "Must not unlock before the 5th tick")
   }
 
+  func testWatchdogTenthTickAlsoChecksTrust() {
+    // count % 5 == 0 fires at tick 5, 10, 15 …
+    // Revoke trust only after tick 5 has passed to verify tick 10 independently.
+    let (sut, _, _, presenter, notifier, trustChecker) = makeSUT()
+    sut.startLock(duration: 60)
+
+    // Ticks 1–9: trust is still valid so no unlock.
+    for count in 1...9 {
+      sut.watchdogTick(count: count)
+    }
+    XCTAssertNotEqual(sut.state, .idle, "Must still be locked before the 10th tick")
+
+    // Revoke trust just before tick 10.
+    trustChecker.trusted = false
+    sut.watchdogTick(count: 10)
+
+    XCTAssertEqual(sut.state, .idle, "Must unlock on 10th tick when trust revoked")
+    XCTAssertEqual(presenter.dismissCallCount, 1)
+    XCTAssertFalse(notifier.messages.isEmpty)
+  }
+
   // MARK: - Teardown order: presenter dismissed before tap removed
 
   func testWatchdogTeardownOrderPresenterBeforeTap() {

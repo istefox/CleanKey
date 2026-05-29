@@ -16,11 +16,11 @@ struct CountdownView: View {
         .font(.system(size: 48, weight: .light, design: .monospaced))
         .foregroundStyle(.white)
 
-      Text("Hold Esc × 3 to unlock")
+      Text("Triple-press Esc to unlock")
         .font(.caption)
         .foregroundStyle(.white.opacity(0.7))
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(Color.black.opacity(0.95))
+    .background(Color.black)
   }
 }
