@@ -134,7 +134,7 @@ final class LockManagerStateTests: XCTestCase {
       let log: (String) -> Void
       var isEnabled: Bool = true
       init(log: @escaping (String) -> Void) { self.log = log }
-      func install() {}
+      func install(trackpadFree: Bool) {}
       func remove() { log("tap.remove") }
     }
 

@@ -1,10 +1,19 @@
 import SwiftUI
 
+@Observable
+final class CountdownModel {
+  var remainingTime: TimeInterval
+
+  init(remainingTime: TimeInterval = 0) {
+    self.remainingTime = remainingTime
+  }
+}
+
 struct CountdownView: View {
-  let remainingTime: TimeInterval
+  var model: CountdownModel
 
   private var formattedTime: String {
-    let total = max(0, Int(remainingTime))
+    let total = max(0, Int(model.remainingTime))
     let minutes = total / 60
     let seconds = total % 60
     return String(format: "%d:%02d", minutes, seconds)

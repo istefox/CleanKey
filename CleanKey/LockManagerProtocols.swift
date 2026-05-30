@@ -8,16 +8,20 @@ public protocol LockPresenting: AnyObject {
   /// Called by LockManager on each watchdog tick while the lock is active.
   /// Default no-op — only overlays that render countdown need to implement it.
   func tick(remainingTime: TimeInterval)
+  /// Configures the presenter with user settings before a lock session begins.
+  /// Default no-op — conformers that need to apply settings override this.
+  func configure(settings: LockSettings)
 }
 
 extension LockPresenting {
   public func tick(remainingTime: TimeInterval) {}
+  public func configure(settings: LockSettings) {}
 }
 
 /// Injected event-tap lifecycle seam. All calls happen on the main actor.
 @MainActor
 public protocol EventTapControlling: AnyObject {
-  func install()
+  func install(trackpadFree: Bool)
   func remove()
   var isEnabled: Bool { get }
 }

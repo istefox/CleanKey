@@ -11,7 +11,7 @@ final class FakeEnabledTapController: EventTapControlling, @unchecked Sendable {
   var removeCallCount = 0
   var enabled: Bool = true
 
-  func install() { installCallCount += 1 }
+  func install(trackpadFree: Bool) { installCallCount += 1 }
   func remove() { removeCallCount += 1 }
   var isEnabled: Bool { enabled }
 }
@@ -167,7 +167,7 @@ final class WatchdogTests: XCTestCase {
       let log: (String) -> Void
       var isEnabled: Bool = false  // disabled → triggers fail-safe
       init(log: @escaping (String) -> Void) { self.log = log }
-      func install() {}
+      func install(trackpadFree: Bool) {}
       func remove() { log("tap.remove") }
     }
 

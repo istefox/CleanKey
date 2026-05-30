@@ -26,8 +26,12 @@ final class FakeEventTapController: EventTapControlling {
   var installCallCount = 0
   var removeCallCount = 0
   var isEnabled: Bool = true
+  var lastInstallTrackpadFree: Bool?
 
-  func install() { installCallCount += 1 }
+  func install(trackpadFree: Bool) {
+    installCallCount += 1
+    lastInstallTrackpadFree = trackpadFree
+  }
   func remove() { removeCallCount += 1 }
 }
 

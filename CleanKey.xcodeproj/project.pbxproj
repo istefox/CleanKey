@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		07F5C7325369CABB4927727B /* TimerPickerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC93E96AF1D27B0599A76F03 /* TimerPickerViewModelTests.swift */; };
+		B2C3D4E5F6A70001B2C3D4E5 /* QuickPickMenuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3D4E5F6A70000B2C3D4E5 /* QuickPickMenuTests.swift */; };
 		231032A13E1DF3AC2E88A471 /* CountdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8250B78CA3D2581CC6330996 /* CountdownView.swift */; };
 		26E017D8774AA2DD7C502229 /* AccessibilitySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E02A4461D2ECBD4C5D05BE7 /* AccessibilitySettings.swift */; };
 		2DD179E8C276CB5B83348699 /* PermissionGuardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F175155719238B1F282C46 /* PermissionGuardTests.swift */; };
@@ -17,7 +17,8 @@
 		7298DE3F45835C0E1254CDCB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCA7467367ECB02679B2C630 /* Assets.xcassets */; };
 		83E5E1144110029D0DD56E8B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6128E0350AE5CC8C4460DD97 /* AppDelegate.swift */; };
 		865E13739A14CAC3C8187EA5 /* PermissionGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CC7E8FDC5F76689D248C30 /* PermissionGuard.swift */; };
-		952D3D3732FAAAB892C52B85 /* TimerPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BCECD8C451C9AF2C559FF41 /* TimerPickerView.swift */; };
+		C3D4E5F6A7B80001C3D4E5F6 /* QuickPickMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D4E5F6A7B80000C3D4E5F6 /* QuickPickMenuViewModel.swift */; };
+		D4E5F6A7B8C90001D4E5F6A7 /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E5F6A7B8C90000D4E5F6A7 /* SettingsWindowController.swift */; };
 		95A79BF65EA57AEE92BB7A9F /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E82E6A629CD2F4B5CB08B9 /* TestHelpers.swift */; };
 		9C849849619FA5A581FE260C /* WatchdogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F21590769C32479A8C1D47 /* WatchdogTests.swift */; };
 		C02504E55A534CD795C28E2F /* LockState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423766F7D16736B68811E4B1 /* LockState.swift */; };
@@ -26,8 +27,19 @@
 		E2982E4009C15D18C770B796 /* LockSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD39292472DAF6A911615771 /* LockSettingsTests.swift */; };
 		E5C1909C9051795D3C94C390 /* LockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB50C58D1D5CDD85ED95F93 /* LockManager.swift */; };
 		E82CB40CE609213945274554 /* LockOverlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD631A543B43998363DD8CD /* LockOverlayController.swift */; };
+		EF478AA603B8EDDD871418A1 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F714A18EFF5CC0A6D003E4 /* main.swift */; };
 		F41149DBA10D00D3E3F69BD2 /* LockManagerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E531B51B612AAD37588596A /* LockManagerProtocols.swift */; };
 		FBA9A8B20D16001A3BA77BB7 /* RealTrustChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464E14750DE2AEA9C591E20A /* RealTrustChecker.swift */; };
+		A1B2C3D4E5F60001A2B3C4D5 /* TwoZoneSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60000A2B3C4D5 /* TwoZoneSlider.swift */; };
+		A1B2C3D4E5F60003A2B3C4D5 /* TwoZoneSliderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002A2B3C4D5 /* TwoZoneSliderTests.swift */; };
+		E5F6A7B8C9D00001E5F6A7B8 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F6A7B8C9D00000E5F6A7B8 /* SettingsViewModel.swift */; };
+		F6A7B8C9D0E10001F6A7B8C9 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A7B8C9D0E10000F6A7B8C9 /* SettingsView.swift */; };
+		07B8C9D0E1F20001078BC9D0 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B8C9D0E1F200000789C9D0 /* GeneralSettingsView.swift */; };
+		29D0E1F2030400012900E1F2 /* DisplaySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D0E1F203040000290DE1F2 /* DisplaySettingsView.swift */; };
+		18C9D0E1F2030001189CD0E1 /* SettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C9D0E1F203000018C9D0E1 /* SettingsViewModelTests.swift */; };
+		F0A1B2C3D4E50001F0A1B2C3 /* TrackpadModeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1B2C3D4E50000F0A1B2C3 /* TrackpadModeTests.swift */; };
+		A2B3C4D5E6F70001A2B3C4D5 /* HUDLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B3C4D5E6F70000A2B3C4D5 /* HUDLayout.swift */; };
+		A2B3C4D5E6F70003A2B3C4D5 /* HUDLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B3C4D5E6F70002A2B3C4D5 /* HUDLayoutTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,17 +66,29 @@
 		57CC7E8FDC5F76689D248C30 /* PermissionGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionGuard.swift; sourceTree = "<group>"; };
 		5E02A4461D2ECBD4C5D05BE7 /* AccessibilitySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilitySettings.swift; sourceTree = "<group>"; };
 		6128E0350AE5CC8C4460DD97 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		7BCECD8C451C9AF2C559FF41 /* TimerPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerPickerView.swift; sourceTree = "<group>"; };
+		C3D4E5F6A7B80000C3D4E5F6 /* QuickPickMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickPickMenuViewModel.swift; sourceTree = "<group>"; };
+		D4E5F6A7B8C90000D4E5F6A7 /* SettingsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowController.swift; sourceTree = "<group>"; };
 		7EB50C58D1D5CDD85ED95F93 /* LockManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockManager.swift; sourceTree = "<group>"; };
 		8250B78CA3D2581CC6330996 /* CountdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownView.swift; sourceTree = "<group>"; };
 		82F21590769C32479A8C1D47 /* WatchdogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchdogTests.swift; sourceTree = "<group>"; };
 		8E8A05E890CBF138C2A4AC65 /* MenuBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarController.swift; sourceTree = "<group>"; };
-		AC93E96AF1D27B0599A76F03 /* TimerPickerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerPickerViewModelTests.swift; sourceTree = "<group>"; };
+		B2C3D4E5F6A70000B2C3D4E5 /* QuickPickMenuTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickPickMenuTests.swift; sourceTree = "<group>"; };
 		B6F175155719238B1F282C46 /* PermissionGuardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionGuardTests.swift; sourceTree = "<group>"; };
 		BAD631A543B43998363DD8CD /* LockOverlayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockOverlayController.swift; sourceTree = "<group>"; };
 		BD39292472DAF6A911615771 /* LockSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockSettingsTests.swift; sourceTree = "<group>"; };
 		CCA7467367ECB02679B2C630 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DC324F48F8185C10CE879A57 /* LockManagerStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockManagerStateTests.swift; sourceTree = "<group>"; };
+		E3F714A18EFF5CC0A6D003E4 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60000A2B3C4D5 /* TwoZoneSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoZoneSlider.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60002A2B3C4D5 /* TwoZoneSliderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoZoneSliderTests.swift; sourceTree = "<group>"; };
+		E5F6A7B8C9D00000E5F6A7B8 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		F6A7B8C9D0E10000F6A7B8C9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		07B8C9D0E1F200000789C9D0 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
+		29D0E1F203040000290DE1F2 /* DisplaySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplaySettingsView.swift; sourceTree = "<group>"; };
+		18C9D0E1F203000018C9D0E1 /* SettingsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModelTests.swift; sourceTree = "<group>"; };
+		F0A1B2C3D4E50000F0A1B2C3 /* TrackpadModeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadModeTests.swift; sourceTree = "<group>"; };
+		A2B3C4D5E6F70000A2B3C4D5 /* HUDLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDLayout.swift; sourceTree = "<group>"; };
+		A2B3C4D5E6F70002A2B3C4D5 /* HUDLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDLayoutTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -80,10 +104,16 @@
 				BAD631A543B43998363DD8CD /* LockOverlayController.swift */,
 				35E14C28844CDFE6FDB51D8F /* LockSettings.swift */,
 				423766F7D16736B68811E4B1 /* LockState.swift */,
+				E3F714A18EFF5CC0A6D003E4 /* main.swift */,
 				8E8A05E890CBF138C2A4AC65 /* MenuBarController.swift */,
 				57CC7E8FDC5F76689D248C30 /* PermissionGuard.swift */,
 				1A8E5D0F68F1459581F954B7 /* RealEventTapController.swift */,
 				464E14750DE2AEA9C591E20A /* RealTrustChecker.swift */,
+				A1B2C3D4E5F60000A2B3C4D5 /* TwoZoneSlider.swift */,
+				A2B3C4D5E6F70000A2B3C4D5 /* HUDLayout.swift */,
+				C3D4E5F6A7B80000C3D4E5F6 /* QuickPickMenuViewModel.swift */,
+				D4E5F6A7B8C90000D4E5F6A7 /* SettingsWindowController.swift */,
+				E5F6A7B8C9D00000E5F6A7B8 /* SettingsViewModel.swift */,
 				BC3E3A290D07F1B457BB1568 /* Views */,
 			);
 			path = CleanKey;
@@ -97,8 +127,12 @@
 				BD39292472DAF6A911615771 /* LockSettingsTests.swift */,
 				B6F175155719238B1F282C46 /* PermissionGuardTests.swift */,
 				44E82E6A629CD2F4B5CB08B9 /* TestHelpers.swift */,
-				AC93E96AF1D27B0599A76F03 /* TimerPickerViewModelTests.swift */,
+				B2C3D4E5F6A70000B2C3D4E5 /* QuickPickMenuTests.swift */,
+				A1B2C3D4E5F60002A2B3C4D5 /* TwoZoneSliderTests.swift */,
+				18C9D0E1F203000018C9D0E1 /* SettingsViewModelTests.swift */,
 				82F21590769C32479A8C1D47 /* WatchdogTests.swift */,
+				F0A1B2C3D4E50000F0A1B2C3 /* TrackpadModeTests.swift */,
+				A2B3C4D5E6F70002A2B3C4D5 /* HUDLayoutTests.swift */,
 			);
 			path = CleanKeyTests;
 			sourceTree = "<group>";
@@ -125,7 +159,9 @@
 			isa = PBXGroup;
 			children = (
 				8250B78CA3D2581CC6330996 /* CountdownView.swift */,
-				7BCECD8C451C9AF2C559FF41 /* TimerPickerView.swift */,
+				F6A7B8C9D0E10000F6A7B8C9 /* SettingsView.swift */,
+				07B8C9D0E1F200000789C9D0 /* GeneralSettingsView.swift */,
+				29D0E1F203040000290DE1F2 /* DisplaySettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -236,7 +272,15 @@
 				865E13739A14CAC3C8187EA5 /* PermissionGuard.swift in Sources */,
 				D3617B87F638F39CA8BB5450 /* RealEventTapController.swift in Sources */,
 				FBA9A8B20D16001A3BA77BB7 /* RealTrustChecker.swift in Sources */,
-				952D3D3732FAAAB892C52B85 /* TimerPickerView.swift in Sources */,
+				C3D4E5F6A7B80001C3D4E5F6 /* QuickPickMenuViewModel.swift in Sources */,
+				D4E5F6A7B8C90001D4E5F6A7 /* SettingsWindowController.swift in Sources */,
+				E5F6A7B8C9D00001E5F6A7B8 /* SettingsViewModel.swift in Sources */,
+				F6A7B8C9D0E10001F6A7B8C9 /* SettingsView.swift in Sources */,
+				07B8C9D0E1F20001078BC9D0 /* GeneralSettingsView.swift in Sources */,
+				29D0E1F2030400012900E1F2 /* DisplaySettingsView.swift in Sources */,
+				A1B2C3D4E5F60001A2B3C4D5 /* TwoZoneSlider.swift in Sources */,
+				A2B3C4D5E6F70001A2B3C4D5 /* HUDLayout.swift in Sources */,
+				EF478AA603B8EDDD871418A1 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,8 +293,12 @@
 				E2982E4009C15D18C770B796 /* LockSettingsTests.swift in Sources */,
 				2DD179E8C276CB5B83348699 /* PermissionGuardTests.swift in Sources */,
 				95A79BF65EA57AEE92BB7A9F /* TestHelpers.swift in Sources */,
-				07F5C7325369CABB4927727B /* TimerPickerViewModelTests.swift in Sources */,
+				B2C3D4E5F6A70001B2C3D4E5 /* QuickPickMenuTests.swift in Sources */,
+				A1B2C3D4E5F60003A2B3C4D5 /* TwoZoneSliderTests.swift in Sources */,
+				18C9D0E1F2030001189CD0E1 /* SettingsViewModelTests.swift in Sources */,
 				9C849849619FA5A581FE260C /* WatchdogTests.swift in Sources */,
+				F0A1B2C3D4E50001F0A1B2C3 /* TrackpadModeTests.swift in Sources */,
+				A2B3C4D5E6F70003A2B3C4D5 /* HUDLayoutTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

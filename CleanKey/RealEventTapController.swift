@@ -15,7 +15,11 @@ import Foundation
 // never mutates TapContext fields directly.
 private final class TapContext: @unchecked Sendable {
   weak var controller: RealEventTapController?
-  init(controller: RealEventTapController) { self.controller = controller }
+  let trackpadFree: Bool
+  init(controller: RealEventTapController, trackpadFree: Bool) {
+    self.controller = controller
+    self.trackpadFree = trackpadFree
+  }
 }
 
 // MARK: - C callback
@@ -27,13 +31,33 @@ private func eventTapCallback(
   userInfo: UnsafeMutableRawPointer?
 ) -> Unmanaged<CGEvent>? {
 
-  guard let rawPtr = userInfo else { return Unmanaged.passRetained(event) }
+  guard let rawPtr = userInfo else { return Unmanaged.passUnretained(event) }
 
   let ctx = Unmanaged<TapContext>.fromOpaque(rawPtr).takeUnretainedValue()
 
   if type == .tapDisabledByUserInput || type == .tapDisabledByTimeout {
     // Watchdog will detect isEnabled == false on next tick; no extra action needed.
     return nil
+  }
+
+  // In trackpad-free mode, pass through all pointing-device and gesture events.
+  if ctx.trackpadFree {
+    switch type {
+    case .leftMouseDown, .leftMouseUp, .leftMouseDragged,
+      .rightMouseDown, .rightMouseUp, .rightMouseDragged,
+      .otherMouseDown, .otherMouseUp, .otherMouseDragged,
+      .mouseMoved, .scrollWheel:
+      return Unmanaged.passUnretained(event)
+    default:
+      // Gesture events (raw 18–20, 29–32) and system events (raw 14).
+      let raw = type.rawValue
+      if raw == 18 || raw == 19 || raw == 20
+        || raw == 29 || raw == 30 || raw == 31 || raw == 32
+        || raw == 14
+      {
+        return Unmanaged.passUnretained(event)
+      }
+    }
   }
 
   if type == .keyDown {
@@ -75,10 +99,10 @@ public final class RealEventTapController: EventTapControlling {
     return CGEvent.tapIsEnabled(tap: tap)
   }
 
-  public func install() {
+  public func install(trackpadFree: Bool) {
     guard tap == nil else { return }
 
-    let ctx = TapContext(controller: self)
+    let ctx = TapContext(controller: self, trackpadFree: trackpadFree)
     let rawPtr = Unmanaged.passRetained(ctx).toOpaque()
     contextPtr = rawPtr
 
@@ -104,7 +128,20 @@ public final class RealEventTapController: EventTapControlling {
       (1 << CGEventType.tapDisabledByUserInput.rawValue)
       | (1 << CGEventType.tapDisabledByTimeout.rawValue)
 
-    let eventMask = keyMask | pointingMask | tapDisabledMask
+    // Raw 14 = kCGEventSystemDefined: media keys — brightness, volume, eject, Exposé.
+    // CGEventType does not expose this case in Swift; raw value used directly.
+    let systemMask: CGEventMask = (1 << 14)
+
+    // Multi-touch trackpad gesture events. The public CGEventType enum does not
+    // expose these, so raw values are used (mirror NSEvent.EventType):
+    //   18 rotate · 19 beginGesture · 20 endGesture
+    //   29 gesture (undocumented — 3/4-finger swipes for Mission Control/Exposé)
+    //   30 magnify · 31 swipe · 32 smartMagnify
+    let gestureMask: CGEventMask =
+      (1 << 18) | (1 << 19) | (1 << 20)
+      | (1 << 29) | (1 << 30) | (1 << 31) | (1 << 32)
+
+    let eventMask = keyMask | pointingMask | tapDisabledMask | systemMask | gestureMask
 
     guard
       let newTap = CGEvent.tapCreate(
@@ -127,6 +164,7 @@ public final class RealEventTapController: EventTapControlling {
     runLoopSource = src
     CFRunLoopAddSource(CFRunLoopGetCurrent(), src, .commonModes)
     CGEvent.tapEnable(tap: newTap, enable: true)
+
   }
 
   public func remove() {
@@ -137,6 +175,7 @@ public final class RealEventTapController: EventTapControlling {
         contextPtr = nil
       }
     }
+
     CGEvent.tapEnable(tap: currentTap, enable: false)
 
     if let src = runLoopSource {

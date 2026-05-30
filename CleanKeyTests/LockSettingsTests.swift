@@ -16,10 +16,14 @@ final class LockSettingsTests: XCTestCase {
     XCTAssertEqual(sut.lastDuration, 120)
   }
 
-  func testValueBelowMinimumClampsTo30() {
+  func testValueBelowMinimumClampsToMinimum() {
     var sut = makeSUT()
-    sut.lastDuration = 5
-    XCTAssertEqual(sut.lastDuration, 30)
+    sut.lastDuration = 1
+    XCTAssertEqual(sut.lastDuration, LockSettings.minimumDuration)
+  }
+
+  func testMinimumDurationIs5() {
+    XCTAssertEqual(LockSettings.minimumDuration, 5)
   }
 
   func testValueAboveMaximumClampsTo600() {
@@ -40,5 +44,71 @@ final class LockSettingsTests: XCTestCase {
     // Re-create from the same defaults store — simulates app relaunch.
     let sut2 = LockSettings(defaults: defaults)
     XCTAssertEqual(sut2.lastDuration, 300)
+  }
+
+  // MARK: - OverlayMode
+
+  func testOverlayModeDefaultIsBlackScreen() {
+    let sut = makeSUT()
+    XCTAssertEqual(sut.overlayMode, .blackScreen)
+  }
+
+  func testOverlayModeRoundTrip() {
+    var sut = makeSUT()
+    sut.overlayMode = .hud
+    XCTAssertEqual(sut.overlayMode, .hud)
+  }
+
+  func testOverlayModeUnknownRawValueFallsBackToDefault() {
+    let suiteName = #function
+    let defaults = UserDefaults(suiteName: suiteName)!
+    defaults.removePersistentDomain(forName: suiteName)
+    defaults.set("invalid", forKey: "overlayMode")
+    let sut = LockSettings(defaults: defaults)
+    XCTAssertEqual(sut.overlayMode, .blackScreen)
+  }
+
+  // MARK: - TrackpadMode
+
+  func testTrackpadModeDefaultIsLocked() {
+    let sut = makeSUT()
+    XCTAssertEqual(sut.trackpadMode, .locked)
+  }
+
+  func testTrackpadModeRoundTrip() {
+    var sut = makeSUT()
+    sut.trackpadMode = .free
+    XCTAssertEqual(sut.trackpadMode, .free)
+  }
+
+  func testTrackpadModeUnknownRawValueFallsBackToDefault() {
+    let suiteName = #function
+    let defaults = UserDefaults(suiteName: suiteName)!
+    defaults.removePersistentDomain(forName: suiteName)
+    defaults.set("invalid", forKey: "trackpadMode")
+    let sut = LockSettings(defaults: defaults)
+    XCTAssertEqual(sut.trackpadMode, .locked)
+  }
+
+  // MARK: - HUDCorner
+
+  func testHUDCornerDefaultIsBottomRight() {
+    let sut = makeSUT()
+    XCTAssertEqual(sut.hudCorner, .bottomRight)
+  }
+
+  func testHUDCornerRoundTrip() {
+    var sut = makeSUT()
+    sut.hudCorner = .topLeft
+    XCTAssertEqual(sut.hudCorner, .topLeft)
+  }
+
+  func testHUDCornerUnknownRawValueFallsBackToDefault() {
+    let suiteName = #function
+    let defaults = UserDefaults(suiteName: suiteName)!
+    defaults.removePersistentDomain(forName: suiteName)
+    defaults.set("invalid", forKey: "hudCorner")
+    let sut = LockSettings(defaults: defaults)
+    XCTAssertEqual(sut.hudCorner, .bottomRight)
   }
 }

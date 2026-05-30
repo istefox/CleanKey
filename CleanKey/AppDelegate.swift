@@ -1,12 +1,17 @@
 import AppKit
 
-@main
 final class AppDelegate: NSObject, NSApplicationDelegate {
 
   private var menuBarController: MenuBarController?
+  private var settingsWindowController: SettingsWindowController?
 
   func applicationDidFinishLaunching(_ notification: Notification) {
-    NSApp.setActivationPolicy(.accessory)
-    menuBarController = MenuBarController()
+    let settings = LockSettings()
+    let swc = SettingsWindowController(settings: settings)
+    settingsWindowController = swc
+    menuBarController = MenuBarController(
+      settings: settings,
+      settingsWindowController: swc
+    )
   }
 }

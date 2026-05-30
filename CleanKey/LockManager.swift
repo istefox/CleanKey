@@ -19,6 +19,7 @@ public final class LockManager {
   var presenter: any LockPresenting
   private let notifier: Notifying
   private let trustChecker: TrustChecking
+  private let trackpadMode: @Sendable () -> TrackpadMode
 
   // MARK: - State
 
@@ -47,13 +48,15 @@ public final class LockManager {
     tapController: EventTapControlling,
     presenter: LockPresenting,
     notifier: Notifying,
-    trustChecker: TrustChecking? = nil
+    trustChecker: TrustChecking? = nil,
+    trackpadMode: @escaping @Sendable () -> TrackpadMode = { .locked }
   ) {
     self.clock = clock
     self.tapController = tapController
     self.presenter = presenter
     self.notifier = notifier
     self.trustChecker = trustChecker ?? AlwaysTrusted()
+    self.trackpadMode = trackpadMode
   }
 
   // MARK: - Public API
@@ -65,7 +68,7 @@ public final class LockManager {
     let endsAt = clock().addingTimeInterval(duration)
     state = .locked(endsAt: endsAt, escapeCombo: EscapeComboState())
 
-    tapController.install()
+    tapController.install(trackpadFree: trackpadMode() == .free)
     presenter.present()
     startWatchdogTimer()
   }
