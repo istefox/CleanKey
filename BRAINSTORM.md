@@ -1,90 +1,160 @@
-# BRAINSTORM — CleanKey: Keyboard and Touchpad Lock for Cleaning
+# BRAINSTORM — CleanKey features before Gumroad release
 
-**Date:** 2026-05-29
-**Requirements source:** /Users/stefanoferri/Developer/Apple/CleanKey/SPEC.md
-**Techniques applied:** first-principles decomposition, assumption-busting, prior-art analysis, alternatives synthesis, inversion (pre-mortem), adjacent ideas
+**Date:** 2026-05-30
+**Requirements source:** session dialogue + current codebase state (main branch)
+**Techniques applied:** first-principles, prior-art, assumption-busting, inversion (pre-mortem), adjacent ideas
 
 ---
 
 ## Reframed problem (first-principles)
 
-The irreducible need is: **complete isolation of the macOS session from all hardware input for a precisely known duration, without requiring re-authentication on resume.**
+A user paying for CleanKey needs three things simultaneously: trigger the lock in zero steps, trust that nothing will go wrong during the clean, and feel that the app is worth money compared to what is already free. Any feature that scores on all three axes is a strong candidate. Features that score on only one are lower priority.
 
-The screen blackout is a signal ("this is locked"), not a requirement in itself. The real requirement is that no keystroke or pointer event reaches the OS session while the hardware surface is being cleaned. Two physical facts constrain the solution: (1) macOS routes all HID events through the kernel and session event stream — suppression must happen at the session tap level or below; (2) the user must regain full control in finite time without a password.
+---
+
+## Competitive landscape (prior-art)
+
+| App | Price | Keyboard | Trackpad | Timer | Settings | Notable gap |
+|---|---|---|---|---|---|---|
+| KeyboardCleanTool | Free | lock | free only | none | none | No timer, no trackpad, no settings |
+| KeyboardLocker | Free | lock | lock | none | none | Cmd+Q to unlock only, no timer |
+| CleanupBuddy | Paid | lock | lock | ? | ? | Animated character angle |
+| Mac Pause | Paid | lock | lock | ? | partial | Keyboard-only or pointer-only modes, launch-at-login |
+| **CleanKey (current)** | — | lock | configurable | full | full | No launch-at-login, no keyboard-only mode |
+
+**Differentiation spaces nobody fills well:**
+1. Partial lock modes with a full settings panel (Mac Pause has modes but less settings depth)
+2. Launch-at-login for a menu-bar cleaner (basic paid-app expectation, missing everywhere)
+3. Proactive cleaning workflow (reminders, history)
+4. Shortcuts/automation integration
 
 ---
 
 ## Challenged assumptions
 
-- **Triple-Escape is safe from accidental firing during cleaning** — outcome: **retained**. Cleaning motions are random and variable; pressing the same key three times in 1.5 s is a deliberate rhythmic gesture that does not naturally emerge from wiping with a cloth. Real hardware testing is recommended in acceptance criteria.
-- **Pre-set duration is the right lock model** — outcome: **retained**. Predictability ("know exactly when the Mac is usable again") is the stated preference. A manual-stop mode is technically possible but not desired for v1.
-- **CGEventTap is the correct blocking mechanism** — outcome: **retained** (with caveats). The System Lock Bridge alternative (delegating to macOS screen lock) was evaluated and rejected: the system lock screen requires password re-authentication, which defeats the purpose of a 2-minute cleaning session.
-- **Fullscreen overlay is necessary** — outcome: **retained as primary, with silent variant noted as future**. The overlay's main value is unambiguous "locked" signalling. A no-overlay (silent) mode is interesting for "lock while watching video" use cases but is deferred.
+- **One lock mode fits all hardware** — challenged. Some users only want keyboard-only (external keyboards, cleaning keys without touching the trackpad). Mac Pause already sells this. **Verdict: drop — add a keyboard-only mode.**
+- **The app starts on demand** — challenged. A paid menu-bar app that disappears after a reboot loses the user. **Verdict: drop — launch-at-login is a baseline expectation for paid tools.**
+- **Duration is the only parameter** — partially challenged. A physical-trigger unlock (plug in a cable) is novel and solves the "forgot the Escape combo" problem. **Verdict: interesting for v2, not a launch blocker.**
 
 ---
 
 ## Approach alternatives
 
-### Alternative A — Full Lock (current SPEC)
+### Alternative A — "Minimum paid baseline"
 
-- **Idea:** CGEventTap at `cgSessionEventTap` suppresses all keyboard and pointer events. A fullscreen dark `NSWindow` at `Level.screenSaver` covers every display. Live countdown displayed. Triple-Escape unlocks.
-- **Axis of difference:** complete visual + input isolation (overlay + tap)
-- **Pros:** no ambiguity about lock state; strongest "do not touch" signal; works regardless of what app is in foreground
-- **Cons:** two subsystems to coordinate (tap + overlay windows); display hotplug complexity; window level may conflict with Stage Manager (see risks)
-- **Indicative cost/time:** medium
+**Idea:** Add only the features that directly answer "why pay vs KeyboardCleanTool." Three additions: launch-at-login, sound feedback (lock/unlock), global hotkey.
 
-### Alternative B — Silent Lock
+**Axis of difference:** minimal scope, highest ROI per implementation day.
 
-- **Idea:** same CGEventTap input suppression, but NO fullscreen overlay. The menu bar icon displays a live countdown (text badge: "1:45"). The desktop remains fully visible. Unlock via triple-Escape or timer expiry.
-- **Axis of difference:** responsibility boundary — window management eliminated; lock state expressed only via menu bar icon
-- **Pros:** no window level conflicts; no display hotplug logic; useful for "clean while watching a video"; simpler codebase
-- **Cons:** weak "locked" signal — returning users may not notice the Mac is still locked; no visual deterrent for bystanders
-- **Indicative cost/time:** low
-- **Status:** deferred to v1.1; worth a feature flag in the architecture so it can be added without a rewrite
+**Pros:**
+- Launch-at-login alone makes the app feel real and paid-worthy.
+- Sound feedback is visible/audible and absent from all free tools.
+- Global hotkey (e.g., Option+Command+L) is a power-user hook with zero ongoing complexity.
+- All three are already identified as ready seams in CLAUDE.md — very low implementation risk.
 
-### Alternative C — System Lock Bridge *(rejected)*
+**Cons:**
+- Does not address the keyboard-only mode gap vs Mac Pause.
+- A determined reviewer can still argue "KeyboardCleanTool does the same core thing."
 
-- **Idea:** delegate blocking to macOS's own screen lock (`CGSession` lock). A timer triggers lock; on expiry, auto-unlock via scripting bridge. No Accessibility permission required.
-- **Axis of difference:** responsibility boundary — blocking fully delegated to OS; no custom event tap
-- **Pros:** zero permission friction; guaranteed OS-level reliability
-- **Cons:** **deal-breaker** — the system lock screen requires password re-authentication. A 2-minute cleaning session must not force a password entry on return. Rejected.
-- **Indicative cost/time:** n/a (rejected)
+**Indicative cost/time:** low (1–2 days)
+
+---
+
+### Alternative B — "Clear differentiator set"
+
+**Idea:** Alternative A plus a partial lock mode — keyboard-only (trackpad stays free) and trackpad-only (keyboard stays free). Directly fills the Mac Pause gap.
+
+**Axis of difference:** new lock scope enum with 3 values (all, keyboardOnly, trackpadOnly) — event tap mask selection changes at install time.
+
+**Pros:**
+- Directly differentiates from KeyboardCleanTool (which only ever keeps trackpad free — CleanKey becomes MORE flexible).
+- Answers "I just want to clean the keyboard, why does it block my mouse?" before users ask.
+- Mac Pause charges for this; it belongs in a paid CleanKey.
+
+**Cons:**
+- New LockManager code path (changes event tap mask selection at install time).
+- More settings surface to explain in onboarding.
+
+**Indicative cost/time:** medium (2–3 days including tests)
+
+---
+
+### Alternative C — "Engagement and retention set"
+
+**Idea:** Alternative A plus cleaning reminders (weekly/biweekly push notification) and a session counter (how many cleans this month, visible in menu or a stats popover).
+
+**Axis of difference:** persistence model — needs UserDefaults for history; background scheduling with UserNotifications framework.
+
+**Pros:**
+- Cleaning reminders are a genuine differentiator — no competing app does this.
+- Session stats make the app feel active and premium.
+- Reminders drive re-engagement and reduce churn (user forgets the app without it).
+
+**Cons:**
+- Requires UserNotifications permission prompt on first run.
+- Stats storage adds a lightweight data layer.
+
+**Indicative cost/time:** medium (2–3 days)
+
+---
+
+### Alternative D — "Full pre-launch polish"
+
+**Idea:** Alternatives B + C together, plus a proper first-launch onboarding flow for the Accessibility permission grant.
+
+**Axis of difference:** scope and timeline — most complete pre-launch state.
+
+**Pros:**
+- Covers every identified gap in one release.
+- Onboarding reduces "the app doesn't work" support emails (missing Accessibility permission).
+- Positions CleanKey above all free and paid competitors.
+
+**Cons:**
+- Longer timeline before shipping anything.
+- Risk of waiting for "complete" and shipping nothing.
+
+**Indicative cost/time:** high (5–7 days)
 
 ---
 
 ## Risks emerged (inversion / pre-mortem)
 
-- **CGEventTap watchdog invalidation while overlay is still showing** → the OS silently kills misbehaving event taps; the overlay remains on screen but input flows through uninhibited; the user types a password or sends a message while thinking the Mac is locked.
-  Mitigation: 1-second `CGEventTapIsEnabled` poll inside `LockManager`; on false result, immediately destroy overlay windows, remove tap reference, surface a user notification: "Lock ended early — Accessibility tap was disabled by macOS."
-
-- **Fullscreen overlay window level conflicts with Stage Manager / full-screen apps** → on macOS 14+ with Stage Manager enabled, `NSWindow.Level.screenSaver` may compete with system-managed window groups, causing display glitches, forced app exits, or windows that cannot be dismissed.
-  Mitigation: acceptance test on macOS 14 Sonoma with Stage Manager on; validate that `collectionBehavior: .canJoinAllSpaces + .fullScreenAuxiliary` prevents Stage Manager from repositioning the overlay; add a regression note in the ADR.
+- **"Why pay for this? KeyboardCleanTool is free and does the same."** — Mitigation: launch-at-login + sound + global hotkey + partial lock modes make the comparison obviously unequal. The Gumroad listing must surface these differences explicitly.
+- **No launch-at-login means users forget the app exists** — Mitigation: P0 for any paid release. Without persistent presence, the app has no retention.
+- **macOS update breaks the CGEventTap** — Mitigation: the app already has a watchdog that detects tap failure. Maintain a clear update policy (free updates within a major macOS version).
+- **Partial lock mode adds event tap complexity** — Mitigation: the existing `trackpadMode` injection seam in LockManager absorbs much of this; the new scope parameter follows the same pattern.
 
 ---
 
 ## Adjacent ideas emerged
 
-- **Global hotkey to trigger lock** — [future v1.1] A configurable `NSEvent.addGlobalMonitorForEvents`-based shortcut to start the last-used lock from any app, without touching the menu bar. The architecture should plan for this: `LockManager.startLock()` is already decoupled from the UI; adding a hotkey is a registration call.
-- **Sound feedback on lock start / unlock** — [future v1.1] A soft system sound (`NSSound`) on lock start and a distinct tone on unlock/expiry. Useful when the user's eyes are on the keyboard, not the screen. Zero architectural impact; trivial to add.
-- **Silent Lock mode (no overlay)** — [future v1.1] Alternative B above. Could be a toggle ("Full / Silent") in the popover. Requires no architectural changes to LockManager; only the overlay creation step is conditional.
+- **Cleaning reminders / schedule** — future v1.1 (strong differentiator, no competitor has it)
+- **Session history / stats** — future v1.1 (engagement, premium feel)
+- **Shortcuts / Siri Shortcuts integration** — future v1.1 (automation users, press coverage)
+- **Physical-trigger unlock (USB plug/unplug via IOKit)** — future v2 (novel, solves "forgot Escape combo", non-trivial)
+- **Menu bar countdown text** — low effort, worth v1.0 (makes countdown visible without opening the overlay)
 
 ---
 
 ## Preliminary recommendation
 
-**Alternative A (Full Lock) is the correct choice for v1.** It is the only approach that completely matches the stated differentiation goals: timer countdown, full input block (keyboard + trackpad), multi-display overlay, modern notarized distribution. No competing alternative is both architecturally sound and user-experience-complete for the cleaning use case.
+**Alternative B is the recommended pre-launch set**, with the three additions from A as prerequisites.
 
-The two risks identified in the pre-mortem are **architecturally significant and must be addressed in the ADR**, not deferred:
-1. The watchdog poll (`CGEventTapIsEnabled` on a 1-second `Timer`) must be part of the design, not an afterthought.
-2. Stage Manager window level compatibility must be an explicit acceptance criterion with a named test case.
+Priority order:
+1. **Launch-at-login** (P0 — without it, a paid menu-bar app feels unfinished)
+2. **Sound feedback** (P1 — audible and visible on the Gumroad listing, no free app has it)
+3. **Global hotkey** (P1 — power-user hook, already a ready seam in CLAUDE.md)
+4. **Keyboard-only lock mode** (P1 — fills the Mac Pause gap, directly answers the "why pay" objection)
+5. **Menu bar countdown text** (P2 — small addition, makes the lock visible at a glance)
+
+This is preliminary and should be validated before committing to scope.
 
 ---
 
 ## Notes for the architect
 
-1. **Watchdog poll is load-bearing**: design `LockManager` with a `Timer`-based health check that calls `CGEventTapIsEnabled`; on false, call `unlock()` and post a notification before the user discovers the failure themselves.
-2. **Stage Manager test case**: document in the ADR that `NSWindow.Level.screenSaver` + `collectionBehavior` must be validated on macOS 14 with Stage Manager enabled before v1 ships.
-3. **Silent Lock hook**: plan `LockOverlayController` as an optional component (not hard-wired); this makes the Alternative B future feature a 1-line conditional, not a refactor.
-4. **Global hotkey future path**: `LockManager.startLock(duration:)` should be a clean entry point with no UI dependency, so a future hotkey registration can call it directly.
-5. **MAS entitlements**: `com.apple.security.device.input-monitoring` must appear in the `.entitlements` file from day one; missing it blocks the MAS path without a signing rebuild.
-6. **AXIsProcessTrusted() revocation**: the watchdog should also check `AXIsProcessTrusted()` every 5 s while locked; if it returns false, treat it the same as watchdog invalidation.
+- **Launch-at-login:** use `SMAppService.mainApp.register()` (macOS 13+ API, no legacy helper target needed for macOS 14+ target).
+- **Sound feedback:** `NSSound(named:)` or a bundled `.aiff` at lock start and unlock. Already flagged in CLAUDE.md v1.1 hooks as "no architectural change needed."
+- **Global hotkey:** `NSEvent.addGlobalMonitorForEvents(matching: .keyDown)` with a configurable key combo stored in `LockSettings`. Already flagged in CLAUDE.md as a ready seam.
+- **Keyboard-only mode:** extend the current `TrackpadMode` concept into a `LockScope` setting (all, keyboardOnly, trackpadOnly). The event tap mask in `RealEventTapController.install(trackpadFree:)` already accepts a parameter — extend it to accept a full scope enum. Tests exist for the current two-mode path; new scope values need new test coverage.
+- **Menu bar countdown text:** set `statusItem.button?.title` to the remaining seconds on each watchdog tick. Low-risk addition.

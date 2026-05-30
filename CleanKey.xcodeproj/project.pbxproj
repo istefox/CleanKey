@@ -36,7 +36,7 @@
 		E5F6A7B8C9D00001E5F6A7B8 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F6A7B8C9D00000E5F6A7B8 /* SettingsViewModel.swift */; };
 		E82CB40CE609213945274554 /* LockOverlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD631A543B43998363DD8CD /* LockOverlayController.swift */; };
 		EF478AA603B8EDDD871418A1 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F714A18EFF5CC0A6D003E4 /* main.swift */; };
-		F0A1B2C3D4E50001F0A1B2C3 /* TrackpadModeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1B2C3D4E50000F0A1B2C3 /* TrackpadModeTests.swift */; };
+		F0A1B2C3D4E50001F0A1B2C3 /* LockScopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1B2C3D4E50000F0A1B2C3 /* LockScopeTests.swift */; };
 		F41149DBA10D00D3E3F69BD2 /* LockManagerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E531B51B612AAD37588596A /* LockManagerProtocols.swift */; };
 		F6A7B8C9D0E10001F6A7B8C9 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A7B8C9D0E10000F6A7B8C9 /* SettingsView.swift */; };
 		FBA9A8B20D16001A3BA77BB7 /* RealTrustChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464E14750DE2AEA9C591E20A /* RealTrustChecker.swift */; };
@@ -90,7 +90,7 @@
 		DC324F48F8185C10CE879A57 /* LockManagerStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockManagerStateTests.swift; sourceTree = "<group>"; };
 		E3F714A18EFF5CC0A6D003E4 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		E5F6A7B8C9D00000E5F6A7B8 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
-		F0A1B2C3D4E50000F0A1B2C3 /* TrackpadModeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadModeTests.swift; sourceTree = "<group>"; };
+		F0A1B2C3D4E50000F0A1B2C3 /* LockScopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScopeTests.swift; sourceTree = "<group>"; };
 		F6A7B8C9D0E10000F6A7B8C9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A8B38D49580B47639DE1B993 /* LaunchAtLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginManager.swift; sourceTree = "<group>"; };
 		80F0AC4690414BADAC35EC66 /* SoundFeedbackPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFeedbackPresenter.swift; sourceTree = "<group>"; };
@@ -139,7 +139,7 @@
 				A1B2C3D4E5F60002A2B3C4D5 /* TwoZoneSliderTests.swift */,
 				18C9D0E1F203000018C9D0E1 /* SettingsViewModelTests.swift */,
 				82F21590769C32479A8C1D47 /* WatchdogTests.swift */,
-				F0A1B2C3D4E50000F0A1B2C3 /* TrackpadModeTests.swift */,
+				F0A1B2C3D4E50000F0A1B2C3 /* LockScopeTests.swift */,
 				A2B3C4D5E6F70002A2B3C4D5 /* HUDLayoutTests.swift */,
 				3F2E6B9BE23E44EEA9607BD5 /* SoundFeedbackPresenterTests.swift */,
 			);
@@ -307,7 +307,7 @@
 				A1B2C3D4E5F60003A2B3C4D5 /* TwoZoneSliderTests.swift in Sources */,
 				18C9D0E1F2030001189CD0E1 /* SettingsViewModelTests.swift in Sources */,
 				9C849849619FA5A581FE260C /* WatchdogTests.swift in Sources */,
-				F0A1B2C3D4E50001F0A1B2C3 /* TrackpadModeTests.swift in Sources */,
+				F0A1B2C3D4E50001F0A1B2C3 /* LockScopeTests.swift in Sources */,
 				A2B3C4D5E6F70003A2B3C4D5 /* HUDLayoutTests.swift in Sources */,
 				D378AAA9AAE644DFB4F5EEAD /* SoundFeedbackPresenterTests.swift in Sources */,
 			);

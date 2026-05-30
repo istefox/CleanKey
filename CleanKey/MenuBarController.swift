@@ -23,7 +23,7 @@ final class MenuBarController: NSObject {
       presenter: SilentPresenter(),
       notifier: ConsoleNotifier(),
       trustChecker: RealTrustChecker(),
-      trackpadMode: { [settings] in settings.trackpadMode },
+      lockScope: { [settings] in settings.lockScope },
       escapeInterval: { [settings] in settings.escapeInterval }
     )
     tapController.lockManager = lockManager

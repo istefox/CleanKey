@@ -67,10 +67,10 @@ CleanKey/
 Reference: `docs/architecture/ADR-002-settings-quick-pick.md`
 
 - **`LockPresenting.configure(settings:)` is a no-op default method.** Add new overlay behaviors as defaulted protocol extensions; never as required methods. All existing conformers (`SilentPresenter`, `FakeLockPresenter`) get the default automatically.
-- **`EventTapControlling.install(trackpadFree:)` is a contract change.** Any future parameter addition requires updating `FakeEventTapController` in `TestHelpers.swift` and running the full suite before merging.
+- **`EventTapControlling.install(scope:)` is a contract change.** Any future parameter addition requires updating `FakeEventTapController` in `TestHelpers.swift` and running the full suite before merging.
 - **`LockSettings.minimumDuration` is 5 s (was 30 s).** Future tests must reference the constant, not the literal `30` or `5`, to survive further range changes.
 - **`TwoZoneSlider.swift` is UI-free.** Zone boundary is at step index 12 (60 s → 120 s gap). Both mapping functions (`durationForPosition` / `positionForDuration`) must round-trip all 21 steps — that is the unit-test acceptance bar.
 - **`SettingsWindowController` is held strongly by `AppDelegate`.** `showOrFocus()` is the single entry point; `isReleasedWhenClosed = false`. Do not create it as a global singleton or from `MenuBarController`.
 - **HUD overlay panels use `.statusBar` window level**, not `.screenSaver`. They must be non-interactive (`ignoresMouseEvents = true`); event blocking happens at the tap layer.
-- **Cursor hide/show is mode-gated.** `LockOverlayController.present()` must skip `CGDisplayHideCursor` / `NSCursor.hide()` when `trackpadMode == .free`. Use a `cursorHidden: Bool` flag and guard in `present()` to avoid double-hide on display hotplug rebuilds.
+- **Cursor hide/show is scope-gated.** `LockOverlayController.present()` must skip `CGDisplayHideCursor` / `NSCursor.hide()` when `lockScope.trackpadBlocked == false` (i.e. `keyboardOnly` scope). Use a `cursorHidden: Bool` flag and guard in `present()` to avoid double-hide on display hotplug rebuilds.
 - **`TimerPickerView` and its tests are retired.** `TimerPickerViewModelTests.swift` must be removed as part of the feature; do not leave orphaned tests for a deleted type.

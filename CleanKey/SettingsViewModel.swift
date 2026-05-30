@@ -7,7 +7,7 @@ final class SettingsViewModel {
 
   var sliderPosition: Double
   var overlayMode: OverlayMode
-  var trackpadMode: TrackpadMode
+  var lockScope: LockScope
   var hudCorner: HUDCorner
   var escapeInterval: TimeInterval
   var launchAtLogin: Bool
@@ -16,7 +16,7 @@ final class SettingsViewModel {
   init(settings: LockSettings) {
     sliderPosition = TwoZoneSlider.positionForDuration(settings.lastDuration)
     overlayMode = settings.overlayMode
-    trackpadMode = settings.trackpadMode
+    lockScope = settings.lockScope
     hudCorner = settings.hudCorner
     escapeInterval = settings.escapeInterval
     launchAtLogin = settings.launchAtLogin
@@ -27,7 +27,7 @@ final class SettingsViewModel {
   func save(to settings: inout LockSettings) {
     settings.lastDuration = TwoZoneSlider.durationForPosition(sliderPosition)
     settings.overlayMode = overlayMode
-    settings.trackpadMode = trackpadMode
+    settings.lockScope = lockScope
     settings.hudCorner = hudCorner
     settings.escapeInterval = escapeInterval
     settings.launchAtLogin = launchAtLogin

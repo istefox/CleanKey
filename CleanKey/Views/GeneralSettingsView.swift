@@ -15,10 +15,11 @@ struct GeneralSettingsView: View {
         }
       }
 
-      Section("Trackpad") {
-        Picker("Trackpad during lock", selection: $viewModel.trackpadMode) {
-          Text("Locked").tag(TrackpadMode.locked)
-          Text("Free").tag(TrackpadMode.free)
+      Section("Lock Scope") {
+        Picker("Lock scope", selection: $viewModel.lockScope) {
+          Text("Both").tag(LockScope.all)
+          Text("Keyboard").tag(LockScope.keyboardOnly)
+          Text("Trackpad").tag(LockScope.trackpadOnly)
         }
         .pickerStyle(.segmented)
         .labelsHidden()

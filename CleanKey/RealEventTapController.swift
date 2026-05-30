@@ -15,10 +15,12 @@ import Foundation
 // never mutates TapContext fields directly.
 private final class TapContext: @unchecked Sendable {
   weak var controller: RealEventTapController?
-  let trackpadFree: Bool
-  init(controller: RealEventTapController, trackpadFree: Bool) {
+  let keyboardBlocked: Bool
+  let trackpadBlocked: Bool
+  init(controller: RealEventTapController, scope: LockScope) {
     self.controller = controller
-    self.trackpadFree = trackpadFree
+    self.keyboardBlocked = scope.keyboardBlocked
+    self.trackpadBlocked = scope.trackpadBlocked
   }
 }
 
@@ -40,26 +42,25 @@ private func eventTapCallback(
     return nil
   }
 
-  // In trackpad-free mode, pass through all pointing-device and gesture events.
-  if ctx.trackpadFree {
-    switch type {
-    case .leftMouseDown, .leftMouseUp, .leftMouseDragged,
-      .rightMouseDown, .rightMouseUp, .rightMouseDragged,
-      .otherMouseDown, .otherMouseUp, .otherMouseDragged,
-      .mouseMoved, .scrollWheel:
-      return Unmanaged.passUnretained(event)
-    default:
-      // Gesture events (raw 18–20, 29–32) and system events (raw 14).
-      let raw = type.rawValue
-      if raw == 18 || raw == 19 || raw == 20
-        || raw == 29 || raw == 30 || raw == 31 || raw == 32
-        || raw == 14
-      {
-        return Unmanaged.passUnretained(event)
-      }
+  // Pointer / gesture / system events: pass through when trackpad is not in scope.
+  switch type {
+  case .leftMouseDown, .leftMouseUp, .leftMouseDragged,
+    .rightMouseDown, .rightMouseUp, .rightMouseDragged,
+    .otherMouseDown, .otherMouseUp, .otherMouseDragged,
+    .mouseMoved, .scrollWheel:
+    return ctx.trackpadBlocked ? nil : Unmanaged.passUnretained(event)
+  default:
+    // Gesture events (raw 18–20, 29–32) and system events (raw 14).
+    let raw = type.rawValue
+    if raw == 18 || raw == 19 || raw == 20
+      || raw == 29 || raw == 30 || raw == 31 || raw == 32
+      || raw == 14
+    {
+      return ctx.trackpadBlocked ? nil : Unmanaged.passUnretained(event)
     }
   }
 
+  // Keyboard events: always route keyDown for emergency unlock, then honour scope.
   if type == .keyDown {
     let keyCode = CGKeyCode(event.getIntegerValueField(.keyboardEventKeycode))
     // CGEventTimestamp is mach absolute time; divide by 1e9 for seconds.
@@ -67,6 +68,11 @@ private func eventTapCallback(
     DispatchQueue.main.async {
       ctx.controller?.routeKeyDown(keyCode: keyCode, timestamp: timestamp)
     }
+    return ctx.keyboardBlocked ? nil : Unmanaged.passUnretained(event)
+  }
+
+  if type == .keyUp || type == .flagsChanged {
+    return ctx.keyboardBlocked ? nil : Unmanaged.passUnretained(event)
   }
 
   return nil  // drop all events while tap is active
@@ -99,10 +105,10 @@ public final class RealEventTapController: EventTapControlling {
     return CGEvent.tapIsEnabled(tap: tap)
   }
 
-  public func install(trackpadFree: Bool) {
+  public func install(scope: LockScope) {
     guard tap == nil else { return }
 
-    let ctx = TapContext(controller: self, trackpadFree: trackpadFree)
+    let ctx = TapContext(controller: self, scope: scope)
     let rawPtr = Unmanaged.passRetained(ctx).toOpaque()
     contextPtr = rawPtr
 

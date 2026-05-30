@@ -16,7 +16,7 @@ final class SettingsViewModelTests: XCTestCase {
     var settings = makeSettings()
     settings.lastDuration = 300
     settings.overlayMode = .hud
-    settings.trackpadMode = .free
+    settings.lockScope = .keyboardOnly
     settings.hudCorner = .topLeft
     settings.launchAtLogin = true
 
@@ -24,7 +24,7 @@ final class SettingsViewModelTests: XCTestCase {
 
     XCTAssertEqual(sut.sliderPosition, TwoZoneSlider.positionForDuration(300))
     XCTAssertEqual(sut.overlayMode, .hud)
-    XCTAssertEqual(sut.trackpadMode, .free)
+    XCTAssertEqual(sut.lockScope, .keyboardOnly)
     XCTAssertEqual(sut.hudCorner, .topLeft)
     XCTAssertTrue(sut.launchAtLogin)
   }
@@ -36,7 +36,7 @@ final class SettingsViewModelTests: XCTestCase {
     XCTAssertEqual(
       sut.sliderPosition, TwoZoneSlider.positionForDuration(LockSettings.defaultDuration))
     XCTAssertEqual(sut.overlayMode, .blackScreen)
-    XCTAssertEqual(sut.trackpadMode, .locked)
+    XCTAssertEqual(sut.lockScope, .all)
     XCTAssertEqual(sut.hudCorner, .bottomRight)
     XCTAssertFalse(sut.launchAtLogin)
   }
@@ -49,7 +49,7 @@ final class SettingsViewModelTests: XCTestCase {
 
     sut.sliderPosition = TwoZoneSlider.positionForDuration(180)
     sut.overlayMode = .hud
-    sut.trackpadMode = .free
+    sut.lockScope = .keyboardOnly
     sut.hudCorner = .topRight
     sut.launchAtLogin = true
 
@@ -57,7 +57,7 @@ final class SettingsViewModelTests: XCTestCase {
 
     XCTAssertEqual(settings.lastDuration, 180)
     XCTAssertEqual(settings.overlayMode, .hud)
-    XCTAssertEqual(settings.trackpadMode, .free)
+    XCTAssertEqual(settings.lockScope, .keyboardOnly)
     XCTAssertEqual(settings.hudCorner, .topRight)
     XCTAssertTrue(settings.launchAtLogin)
   }
@@ -182,14 +182,14 @@ final class SettingsViewModelTests: XCTestCase {
     var settings = makeSettings()
     settings.lastDuration = 120
     settings.overlayMode = .blackScreen
-    settings.trackpadMode = .locked
+    settings.lockScope = .all
 
     let sut = SettingsViewModel(settings: settings)
 
     // Mutate draft
     sut.sliderPosition = TwoZoneSlider.positionForDuration(600)
     sut.overlayMode = .hud
-    sut.trackpadMode = .free
+    sut.lockScope = .keyboardOnly
 
     // Cancel — don't save
     sut.cancel()
@@ -197,7 +197,7 @@ final class SettingsViewModelTests: XCTestCase {
     // Settings remain unchanged
     XCTAssertEqual(settings.lastDuration, 120)
     XCTAssertEqual(settings.overlayMode, .blackScreen)
-    XCTAssertEqual(settings.trackpadMode, .locked)
+    XCTAssertEqual(settings.lockScope, .all)
   }
 
   func testCancelLeavesLockSettingsUnchanged() {

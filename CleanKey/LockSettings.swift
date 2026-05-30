@@ -5,9 +5,13 @@ public enum OverlayMode: String {
   case hud
 }
 
-public enum TrackpadMode: String {
-  case locked
-  case free
+public enum LockScope: String {
+  case all
+  case keyboardOnly
+  case trackpadOnly
+
+  var keyboardBlocked: Bool { self != .trackpadOnly }
+  var trackpadBlocked: Bool { self != .keyboardOnly }
 }
 
 public enum HUDCorner: String {
@@ -38,7 +42,8 @@ public struct LockSettings: @unchecked Sendable {
   private let defaults: UserDefaults
   private static let lastDurationKey = "lastDuration"
   private static let overlayModeKey = "overlayMode"
-  private static let trackpadModeKey = "trackpadMode"
+  private static let lockScopeKey = "lockScope"
+  private static let trackpadModeKey = "trackpadMode"  // legacy migration only
   private static let hudCornerKey = "hudCorner"
   private static let escapeIntervalKey = "escapeInterval"
   private static let launchAtLoginKey = "launchAtLogin"
@@ -79,16 +84,23 @@ public struct LockSettings: @unchecked Sendable {
     }
   }
 
-  /// Trackpad behavior during a lock. Defaults to `.locked`.
-  public var trackpadMode: TrackpadMode {
+  /// Which inputs are blocked during a lock. Defaults to `.all`.
+  /// Migrates the legacy `trackpadMode` key on first read if `lockScope` is absent.
+  public var lockScope: LockScope {
     get {
-      guard let raw = defaults.string(forKey: Self.trackpadModeKey),
-        let value = TrackpadMode(rawValue: raw)
-      else { return .locked }
-      return value
+      if let raw = defaults.string(forKey: Self.lockScopeKey),
+        let value = LockScope(rawValue: raw)
+      {
+        return value
+      }
+      // Legacy migration: map old trackpadMode to the nearest LockScope.
+      if let legacyRaw = defaults.string(forKey: Self.trackpadModeKey) {
+        return legacyRaw == "free" ? .keyboardOnly : .all
+      }
+      return .all
     }
     set {
-      defaults.set(newValue.rawValue, forKey: Self.trackpadModeKey)
+      defaults.set(newValue.rawValue, forKey: Self.lockScopeKey)
     }
   }
 

@@ -10,7 +10,7 @@ public final class LockOverlayController: LockPresenting {
   private weak var lockManager: LockManager?
 
   private var overlayMode: OverlayMode = .blackScreen
-  private var trackpadMode: TrackpadMode = .locked
+  private var lockScope: LockScope = .all
   private var hudCorner: HUDCorner = .bottomRight
 
   /// Tracks whether cursor was hidden by present() so dismiss() balances it.
@@ -36,7 +36,7 @@ public final class LockOverlayController: LockPresenting {
 
   public func configure(settings: LockSettings) {
     overlayMode = settings.overlayMode
-    trackpadMode = settings.trackpadMode
+    lockScope = settings.lockScope
     hudCorner = settings.hudCorner
   }
 
@@ -45,7 +45,7 @@ public final class LockOverlayController: LockPresenting {
     switch overlayMode {
     case .blackScreen:
       buildFullScreenWindows()
-      if trackpadMode != .free {
+      if lockScope.trackpadBlocked {
         CGDisplayHideCursor(CGMainDisplayID())
         NSCursor.hide()
         cursorHidden = true

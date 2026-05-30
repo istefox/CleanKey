@@ -41,7 +41,7 @@ struct SettingsView: View {
         .padding()
       }
     }
-    .frame(minWidth: 480, minHeight: 320)
+    .frame(minWidth: 520, minHeight: 520)
   }
 
   private func systemImage(for item: SettingsSidebarItem) -> String {

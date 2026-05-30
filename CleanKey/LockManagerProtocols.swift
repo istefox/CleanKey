@@ -21,7 +21,7 @@ extension LockPresenting {
 /// Injected event-tap lifecycle seam. All calls happen on the main actor.
 @MainActor
 public protocol EventTapControlling: AnyObject {
-  func install(trackpadFree: Bool)
+  func install(scope: LockScope)
   func remove()
   var isEnabled: Bool { get }
 }

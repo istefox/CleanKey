@@ -19,7 +19,7 @@ public final class LockManager {
   var presenter: any LockPresenting
   private let notifier: Notifying
   private let trustChecker: TrustChecking
-  private let trackpadMode: @Sendable () -> TrackpadMode
+  private let lockScope: @Sendable () -> LockScope
   private let escapeInterval: @Sendable () -> TimeInterval
 
   // MARK: - State
@@ -45,7 +45,7 @@ public final class LockManager {
     presenter: LockPresenting,
     notifier: Notifying,
     trustChecker: TrustChecking? = nil,
-    trackpadMode: @escaping @Sendable () -> TrackpadMode = { .locked },
+    lockScope: @escaping @Sendable () -> LockScope = { .all },
     escapeInterval: @escaping @Sendable () -> TimeInterval = { 1.5 }
   ) {
     self.clock = clock
@@ -53,7 +53,7 @@ public final class LockManager {
     self.presenter = presenter
     self.notifier = notifier
     self.trustChecker = trustChecker ?? AlwaysTrusted()
-    self.trackpadMode = trackpadMode
+    self.lockScope = lockScope
     self.escapeInterval = escapeInterval
   }
 
@@ -66,7 +66,7 @@ public final class LockManager {
     let endsAt = clock().addingTimeInterval(duration)
     state = .locked(endsAt: endsAt, escapeCombo: EscapeComboState())
 
-    tapController.install(trackpadFree: trackpadMode() == .free)
+    tapController.install(scope: lockScope())
     presenter.present()
     startWatchdogTimer()
   }

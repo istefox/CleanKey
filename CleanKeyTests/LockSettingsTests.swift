@@ -113,26 +113,44 @@ final class LockSettingsTests: XCTestCase {
     XCTAssertEqual(sut.overlayMode, .blackScreen)
   }
 
-  // MARK: - TrackpadMode
+  // MARK: - LockScope
 
-  func testTrackpadModeDefaultIsLocked() {
+  func testLockScopeDefaultIsAll() {
     let sut = makeSUT()
-    XCTAssertEqual(sut.trackpadMode, .locked)
+    XCTAssertEqual(sut.lockScope, .all)
   }
 
-  func testTrackpadModeRoundTrip() {
+  func testLockScopeRoundTripTrackpadOnly() {
     var sut = makeSUT()
-    sut.trackpadMode = .free
-    XCTAssertEqual(sut.trackpadMode, .free)
+    sut.lockScope = .trackpadOnly
+    XCTAssertEqual(sut.lockScope, .trackpadOnly)
   }
 
-  func testTrackpadModeUnknownRawValueFallsBackToDefault() {
+  func testLockScopeUnknownRawValueFallsBackToAll() {
     let suiteName = #function
     let defaults = UserDefaults(suiteName: suiteName)!
     defaults.removePersistentDomain(forName: suiteName)
-    defaults.set("invalid", forKey: "trackpadMode")
+    defaults.set("invalid", forKey: "lockScope")
     let sut = LockSettings(defaults: defaults)
-    XCTAssertEqual(sut.trackpadMode, .locked)
+    XCTAssertEqual(sut.lockScope, .all)
+  }
+
+  func testLockScopeMigratesLegacyTrackpadModeLocked() {
+    let suiteName = #function
+    let defaults = UserDefaults(suiteName: suiteName)!
+    defaults.removePersistentDomain(forName: suiteName)
+    defaults.set("locked", forKey: "trackpadMode")
+    let sut = LockSettings(defaults: defaults)
+    XCTAssertEqual(sut.lockScope, .all)
+  }
+
+  func testLockScopeMigratesLegacyTrackpadModeFree() {
+    let suiteName = #function
+    let defaults = UserDefaults(suiteName: suiteName)!
+    defaults.removePersistentDomain(forName: suiteName)
+    defaults.set("free", forKey: "trackpadMode")
+    let sut = LockSettings(defaults: defaults)
+    XCTAssertEqual(sut.lockScope, .keyboardOnly)
   }
 
   // MARK: - LaunchAtLogin
