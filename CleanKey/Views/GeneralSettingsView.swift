@@ -28,6 +28,10 @@ struct GeneralSettingsView: View {
         Toggle("Launch at login", isOn: $viewModel.launchAtLogin)
       }
 
+      Section("Sound") {
+        Toggle("Sound feedback on lock and unlock", isOn: $viewModel.soundFeedback)
+      }
+
       Section("Emergency unlock") {
         VStack(alignment: .leading, spacing: 8) {
           Text("Triple-Escape speed: \(escapeIntervalLabel)")

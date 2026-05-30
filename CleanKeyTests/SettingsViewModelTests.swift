@@ -130,6 +130,29 @@ final class SettingsViewModelTests: XCTestCase {
     XCTAssertEqual(settings2.hudCorner, .bottomLeft)
   }
 
+  // MARK: - SoundFeedback
+
+  func testInitHydratesSoundFeedbackFromSettings() {
+    var settings = makeSettings()
+    settings.soundFeedback = false
+    let sut = SettingsViewModel(settings: settings)
+    XCTAssertFalse(sut.soundFeedback)
+  }
+
+  func testInitDefaultSoundFeedbackIsTrue() {
+    let settings = makeSettings()
+    let sut = SettingsViewModel(settings: settings)
+    XCTAssertTrue(sut.soundFeedback)
+  }
+
+  func testSaveWritesSoundFeedbackToSettings() {
+    var settings = makeSettings()
+    let sut = SettingsViewModel(settings: settings)
+    sut.soundFeedback = false
+    sut.save(to: &settings)
+    XCTAssertFalse(settings.soundFeedback)
+  }
+
   // MARK: - EscapeInterval
 
   func testInitHydratesEscapeIntervalFromSettings() {

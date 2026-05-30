@@ -35,8 +35,9 @@ final class MenuBarController: NSObject {
     super.init()
     self.settingsWindowController = settingsWindowController
     let overlay = LockOverlayController(lockManager: lockManager)
+    let sound = SoundFeedbackPresenter(real: overlay)
     lockManager.presenter = PresenterProxy(
-      real: overlay,
+      real: sound,
       onPresent: { [weak self] in
         self?.setMenuBarIcon(locked: true)
       },

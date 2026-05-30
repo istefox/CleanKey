@@ -47,6 +47,14 @@ final class FakeTrustChecker: TrustChecking, @unchecked Sendable {
   var isTrusted: Bool { trusted }
 }
 
+// MARK: - Sound fake
+
+// @unchecked Sendable is safe: only ever mutated from @MainActor test methods.
+final class FakeSoundPlayer: SoundPlaying, @unchecked Sendable {
+  var played: [FeedbackSound] = []
+  func play(_ sound: FeedbackSound) { played.append(sound) }
+}
+
 // MARK: - LaunchAtLogin fake
 
 // @unchecked Sendable is safe: only ever mutated from @MainActor test methods.

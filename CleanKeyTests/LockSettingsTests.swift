@@ -46,6 +46,26 @@ final class LockSettingsTests: XCTestCase {
     XCTAssertEqual(sut2.lastDuration, 300)
   }
 
+  // MARK: - SoundFeedback
+
+  func testSoundFeedbackDefaultIsTrue() {
+    let sut = makeSUT()
+    XCTAssertTrue(sut.soundFeedback)
+  }
+
+  func testSoundFeedbackRoundTripFalse() {
+    var sut = makeSUT()
+    sut.soundFeedback = false
+    XCTAssertFalse(sut.soundFeedback)
+  }
+
+  func testSoundFeedbackRoundTripTrueAfterFalse() {
+    var sut = makeSUT()
+    sut.soundFeedback = false
+    sut.soundFeedback = true
+    XCTAssertTrue(sut.soundFeedback)
+  }
+
   // MARK: - EscapeInterval
 
   func testEscapeIntervalDefaultIs1Point5() {

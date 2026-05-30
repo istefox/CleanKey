@@ -41,6 +41,8 @@
 		F6A7B8C9D0E10001F6A7B8C9 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A7B8C9D0E10000F6A7B8C9 /* SettingsView.swift */; };
 		FBA9A8B20D16001A3BA77BB7 /* RealTrustChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464E14750DE2AEA9C591E20A /* RealTrustChecker.swift */; };
 		0B039D96BFD04D67B92D3677 /* LaunchAtLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B38D49580B47639DE1B993 /* LaunchAtLoginManager.swift */; };
+		13F32C505DC44B7A9441B01F /* SoundFeedbackPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F0AC4690414BADAC35EC66 /* SoundFeedbackPresenter.swift */; };
+		D378AAA9AAE644DFB4F5EEAD /* SoundFeedbackPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2E6B9BE23E44EEA9607BD5 /* SoundFeedbackPresenterTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +93,8 @@
 		F0A1B2C3D4E50000F0A1B2C3 /* TrackpadModeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadModeTests.swift; sourceTree = "<group>"; };
 		F6A7B8C9D0E10000F6A7B8C9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A8B38D49580B47639DE1B993 /* LaunchAtLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginManager.swift; sourceTree = "<group>"; };
+		80F0AC4690414BADAC35EC66 /* SoundFeedbackPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFeedbackPresenter.swift; sourceTree = "<group>"; };
+		3F2E6B9BE23E44EEA9607BD5 /* SoundFeedbackPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFeedbackPresenterTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -106,6 +110,7 @@
 				BAD631A543B43998363DD8CD /* LockOverlayController.swift */,
 				A8B38D49580B47639DE1B993 /* LaunchAtLoginManager.swift */,
 				35E14C28844CDFE6FDB51D8F /* LockSettings.swift */,
+				80F0AC4690414BADAC35EC66 /* SoundFeedbackPresenter.swift */,
 				423766F7D16736B68811E4B1 /* LockState.swift */,
 				E3F714A18EFF5CC0A6D003E4 /* main.swift */,
 				8E8A05E890CBF138C2A4AC65 /* MenuBarController.swift */,
@@ -136,6 +141,7 @@
 				82F21590769C32479A8C1D47 /* WatchdogTests.swift */,
 				F0A1B2C3D4E50000F0A1B2C3 /* TrackpadModeTests.swift */,
 				A2B3C4D5E6F70002A2B3C4D5 /* HUDLayoutTests.swift */,
+				3F2E6B9BE23E44EEA9607BD5 /* SoundFeedbackPresenterTests.swift */,
 			);
 			path = CleanKeyTests;
 			sourceTree = "<group>";
@@ -284,6 +290,7 @@
 				A2B3C4D5E6F70001A2B3C4D5 /* HUDLayout.swift in Sources */,
 				EF478AA603B8EDDD871418A1 /* main.swift in Sources */,
 				0B039D96BFD04D67B92D3677 /* LaunchAtLoginManager.swift in Sources */,
+				13F32C505DC44B7A9441B01F /* SoundFeedbackPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -302,6 +309,7 @@
 				9C849849619FA5A581FE260C /* WatchdogTests.swift in Sources */,
 				F0A1B2C3D4E50001F0A1B2C3 /* TrackpadModeTests.swift in Sources */,
 				A2B3C4D5E6F70003A2B3C4D5 /* HUDLayoutTests.swift in Sources */,
+				D378AAA9AAE644DFB4F5EEAD /* SoundFeedbackPresenterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

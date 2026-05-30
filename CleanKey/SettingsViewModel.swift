@@ -11,6 +11,7 @@ final class SettingsViewModel {
   var hudCorner: HUDCorner
   var escapeInterval: TimeInterval
   var launchAtLogin: Bool
+  var soundFeedback: Bool
 
   init(settings: LockSettings) {
     sliderPosition = TwoZoneSlider.positionForDuration(settings.lastDuration)
@@ -19,6 +20,7 @@ final class SettingsViewModel {
     hudCorner = settings.hudCorner
     escapeInterval = settings.escapeInterval
     launchAtLogin = settings.launchAtLogin
+    soundFeedback = settings.soundFeedback
   }
 
   /// Writes all draft fields to the provided LockSettings instance.
@@ -29,6 +31,7 @@ final class SettingsViewModel {
     settings.hudCorner = hudCorner
     settings.escapeInterval = escapeInterval
     settings.launchAtLogin = launchAtLogin
+    settings.soundFeedback = soundFeedback
   }
 
   /// Discards the current draft without writing to LockSettings.

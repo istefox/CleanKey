@@ -42,6 +42,7 @@ public struct LockSettings: @unchecked Sendable {
   private static let hudCornerKey = "hudCorner"
   private static let escapeIntervalKey = "escapeInterval"
   private static let launchAtLoginKey = "launchAtLogin"
+  private static let soundFeedbackDisabledKey = "soundFeedbackDisabled"
 
   // MARK: - Init
 
@@ -121,6 +122,13 @@ public struct LockSettings: @unchecked Sendable {
   public var launchAtLogin: Bool {
     get { defaults.bool(forKey: Self.launchAtLoginKey) }
     set { defaults.set(newValue, forKey: Self.launchAtLoginKey) }
+  }
+
+  /// Whether lock/unlock events play a system sound. Defaults to `true` (ON).
+  /// Stored as the inverse so the absent-key case reads as enabled.
+  public var soundFeedback: Bool {
+    get { !defaults.bool(forKey: Self.soundFeedbackDisabledKey) }
+    set { defaults.set(!newValue, forKey: Self.soundFeedbackDisabledKey) }
   }
 
   // MARK: - Helpers
