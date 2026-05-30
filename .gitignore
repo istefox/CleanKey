@@ -33,3 +33,4 @@ fastlane/test_output
 # Harness anchors — do not ignore
 !.remember/
 !.claude/
+.claude/.triage-fix-last-chore_bootstrap.json

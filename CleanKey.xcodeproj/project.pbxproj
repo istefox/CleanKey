@@ -7,9 +7,39 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07B8C9D0E1F20001078BC9D0 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B8C9D0E1F200000789C9D0 /* GeneralSettingsView.swift */; };
+		18C9D0E1F2030001189CD0E1 /* SettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C9D0E1F203000018C9D0E1 /* SettingsViewModelTests.swift */; };
+		231032A13E1DF3AC2E88A471 /* CountdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8250B78CA3D2581CC6330996 /* CountdownView.swift */; };
+		26E017D8774AA2DD7C502229 /* AccessibilitySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E02A4461D2ECBD4C5D05BE7 /* AccessibilitySettings.swift */; };
+		29D0E1F2030400012900E1F2 /* DisplaySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D0E1F203040000290DE1F2 /* DisplaySettingsView.swift */; };
+		2DD179E8C276CB5B83348699 /* PermissionGuardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F175155719238B1F282C46 /* PermissionGuardTests.swift */; };
+		56BDA646D0637CE69524B938 /* LockSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E14C28844CDFE6FDB51D8F /* LockSettings.swift */; };
+		60A226845773371D7045988C /* MenuBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E8A05E890CBF138C2A4AC65 /* MenuBarController.swift */; };
+		633285CEA0075F805CD88236 /* LockManagerStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC324F48F8185C10CE879A57 /* LockManagerStateTests.swift */; };
 		7298DE3F45835C0E1254CDCB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCA7467367ECB02679B2C630 /* Assets.xcassets */; };
 		83E5E1144110029D0DD56E8B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6128E0350AE5CC8C4460DD97 /* AppDelegate.swift */; };
+		865E13739A14CAC3C8187EA5 /* PermissionGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CC7E8FDC5F76689D248C30 /* PermissionGuard.swift */; };
+		95A79BF65EA57AEE92BB7A9F /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E82E6A629CD2F4B5CB08B9 /* TestHelpers.swift */; };
+		9C849849619FA5A581FE260C /* WatchdogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F21590769C32479A8C1D47 /* WatchdogTests.swift */; };
+		A1B2C3D4E5F60001A2B3C4D5 /* TwoZoneSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60000A2B3C4D5 /* TwoZoneSlider.swift */; };
+		A1B2C3D4E5F60003A2B3C4D5 /* TwoZoneSliderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002A2B3C4D5 /* TwoZoneSliderTests.swift */; };
+		A2B3C4D5E6F70001A2B3C4D5 /* HUDLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B3C4D5E6F70000A2B3C4D5 /* HUDLayout.swift */; };
+		A2B3C4D5E6F70003A2B3C4D5 /* HUDLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B3C4D5E6F70002A2B3C4D5 /* HUDLayoutTests.swift */; };
+		B2C3D4E5F6A70001B2C3D4E5 /* QuickPickMenuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3D4E5F6A70000B2C3D4E5 /* QuickPickMenuTests.swift */; };
+		C02504E55A534CD795C28E2F /* LockState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423766F7D16736B68811E4B1 /* LockState.swift */; };
 		C2B794348E950834CB53BC20 /* CleanKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D4E4FF0FB0F11BD29EA517 /* CleanKeyTests.swift */; };
+		C3D4E5F6A7B80001C3D4E5F6 /* QuickPickMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D4E5F6A7B80000C3D4E5F6 /* QuickPickMenuViewModel.swift */; };
+		D3617B87F638F39CA8BB5450 /* RealEventTapController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8E5D0F68F1459581F954B7 /* RealEventTapController.swift */; };
+		D4E5F6A7B8C90001D4E5F6A7 /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E5F6A7B8C90000D4E5F6A7 /* SettingsWindowController.swift */; };
+		E2982E4009C15D18C770B796 /* LockSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD39292472DAF6A911615771 /* LockSettingsTests.swift */; };
+		E5C1909C9051795D3C94C390 /* LockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB50C58D1D5CDD85ED95F93 /* LockManager.swift */; };
+		E5F6A7B8C9D00001E5F6A7B8 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F6A7B8C9D00000E5F6A7B8 /* SettingsViewModel.swift */; };
+		E82CB40CE609213945274554 /* LockOverlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD631A543B43998363DD8CD /* LockOverlayController.swift */; };
+		EF478AA603B8EDDD871418A1 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F714A18EFF5CC0A6D003E4 /* main.swift */; };
+		F0A1B2C3D4E50001F0A1B2C3 /* TrackpadModeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1B2C3D4E50000F0A1B2C3 /* TrackpadModeTests.swift */; };
+		F41149DBA10D00D3E3F69BD2 /* LockManagerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E531B51B612AAD37588596A /* LockManagerProtocols.swift */; };
+		F6A7B8C9D0E10001F6A7B8C9 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A7B8C9D0E10000F6A7B8C9 /* SettingsView.swift */; };
+		FBA9A8B20D16001A3BA77BB7 /* RealTrustChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464E14750DE2AEA9C591E20A /* RealTrustChecker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,20 +54,66 @@
 
 /* Begin PBXFileReference section */
 		04D1275CA2CDC05A38B7E317 /* CleanKeyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CleanKeyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		07B8C9D0E1F200000789C9D0 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
 		0C7FFFFE0F678343F65ABFC7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		18C9D0E1F203000018C9D0E1 /* SettingsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModelTests.swift; sourceTree = "<group>"; };
+		1A8E5D0F68F1459581F954B7 /* RealEventTapController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealEventTapController.swift; sourceTree = "<group>"; };
+		1E531B51B612AAD37588596A /* LockManagerProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockManagerProtocols.swift; sourceTree = "<group>"; };
+		29D0E1F203040000290DE1F2 /* DisplaySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplaySettingsView.swift; sourceTree = "<group>"; };
 		33D4E4FF0FB0F11BD29EA517 /* CleanKeyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanKeyTests.swift; sourceTree = "<group>"; };
+		35E14C28844CDFE6FDB51D8F /* LockSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockSettings.swift; sourceTree = "<group>"; };
+		423766F7D16736B68811E4B1 /* LockState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockState.swift; sourceTree = "<group>"; };
+		44E82E6A629CD2F4B5CB08B9 /* TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
+		464E14750DE2AEA9C591E20A /* RealTrustChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealTrustChecker.swift; sourceTree = "<group>"; };
 		51269EC3F81C2C345B9781CD /* CleanKey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CleanKey.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		57CC7E8FDC5F76689D248C30 /* PermissionGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionGuard.swift; sourceTree = "<group>"; };
+		5E02A4461D2ECBD4C5D05BE7 /* AccessibilitySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilitySettings.swift; sourceTree = "<group>"; };
 		6128E0350AE5CC8C4460DD97 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		7EB50C58D1D5CDD85ED95F93 /* LockManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockManager.swift; sourceTree = "<group>"; };
+		8250B78CA3D2581CC6330996 /* CountdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownView.swift; sourceTree = "<group>"; };
+		82F21590769C32479A8C1D47 /* WatchdogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchdogTests.swift; sourceTree = "<group>"; };
+		8E8A05E890CBF138C2A4AC65 /* MenuBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarController.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60000A2B3C4D5 /* TwoZoneSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoZoneSlider.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60002A2B3C4D5 /* TwoZoneSliderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoZoneSliderTests.swift; sourceTree = "<group>"; };
+		A2B3C4D5E6F70000A2B3C4D5 /* HUDLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDLayout.swift; sourceTree = "<group>"; };
+		A2B3C4D5E6F70002A2B3C4D5 /* HUDLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDLayoutTests.swift; sourceTree = "<group>"; };
+		B2C3D4E5F6A70000B2C3D4E5 /* QuickPickMenuTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickPickMenuTests.swift; sourceTree = "<group>"; };
+		B6F175155719238B1F282C46 /* PermissionGuardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionGuardTests.swift; sourceTree = "<group>"; };
+		BAD631A543B43998363DD8CD /* LockOverlayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockOverlayController.swift; sourceTree = "<group>"; };
+		BD39292472DAF6A911615771 /* LockSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockSettingsTests.swift; sourceTree = "<group>"; };
+		C3D4E5F6A7B80000C3D4E5F6 /* QuickPickMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickPickMenuViewModel.swift; sourceTree = "<group>"; };
 		CCA7467367ECB02679B2C630 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D4E5F6A7B8C90000D4E5F6A7 /* SettingsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowController.swift; sourceTree = "<group>"; };
+		DC324F48F8185C10CE879A57 /* LockManagerStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockManagerStateTests.swift; sourceTree = "<group>"; };
+		E3F714A18EFF5CC0A6D003E4 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		E5F6A7B8C9D00000E5F6A7B8 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		F0A1B2C3D4E50000F0A1B2C3 /* TrackpadModeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadModeTests.swift; sourceTree = "<group>"; };
+		F6A7B8C9D0E10000F6A7B8C9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		2B7C3405AF1D1BE2684D902F /* CleanKey */ = {
 			isa = PBXGroup;
 			children = (
+				5E02A4461D2ECBD4C5D05BE7 /* AccessibilitySettings.swift */,
 				6128E0350AE5CC8C4460DD97 /* AppDelegate.swift */,
 				CCA7467367ECB02679B2C630 /* Assets.xcassets */,
 				0C7FFFFE0F678343F65ABFC7 /* Info.plist */,
+				7EB50C58D1D5CDD85ED95F93 /* LockManager.swift */,
+				1E531B51B612AAD37588596A /* LockManagerProtocols.swift */,
+				BAD631A543B43998363DD8CD /* LockOverlayController.swift */,
+				35E14C28844CDFE6FDB51D8F /* LockSettings.swift */,
+				423766F7D16736B68811E4B1 /* LockState.swift */,
+				E3F714A18EFF5CC0A6D003E4 /* main.swift */,
+				8E8A05E890CBF138C2A4AC65 /* MenuBarController.swift */,
+				57CC7E8FDC5F76689D248C30 /* PermissionGuard.swift */,
+				1A8E5D0F68F1459581F954B7 /* RealEventTapController.swift */,
+				464E14750DE2AEA9C591E20A /* RealTrustChecker.swift */,
+				A1B2C3D4E5F60000A2B3C4D5 /* TwoZoneSlider.swift */,
+				A2B3C4D5E6F70000A2B3C4D5 /* HUDLayout.swift */,
+				C3D4E5F6A7B80000C3D4E5F6 /* QuickPickMenuViewModel.swift */,
+				D4E5F6A7B8C90000D4E5F6A7 /* SettingsWindowController.swift */,
+				E5F6A7B8C9D00000E5F6A7B8 /* SettingsViewModel.swift */,
 				BC3E3A290D07F1B457BB1568 /* Views */,
 			);
 			path = CleanKey;
@@ -47,6 +123,16 @@
 			isa = PBXGroup;
 			children = (
 				33D4E4FF0FB0F11BD29EA517 /* CleanKeyTests.swift */,
+				DC324F48F8185C10CE879A57 /* LockManagerStateTests.swift */,
+				BD39292472DAF6A911615771 /* LockSettingsTests.swift */,
+				B6F175155719238B1F282C46 /* PermissionGuardTests.swift */,
+				44E82E6A629CD2F4B5CB08B9 /* TestHelpers.swift */,
+				B2C3D4E5F6A70000B2C3D4E5 /* QuickPickMenuTests.swift */,
+				A1B2C3D4E5F60002A2B3C4D5 /* TwoZoneSliderTests.swift */,
+				18C9D0E1F203000018C9D0E1 /* SettingsViewModelTests.swift */,
+				82F21590769C32479A8C1D47 /* WatchdogTests.swift */,
+				F0A1B2C3D4E50000F0A1B2C3 /* TrackpadModeTests.swift */,
+				A2B3C4D5E6F70002A2B3C4D5 /* HUDLayoutTests.swift */,
 			);
 			path = CleanKeyTests;
 			sourceTree = "<group>";
@@ -72,6 +158,10 @@
 		BC3E3A290D07F1B457BB1568 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				8250B78CA3D2581CC6330996 /* CountdownView.swift */,
+				F6A7B8C9D0E10000F6A7B8C9 /* SettingsView.swift */,
+				07B8C9D0E1F200000789C9D0 /* GeneralSettingsView.swift */,
+				29D0E1F203040000290DE1F2 /* DisplaySettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -122,14 +212,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1600;
+				LastUpgradeCheck = 2650;
 				TargetAttributes = {
 					1693ADBA490419D2BED8525B = {
 						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 					68DFA0E062BFD50DE117DEE8 = {
-						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -170,7 +259,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				26E017D8774AA2DD7C502229 /* AccessibilitySettings.swift in Sources */,
 				83E5E1144110029D0DD56E8B /* AppDelegate.swift in Sources */,
+				231032A13E1DF3AC2E88A471 /* CountdownView.swift in Sources */,
+				E5C1909C9051795D3C94C390 /* LockManager.swift in Sources */,
+				F41149DBA10D00D3E3F69BD2 /* LockManagerProtocols.swift in Sources */,
+				E82CB40CE609213945274554 /* LockOverlayController.swift in Sources */,
+				56BDA646D0637CE69524B938 /* LockSettings.swift in Sources */,
+				C02504E55A534CD795C28E2F /* LockState.swift in Sources */,
+				60A226845773371D7045988C /* MenuBarController.swift in Sources */,
+				865E13739A14CAC3C8187EA5 /* PermissionGuard.swift in Sources */,
+				D3617B87F638F39CA8BB5450 /* RealEventTapController.swift in Sources */,
+				FBA9A8B20D16001A3BA77BB7 /* RealTrustChecker.swift in Sources */,
+				C3D4E5F6A7B80001C3D4E5F6 /* QuickPickMenuViewModel.swift in Sources */,
+				D4E5F6A7B8C90001D4E5F6A7 /* SettingsWindowController.swift in Sources */,
+				E5F6A7B8C9D00001E5F6A7B8 /* SettingsViewModel.swift in Sources */,
+				F6A7B8C9D0E10001F6A7B8C9 /* SettingsView.swift in Sources */,
+				07B8C9D0E1F20001078BC9D0 /* GeneralSettingsView.swift in Sources */,
+				29D0E1F2030400012900E1F2 /* DisplaySettingsView.swift in Sources */,
+				A1B2C3D4E5F60001A2B3C4D5 /* TwoZoneSlider.swift in Sources */,
+				A2B3C4D5E6F70001A2B3C4D5 /* HUDLayout.swift in Sources */,
+				EF478AA603B8EDDD871418A1 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,6 +288,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2B794348E950834CB53BC20 /* CleanKeyTests.swift in Sources */,
+				633285CEA0075F805CD88236 /* LockManagerStateTests.swift in Sources */,
+				E2982E4009C15D18C770B796 /* LockSettingsTests.swift in Sources */,
+				2DD179E8C276CB5B83348699 /* PermissionGuardTests.swift in Sources */,
+				95A79BF65EA57AEE92BB7A9F /* TestHelpers.swift in Sources */,
+				B2C3D4E5F6A70001B2C3D4E5 /* QuickPickMenuTests.swift in Sources */,
+				A1B2C3D4E5F60003A2B3C4D5 /* TwoZoneSliderTests.swift in Sources */,
+				18C9D0E1F2030001189CD0E1 /* SettingsViewModelTests.swift in Sources */,
+				9C849849619FA5A581FE260C /* WatchdogTests.swift in Sources */,
+				F0A1B2C3D4E50001F0A1B2C3 /* TrackpadModeTests.swift in Sources */,
+				A2B3C4D5E6F70003A2B3C4D5 /* HUDLayoutTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,11 +347,13 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -246,6 +367,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 6.0;
@@ -258,6 +380,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = CleanKey/CleanKey.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = T7H24G7BFW;
 				ENABLE_APP_SANDBOX = NO;
 				INFOPLIST_FILE = CleanKey/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -276,6 +400,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -325,11 +450,13 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -350,6 +477,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 6.0;
@@ -361,6 +489,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -381,6 +510,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = CleanKey/CleanKey.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = T7H24G7BFW;
 				ENABLE_APP_SANDBOX = NO;
 				INFOPLIST_FILE = CleanKey/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
