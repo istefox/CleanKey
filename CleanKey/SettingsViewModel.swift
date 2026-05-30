@@ -10,6 +10,7 @@ final class SettingsViewModel {
   var trackpadMode: TrackpadMode
   var hudCorner: HUDCorner
   var escapeInterval: TimeInterval
+  var launchAtLogin: Bool
 
   init(settings: LockSettings) {
     sliderPosition = TwoZoneSlider.positionForDuration(settings.lastDuration)
@@ -17,6 +18,7 @@ final class SettingsViewModel {
     trackpadMode = settings.trackpadMode
     hudCorner = settings.hudCorner
     escapeInterval = settings.escapeInterval
+    launchAtLogin = settings.launchAtLogin
   }
 
   /// Writes all draft fields to the provided LockSettings instance.
@@ -26,6 +28,7 @@ final class SettingsViewModel {
     settings.trackpadMode = trackpadMode
     settings.hudCorner = hudCorner
     settings.escapeInterval = escapeInterval
+    settings.launchAtLogin = launchAtLogin
   }
 
   /// Discards the current draft without writing to LockSettings.

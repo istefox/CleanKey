@@ -41,6 +41,7 @@ public struct LockSettings: @unchecked Sendable {
   private static let trackpadModeKey = "trackpadMode"
   private static let hudCornerKey = "hudCorner"
   private static let escapeIntervalKey = "escapeInterval"
+  private static let launchAtLoginKey = "launchAtLogin"
 
   // MARK: - Init
 
@@ -114,6 +115,12 @@ public struct LockSettings: @unchecked Sendable {
     set {
       defaults.set(Self.clampEscapeInterval(newValue), forKey: Self.escapeIntervalKey)
     }
+  }
+
+  /// Whether CleanKey registers as a login item on reboot. Defaults to `false`.
+  public var launchAtLogin: Bool {
+    get { defaults.bool(forKey: Self.launchAtLoginKey) }
+    set { defaults.set(newValue, forKey: Self.launchAtLoginKey) }
   }
 
   // MARK: - Helpers

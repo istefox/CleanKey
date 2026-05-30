@@ -115,6 +115,19 @@ final class LockSettingsTests: XCTestCase {
     XCTAssertEqual(sut.trackpadMode, .locked)
   }
 
+  // MARK: - LaunchAtLogin
+
+  func testLaunchAtLoginDefaultIsFalse() {
+    let sut = makeSUT()
+    XCTAssertFalse(sut.launchAtLogin)
+  }
+
+  func testLaunchAtLoginRoundTrip() {
+    var sut = makeSUT()
+    sut.launchAtLogin = true
+    XCTAssertTrue(sut.launchAtLogin)
+  }
+
   // MARK: - HUDCorner
 
   func testHUDCornerDefaultIsBottomRight() {

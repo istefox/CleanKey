@@ -40,6 +40,7 @@
 		F41149DBA10D00D3E3F69BD2 /* LockManagerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E531B51B612AAD37588596A /* LockManagerProtocols.swift */; };
 		F6A7B8C9D0E10001F6A7B8C9 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A7B8C9D0E10000F6A7B8C9 /* SettingsView.swift */; };
 		FBA9A8B20D16001A3BA77BB7 /* RealTrustChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464E14750DE2AEA9C591E20A /* RealTrustChecker.swift */; };
+		0B039D96BFD04D67B92D3677 /* LaunchAtLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B38D49580B47639DE1B993 /* LaunchAtLoginManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		E5F6A7B8C9D00000E5F6A7B8 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		F0A1B2C3D4E50000F0A1B2C3 /* TrackpadModeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadModeTests.swift; sourceTree = "<group>"; };
 		F6A7B8C9D0E10000F6A7B8C9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A8B38D49580B47639DE1B993 /* LaunchAtLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -102,6 +104,7 @@
 				7EB50C58D1D5CDD85ED95F93 /* LockManager.swift */,
 				1E531B51B612AAD37588596A /* LockManagerProtocols.swift */,
 				BAD631A543B43998363DD8CD /* LockOverlayController.swift */,
+				A8B38D49580B47639DE1B993 /* LaunchAtLoginManager.swift */,
 				35E14C28844CDFE6FDB51D8F /* LockSettings.swift */,
 				423766F7D16736B68811E4B1 /* LockState.swift */,
 				E3F714A18EFF5CC0A6D003E4 /* main.swift */,
@@ -280,6 +283,7 @@
 				A1B2C3D4E5F60001A2B3C4D5 /* TwoZoneSlider.swift in Sources */,
 				A2B3C4D5E6F70001A2B3C4D5 /* HUDLayout.swift in Sources */,
 				EF478AA603B8EDDD871418A1 /* main.swift in Sources */,
+				0B039D96BFD04D67B92D3677 /* LaunchAtLoginManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

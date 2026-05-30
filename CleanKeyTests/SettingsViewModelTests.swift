@@ -18,6 +18,7 @@ final class SettingsViewModelTests: XCTestCase {
     settings.overlayMode = .hud
     settings.trackpadMode = .free
     settings.hudCorner = .topLeft
+    settings.launchAtLogin = true
 
     let sut = SettingsViewModel(settings: settings)
 
@@ -25,6 +26,7 @@ final class SettingsViewModelTests: XCTestCase {
     XCTAssertEqual(sut.overlayMode, .hud)
     XCTAssertEqual(sut.trackpadMode, .free)
     XCTAssertEqual(sut.hudCorner, .topLeft)
+    XCTAssertTrue(sut.launchAtLogin)
   }
 
   func testInitDefaultsMatchLockSettingsDefaults() {
@@ -36,6 +38,7 @@ final class SettingsViewModelTests: XCTestCase {
     XCTAssertEqual(sut.overlayMode, .blackScreen)
     XCTAssertEqual(sut.trackpadMode, .locked)
     XCTAssertEqual(sut.hudCorner, .bottomRight)
+    XCTAssertFalse(sut.launchAtLogin)
   }
 
   // MARK: - save()
@@ -48,6 +51,7 @@ final class SettingsViewModelTests: XCTestCase {
     sut.overlayMode = .hud
     sut.trackpadMode = .free
     sut.hudCorner = .topRight
+    sut.launchAtLogin = true
 
     sut.save(to: &settings)
 
@@ -55,6 +59,7 @@ final class SettingsViewModelTests: XCTestCase {
     XCTAssertEqual(settings.overlayMode, .hud)
     XCTAssertEqual(settings.trackpadMode, .free)
     XCTAssertEqual(settings.hudCorner, .topRight)
+    XCTAssertTrue(settings.launchAtLogin)
   }
 
   func testSaveAfterSliderDragUpdatesLastDuration() {

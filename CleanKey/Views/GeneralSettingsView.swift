@@ -24,6 +24,10 @@ struct GeneralSettingsView: View {
         .labelsHidden()
       }
 
+      Section("Startup") {
+        Toggle("Launch at login", isOn: $viewModel.launchAtLogin)
+      }
+
       Section("Emergency unlock") {
         VStack(alignment: .leading, spacing: 8) {
           Text("Triple-Escape speed: \(escapeIntervalLabel)")

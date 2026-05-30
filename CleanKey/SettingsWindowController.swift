@@ -7,9 +7,11 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
 
   private var window: NSWindow?
   private var settings: LockSettings
+  private let launchAtLogin: LaunchAtLoginControlling
 
-  init(settings: LockSettings) {
+  init(settings: LockSettings, launchAtLogin: LaunchAtLoginControlling = LaunchAtLoginManager()) {
     self.settings = settings
+    self.launchAtLogin = launchAtLogin
   }
 
   /// Shows the Settings window, or brings it to front if already visible.
@@ -30,6 +32,7 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
       onSave: { [weak self] in
         guard let self else { return }
         viewModel.save(to: &self.settings)
+        self.launchAtLogin.apply(self.settings.launchAtLogin)
         self.window?.close()
       },
       onCancel: { [weak self] in
@@ -43,6 +46,8 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
     win.title = "CleanKey Settings"
     win.isReleasedWhenClosed = false
     win.styleMask = [.titled, .closable, .miniaturizable, .resizable]
+    win.level = .floating
+    win.setContentSize(NSSize(width: 520, height: 520))
     win.center()
     win.delegate = self
     win.makeKeyAndOrderFront(nil)

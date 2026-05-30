@@ -47,6 +47,14 @@ final class FakeTrustChecker: TrustChecking, @unchecked Sendable {
   var isTrusted: Bool { trusted }
 }
 
+// MARK: - LaunchAtLogin fake
+
+// @unchecked Sendable is safe: only ever mutated from @MainActor test methods.
+final class FakeLaunchAtLogin: LaunchAtLoginControlling, @unchecked Sendable {
+  var lastApplied: Bool?
+  func apply(_ enabled: Bool) { lastApplied = enabled }
+}
+
 // MARK: - LockState test-only Equatable
 // WARNING: ignores escapeCombo — .locked states with different combo progress compare equal.
 // Use pattern matching (guard case .locked = state) when combo content matters.
