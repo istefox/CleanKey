@@ -23,9 +23,27 @@ struct GeneralSettingsView: View {
         .pickerStyle(.segmented)
         .labelsHidden()
       }
+
+      Section("Emergency unlock") {
+        VStack(alignment: .leading, spacing: 8) {
+          Text("Triple-Escape speed: \(escapeIntervalLabel)")
+            .monospacedDigit()
+            .frame(minWidth: 80, alignment: .leading)
+          Slider(
+            value: $viewModel.escapeInterval,
+            in: LockSettings.escapeIntervalMinimum...LockSettings.escapeIntervalMaximum,
+            step: 0.5
+          )
+        }
+      }
     }
     .formStyle(.grouped)
     .padding()
+  }
+
+  private var escapeIntervalLabel: String {
+    let value = viewModel.escapeInterval
+    return String(format: "%.1f s", value)
   }
 
   private var durationLabel: String {

@@ -20,6 +20,7 @@ public final class LockManager {
   private let notifier: Notifying
   private let trustChecker: TrustChecking
   private let trackpadMode: @Sendable () -> TrackpadMode
+  private let escapeInterval: @Sendable () -> TimeInterval
 
   // MARK: - State
 
@@ -36,11 +37,6 @@ public final class LockManager {
   private var watchdogTimer: Timer?
   private var watchdogTickCount: Int = 0
 
-  // MARK: - Constants
-
-  /// Maximum inter-press interval for the triple-Escape combo (seconds).
-  private static let escapeIntervalLimit: TimeInterval = 1.5
-
   // MARK: - Init
 
   public init(
@@ -49,7 +45,8 @@ public final class LockManager {
     presenter: LockPresenting,
     notifier: Notifying,
     trustChecker: TrustChecking? = nil,
-    trackpadMode: @escaping @Sendable () -> TrackpadMode = { .locked }
+    trackpadMode: @escaping @Sendable () -> TrackpadMode = { .locked },
+    escapeInterval: @escaping @Sendable () -> TimeInterval = { 1.5 }
   ) {
     self.clock = clock
     self.tapController = tapController
@@ -57,6 +54,7 @@ public final class LockManager {
     self.notifier = notifier
     self.trustChecker = trustChecker ?? AlwaysTrusted()
     self.trackpadMode = trackpadMode
+    self.escapeInterval = escapeInterval
   }
 
   // MARK: - Public API
@@ -103,7 +101,7 @@ public final class LockManager {
 
     // Check inter-press interval.
     if let last = combo.lastTimestamp,
-      (timestamp - last) > Self.escapeIntervalLimit
+      (timestamp - last) > escapeInterval()
     {
       // Too slow — restart the count from 1 (this press is the new first).
       combo.count = 1

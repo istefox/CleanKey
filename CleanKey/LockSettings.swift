@@ -29,6 +29,10 @@ public struct LockSettings: @unchecked Sendable {
   public static let maximumDuration: TimeInterval = 600
   public static let defaultDuration: TimeInterval = 120
 
+  public static let escapeIntervalMinimum: TimeInterval = 0.5
+  public static let escapeIntervalMaximum: TimeInterval = 3.0
+  public static let escapeIntervalDefault: TimeInterval = 1.5
+
   // MARK: - Private
 
   private let defaults: UserDefaults
@@ -36,6 +40,7 @@ public struct LockSettings: @unchecked Sendable {
   private static let overlayModeKey = "overlayMode"
   private static let trackpadModeKey = "trackpadMode"
   private static let hudCornerKey = "hudCorner"
+  private static let escapeIntervalKey = "escapeInterval"
 
   // MARK: - Init
 
@@ -98,10 +103,27 @@ public struct LockSettings: @unchecked Sendable {
     }
   }
 
+  /// Maximum inter-press interval for the triple-Escape emergency unlock, in seconds.
+  /// Clamped to 0.5–3.0 s. Defaults to 1.5 s.
+  public var escapeInterval: TimeInterval {
+    get {
+      let stored = defaults.double(forKey: Self.escapeIntervalKey)
+      guard stored > 0 else { return Self.escapeIntervalDefault }
+      return Self.clampEscapeInterval(stored)
+    }
+    set {
+      defaults.set(Self.clampEscapeInterval(newValue), forKey: Self.escapeIntervalKey)
+    }
+  }
+
   // MARK: - Helpers
 
   /// Clamps `value` to the valid duration range. Reused by the slider.
   public static func clamp(_ value: TimeInterval) -> TimeInterval {
     min(max(value, minimumDuration), maximumDuration)
+  }
+
+  public static func clampEscapeInterval(_ value: TimeInterval) -> TimeInterval {
+    min(max(value, escapeIntervalMinimum), escapeIntervalMaximum)
   }
 }

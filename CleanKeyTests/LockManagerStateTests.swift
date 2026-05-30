@@ -217,4 +217,29 @@ final class LockManagerStateTests: XCTestCase {
     XCTAssertFalse(result)
     XCTAssertEqual(sut.state, .idle)
   }
+
+  func testInjectedEscapeIntervalIsHonored() {
+    // A 0.5 s window: third press at 1.0 s after second is outside the window.
+    let presenter = FakeLockPresenter()
+    let tapController = FakeEventTapController()
+    let notifier = FakeNotifier()
+    let trustChecker = FakeTrustChecker()
+    let sut = LockManager(
+      tapController: tapController,
+      presenter: presenter,
+      notifier: notifier,
+      trustChecker: trustChecker,
+      escapeInterval: { 0.5 }
+    )
+    sut.startLock(duration: 60)
+
+    let t0: TimeInterval = 0
+    XCTAssertFalse(sut.evaluateEscapeCombo(keyCode: 53, timestamp: t0))
+    XCTAssertFalse(sut.evaluateEscapeCombo(keyCode: 53, timestamp: t0 + 0.3))
+    // Third press at 1.0 s after second — exceeds the 0.5 s injected window.
+    let unlocked = sut.evaluateEscapeCombo(keyCode: 53, timestamp: t0 + 0.3 + 1.0)
+
+    XCTAssertFalse(unlocked, "Third press outside the 0.5 s window must not unlock")
+    XCTAssertNotEqual(sut.state, .idle)
+  }
 }

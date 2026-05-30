@@ -46,6 +46,31 @@ final class LockSettingsTests: XCTestCase {
     XCTAssertEqual(sut2.lastDuration, 300)
   }
 
+  // MARK: - EscapeInterval
+
+  func testEscapeIntervalDefaultIs1Point5() {
+    let sut = makeSUT()
+    XCTAssertEqual(sut.escapeInterval, 1.5)
+  }
+
+  func testEscapeIntervalRoundTrip() {
+    var sut = makeSUT()
+    sut.escapeInterval = 2.0
+    XCTAssertEqual(sut.escapeInterval, 2.0)
+  }
+
+  func testEscapeIntervalBelowMinimumClampsTo0Point5() {
+    var sut = makeSUT()
+    sut.escapeInterval = 0.1
+    XCTAssertEqual(sut.escapeInterval, LockSettings.escapeIntervalMinimum)
+  }
+
+  func testEscapeIntervalAboveMaximumClampsTo3() {
+    var sut = makeSUT()
+    sut.escapeInterval = 99
+    XCTAssertEqual(sut.escapeInterval, LockSettings.escapeIntervalMaximum)
+  }
+
   // MARK: - OverlayMode
 
   func testOverlayModeDefaultIsBlackScreen() {

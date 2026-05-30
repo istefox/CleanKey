@@ -125,6 +125,29 @@ final class SettingsViewModelTests: XCTestCase {
     XCTAssertEqual(settings2.hudCorner, .bottomLeft)
   }
 
+  // MARK: - EscapeInterval
+
+  func testInitHydratesEscapeIntervalFromSettings() {
+    var settings = makeSettings()
+    settings.escapeInterval = 2.5
+    let sut = SettingsViewModel(settings: settings)
+    XCTAssertEqual(sut.escapeInterval, 2.5)
+  }
+
+  func testInitDefaultEscapeIntervalIs1Point5() {
+    let settings = makeSettings()
+    let sut = SettingsViewModel(settings: settings)
+    XCTAssertEqual(sut.escapeInterval, LockSettings.escapeIntervalDefault)
+  }
+
+  func testSaveWritesEscapeIntervalToSettings() {
+    var settings = makeSettings()
+    let sut = SettingsViewModel(settings: settings)
+    sut.escapeInterval = 3.0
+    sut.save(to: &settings)
+    XCTAssertEqual(settings.escapeInterval, 3.0)
+  }
+
   // MARK: - cancel()
 
   func testCancelDiscardsChanges() {
