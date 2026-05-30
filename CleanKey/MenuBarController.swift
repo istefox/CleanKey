@@ -43,6 +43,9 @@ final class MenuBarController: NSObject {
       },
       onDismiss: { [weak self] in
         self?.setMenuBarIcon(locked: false)
+      },
+      onTick: { [weak self] remaining in
+        self?.setMenuBarTitle(remaining: remaining)
       })
     setupStatusItem()
   }
@@ -57,7 +60,15 @@ final class MenuBarController: NSObject {
     statusItem.button?.sendAction(on: [.leftMouseUp, .rightMouseUp])
   }
 
+  private func setMenuBarTitle(remaining: TimeInterval) {
+    let total = max(0, Int(remaining))
+    let m = total / 60
+    let s = total % 60
+    statusItem.button?.title = String(format: "%d:%02d", m, s)
+  }
+
   private func setMenuBarIcon(locked: Bool) {
+    if !locked { statusItem.button?.title = "" }
     let name = locked ? "menubar-locked" : "menubar-unlocked"
     if let img = NSImage(named: name) {
       img.isTemplate = true
@@ -168,11 +179,18 @@ private final class PresenterProxy: LockPresenting {
   private let real: any LockPresenting
   private let onPresent: () -> Void
   private let onDismiss: () -> Void
+  private let onTick: (TimeInterval) -> Void
 
-  init(real: any LockPresenting, onPresent: @escaping () -> Void, onDismiss: @escaping () -> Void) {
+  init(
+    real: any LockPresenting,
+    onPresent: @escaping () -> Void,
+    onDismiss: @escaping () -> Void,
+    onTick: @escaping (TimeInterval) -> Void
+  ) {
     self.real = real
     self.onPresent = onPresent
     self.onDismiss = onDismiss
+    self.onTick = onTick
   }
 
   func present() {
@@ -183,7 +201,10 @@ private final class PresenterProxy: LockPresenting {
     real.dismiss()
     onDismiss()
   }
-  func tick(remainingTime: TimeInterval) { real.tick(remainingTime: remainingTime) }
+  func tick(remainingTime: TimeInterval) {
+    real.tick(remainingTime: remainingTime)
+    onTick(remainingTime)
+  }
   func configure(settings: LockSettings) { real.configure(settings: settings) }
 }
 
