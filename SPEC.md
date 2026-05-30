@@ -120,7 +120,7 @@ If the permission is revoked while the app is running, the CGEventTap fails to i
 2. Triple-Escape combo reliably unlocks within 200 ms of the third press.
 3. The overlay covers all connected displays including external monitors.
 4. The countdown is accurate within ±1 second over a 10-minute lock.
-5. The app uses ≤ 5 MB RAM at idle and ≤ 10 MB while locked.
+5. The app uses ≤ 15 MB physical footprint at idle and ≤ 20 MB while locked. (Measured via `vmmap -summary | grep "Physical footprint"` on a release build. RSS is not the correct metric — shared dylib pages inflate it to ~40 MB regardless of app code.)
 6. The app passes `codesign --verify` and `spctl --assess` (notarization).
 7. The app drops no events after unlock (the CGEventTap is fully removed before the OS processes the next input).
 8. First-launch Accessibility onboarding leads the user to grant permission in System Settings without error.
