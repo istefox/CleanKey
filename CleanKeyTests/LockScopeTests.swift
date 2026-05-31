@@ -46,4 +46,26 @@ final class LockScopeTests: XCTestCase {
 
     XCTAssertEqual(tapController.lastInstallScope, .trackpadOnly)
   }
+
+  // MARK: - Cursor-visibility gating (smoke)
+  // LockOverlayController.present() hides the cursor iff lockScope.trackpadBlocked == true.
+  // These tests verify the predicate for all three scopes.
+
+  func testCursorHiddenWhenScopeIsAll() {
+    XCTAssertTrue(
+      LockScope.all.trackpadBlocked,
+      "scope=all must block trackpad so cursor is hidden during lock")
+  }
+
+  func testCursorHiddenWhenScopeIsTrackpadOnly() {
+    XCTAssertTrue(
+      LockScope.trackpadOnly.trackpadBlocked,
+      "scope=trackpadOnly must block trackpad so cursor is hidden during lock")
+  }
+
+  func testCursorVisibleWhenScopeIsKeyboardOnly() {
+    XCTAssertFalse(
+      LockScope.keyboardOnly.trackpadBlocked,
+      "scope=keyboardOnly must NOT block trackpad so cursor stays visible during lock")
+  }
 }
