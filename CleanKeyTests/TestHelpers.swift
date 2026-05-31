@@ -63,6 +63,84 @@ final class FakeLaunchAtLogin: LaunchAtLoginControlling, @unchecked Sendable {
   func apply(_ enabled: Bool) { lastApplied = enabled }
 }
 
+// MARK: - Keep-Awake fakes
+
+/// Records create/release calls. `createShouldFail` makes `createAssertions` return `false`.
+/// `isHeld` is derived from the net create/release balance and the fail flag.
+// @unchecked Sendable is safe: only ever mutated from @MainActor test methods.
+@MainActor
+final class FakeSleepAssertionController: SleepAssertionControlling, @unchecked Sendable {
+  var createCallCount = 0
+  var releaseCallCount = 0
+  var createShouldFail = false
+
+  var isHeld: Bool {
+    guard !createShouldFail else { return false }
+    return createCallCount > releaseCallCount
+  }
+
+  func createAssertions(reason: String) -> Bool {
+    createCallCount += 1
+    return !createShouldFail
+  }
+
+  /// Called after incrementing `releaseCallCount`. Wire this in tests to record ordering.
+  var onRelease: (() -> Void)?
+
+  func releaseAssertions() {
+    releaseCallCount += 1
+    onRelease?()
+  }
+}
+
+// MARK: - Keep-Awake fakes (power observer + battery notifier)
+
+/// Records start/stop calls and lets tests trigger the onChange callback manually.
+// @unchecked Sendable is safe: only ever mutated from @MainActor test methods.
+@MainActor
+final class FakePowerSourceObserver: PowerSourceObserving, @unchecked Sendable {
+  var startCallCount = 0
+  var stopCallCount = 0
+  private(set) var onChange: ((_ isOnBattery: Bool) -> Void)?
+
+  func start(onChange: @escaping (_ isOnBattery: Bool) -> Void) {
+    startCallCount += 1
+    self.onChange = onChange
+  }
+
+  /// Called after incrementing `stopCallCount`. Wire this in tests to record ordering.
+  var onStop: (() -> Void)?
+
+  func stop() {
+    stopCallCount += 1
+    onStop?()
+    onChange = nil
+  }
+
+  /// Simulate a power-source change event in tests.
+  func fireOnChange(isOnBattery: Bool) {
+    onChange?(isOnBattery)
+  }
+}
+
+/// Records authorization and warning calls; never touches UNUserNotificationCenter.
+@MainActor
+final class FakeBatteryWarningNotifier: BatteryWarningNotifying {
+  var requestAuthorizationCallCount = 0
+  var postBatteryWarningCallCount = 0
+  var clearBatteryWarningCallCount = 0
+
+  /// Called after incrementing `clearBatteryWarningCallCount`. Wire this in tests to record ordering.
+  var onClear: (() -> Void)?
+
+  func requestAuthorizationIfNeeded() { requestAuthorizationCallCount += 1 }
+  func postBatteryWarning() { postBatteryWarningCallCount += 1 }
+  func clearBatteryWarning() {
+    clearBatteryWarningCallCount += 1
+    onClear?()
+  }
+}
+
 // MARK: - LockState test-only Equatable
 // WARNING: ignores escapeCombo — .locked states with different combo progress compare equal.
 // Use pattern matching (guard case .locked = state) when combo content matters.

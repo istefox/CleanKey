@@ -2,7 +2,7 @@ import AppKit
 import OSLog
 import SwiftUI
 
-/// Owns the NSStatusItem, LockManager, and permission guard.
+/// Owns the NSStatusItem, LockManager, KeepAwakeManager, and permission guard.
 @MainActor
 final class MenuBarController: NSObject {
 
@@ -11,12 +11,23 @@ final class MenuBarController: NSObject {
   private let tapController: RealEventTapController
   private let settings: LockSettings
   private let permissionGuard: PermissionGuard
+  private let keepAwakeManager: KeepAwakeManager
   weak var settingsWindowController: SettingsWindowController?
+
+  // 4-state icon flags (ADR-003 D3)
+  private var isLocked = false
+  private var isAwake = false
 
   init(
     settings: LockSettings = LockSettings(),
-    settingsWindowController: SettingsWindowController? = nil
+    settingsWindowController: SettingsWindowController? = nil,
+    keepAwakeManager: KeepAwakeManager = KeepAwakeManager(
+      assertions: NoOpSleepAssertionController(),
+      powerObserver: NoOpPowerSourceObserver(),
+      notifier: NoOpBatteryWarningNotifier()
+    )
   ) {
+    self.keepAwakeManager = keepAwakeManager
     tapController = RealEventTapController()
     lockManager = LockManager(
       tapController: tapController,
@@ -39,14 +50,21 @@ final class MenuBarController: NSObject {
     lockManager.presenter = PresenterProxy(
       real: sound,
       onPresent: { [weak self] in
-        self?.setMenuBarIcon(locked: true)
+        self?.isLocked = true
+        self?.updateMenuBarIcon()
       },
       onDismiss: { [weak self] in
-        self?.setMenuBarIcon(locked: false)
+        self?.isLocked = false
+        self?.updateMenuBarIcon()
       },
       onTick: { [weak self] remaining in
         self?.setMenuBarTitle(remaining: remaining)
       })
+    keepAwakeManager.onChange = { [weak self] in
+      guard let self else { return }
+      self.isAwake = self.keepAwakeManager.isActive
+      self.updateMenuBarIcon()
+    }
     setupStatusItem()
   }
 
@@ -54,7 +72,7 @@ final class MenuBarController: NSObject {
     statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
     statusItem.isVisible = true
     statusItem.button?.title = "⌨"
-    setMenuBarIcon(locked: false)
+    updateMenuBarIcon()
     statusItem.button?.action = #selector(statusItemClicked)
     statusItem.button?.target = self
     statusItem.button?.sendAction(on: [.leftMouseUp, .rightMouseUp])
@@ -67,17 +85,35 @@ final class MenuBarController: NSObject {
     statusItem.button?.title = String(format: "%d:%02d", m, s)
   }
 
-  private func setMenuBarIcon(locked: Bool) {
-    if !locked { statusItem.button?.title = "" }
-    let name = locked ? "menubar-locked" : "menubar-unlocked"
+  /// Derives the icon asset name from the two independent state flags (ADR-003 D3).
+  static func iconName(locked: Bool, awake: Bool) -> String {
+    switch (locked, awake) {
+    case (false, false): return "menubar-unlocked"
+    case (true, false): return "menubar-locked"
+    case (false, true): return "menubar-awake"
+    case (true, true): return "menubar-locked-awake"
+    }
+  }
+
+  private func updateMenuBarIcon() {
+    // Clear countdown title when not locked (preserve it while locked).
+    if !isLocked { statusItem.button?.title = "" }
+    let name = MenuBarController.iconName(locked: isLocked, awake: isAwake)
     if let img = NSImage(named: name) {
       img.isTemplate = true
       statusItem.button?.image = img
-    } else if let img = NSImage(
-      systemSymbolName: locked ? "lock" : "keyboard",
-      accessibilityDescription: "CleanKey")
-    {
-      statusItem.button?.image = img
+    } else {
+      // SF Symbol fallbacks when asset art is not yet available.
+      let symbolName: String
+      switch (isLocked, isAwake) {
+      case (false, false): symbolName = "keyboard"
+      case (true, false): symbolName = "lock"
+      case (false, true): symbolName = "sun.max"
+      case (true, true): symbolName = "lock.circle"
+      }
+      if let img = NSImage(systemSymbolName: symbolName, accessibilityDescription: "CleanKey") {
+        statusItem.button?.image = img
+      }
     }
   }
 
@@ -116,6 +152,18 @@ final class MenuBarController: NSObject {
 
   private func showContextMenu() {
     let menu = NSMenu()
+    // Keep Awake toggle item (placed above Settings per ADR-003 D3).
+    let keepAwakeTitle = isAwake ? "Disable Keep Awake" : "Enable Keep Awake"
+    let keepAwakeAction: Selector =
+      isAwake ? #selector(disableKeepAwake) : #selector(enableKeepAwake)
+    let keepAwakeItem = NSMenuItem(
+      title: keepAwakeTitle,
+      action: keepAwakeAction,
+      keyEquivalent: ""
+    )
+    keepAwakeItem.target = self
+    menu.addItem(keepAwakeItem)
+    menu.addItem(.separator())
     let settingsItem = NSMenuItem(
       title: "Settings…",
       action: #selector(openSettings),
@@ -133,6 +181,14 @@ final class MenuBarController: NSObject {
     menu.addItem(quitItem)
     guard let button = statusItem.button, let event = NSApp.currentEvent else { return }
     NSMenu.popUpContextMenu(menu, with: event, for: button)
+  }
+
+  @objc private func enableKeepAwake() {
+    keepAwakeManager.enable()
+  }
+
+  @objc private func disableKeepAwake() {
+    keepAwakeManager.disable()
   }
 
   @objc private func openSettings() {
@@ -224,4 +280,27 @@ private final class ConsoleNotifier: Notifying {
 // NSAlert.runModal() gets a real key-window anchor in LSUIElement apps.
 private final class KeyablePanel: NSPanel {
   override var canBecomeKey: Bool { true }
+}
+
+// MARK: - No-op keep-awake stubs (used only in the default MenuBarController init)
+// Task 7 replaces the default with real implementations constructed by AppDelegate.
+
+@MainActor
+private final class NoOpSleepAssertionController: SleepAssertionControlling {
+  var isHeld: Bool { false }
+  func createAssertions(reason: String) -> Bool { false }
+  func releaseAssertions() {}
+}
+
+@MainActor
+private final class NoOpPowerSourceObserver: PowerSourceObserving {
+  func start(onChange: @escaping (Bool) -> Void) {}
+  func stop() {}
+}
+
+@MainActor
+private final class NoOpBatteryWarningNotifier: BatteryWarningNotifying {
+  func requestAuthorizationIfNeeded() {}
+  func postBatteryWarning() {}
+  func clearBatteryWarning() {}
 }

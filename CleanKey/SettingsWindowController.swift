@@ -7,10 +7,16 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
 
   private var window: NSWindow?
   private var settings: LockSettings
+  private var keepAwakeSettings: KeepAwakeSettings
   private let launchAtLogin: LaunchAtLoginControlling
 
-  init(settings: LockSettings, launchAtLogin: LaunchAtLoginControlling = LaunchAtLoginManager()) {
+  init(
+    settings: LockSettings,
+    keepAwakeSettings: KeepAwakeSettings,
+    launchAtLogin: LaunchAtLoginControlling = LaunchAtLoginManager()
+  ) {
     self.settings = settings
+    self.keepAwakeSettings = keepAwakeSettings
     self.launchAtLogin = launchAtLogin
   }
 
@@ -25,13 +31,14 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
     window?.close()
     window = nil
 
-    let viewModel = SettingsViewModel(settings: settings)
+    let viewModel = SettingsViewModel(settings: settings, keepAwake: keepAwakeSettings)
 
     let settingsView = SettingsView(
       viewModel: viewModel,
       onSave: { [weak self] in
         guard let self else { return }
         viewModel.save(to: &self.settings)
+        viewModel.saveKeepAwake(to: &self.keepAwakeSettings)
         self.launchAtLogin.apply(self.settings.launchAtLogin)
         self.window?.close()
       },
@@ -47,7 +54,7 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
     win.isReleasedWhenClosed = false
     win.styleMask = [.titled, .closable, .miniaturizable, .resizable]
     win.level = .floating
-    win.setContentSize(NSSize(width: 520, height: 520))
+    win.setContentSize(NSSize(width: 520, height: 660))
     win.center()
     win.delegate = self
     win.makeKeyAndOrderFront(nil)

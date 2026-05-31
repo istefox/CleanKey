@@ -210,4 +210,97 @@ final class SettingsViewModelTests: XCTestCase {
 
     XCTAssertEqual(settings.lastDuration, 60)
   }
+
+  // MARK: - KeepAwake init
+
+  private func makeKeepAwakeSettings(suiteName: String = #function) -> KeepAwakeSettings {
+    let defaults = UserDefaults(suiteName: suiteName)!
+    defaults.removePersistentDomain(forName: suiteName)
+    return KeepAwakeSettings(defaults: defaults)
+  }
+
+  func testInitReflectsInjectedKeepAwakeSettings() {
+    let settings = makeSettings(suiteName: "testInitReflectsKA_lock")
+    var keepAwake = makeKeepAwakeSettings(suiteName: "testInitReflectsKA_ka")
+    keepAwake.durationCap = 7200
+    keepAwake.restoreOnLaunch = true
+
+    let sut = SettingsViewModel(settings: settings, keepAwake: keepAwake)
+
+    XCTAssertEqual(sut.keepAwakeDurationCap, 7200)
+    XCTAssertTrue(sut.keepAwakeRestoreOnLaunch)
+  }
+
+  func testInitDefaultKeepAwakeValues() {
+    let settings = makeSettings(suiteName: "testInitDefaultKA_lock")
+    let keepAwake = makeKeepAwakeSettings(suiteName: "testInitDefaultKA_ka")
+
+    let sut = SettingsViewModel(settings: settings, keepAwake: keepAwake)
+
+    XCTAssertEqual(sut.keepAwakeDurationCap, 0)
+    XCTAssertFalse(sut.keepAwakeRestoreOnLaunch)
+  }
+
+  // MARK: - saveKeepAwake
+
+  func testSaveKeepAwakeWritesBothFields() {
+    var settings = makeSettings(suiteName: "testSaveKAWritesBoth_lock")
+    var keepAwake = makeKeepAwakeSettings(suiteName: "testSaveKAWritesBoth_ka")
+    let sut = SettingsViewModel(settings: settings, keepAwake: keepAwake)
+
+    sut.keepAwakeDurationCap = 14400
+    sut.keepAwakeRestoreOnLaunch = true
+
+    sut.saveKeepAwake(to: &keepAwake)
+
+    XCTAssertEqual(keepAwake.durationCap, 14400)
+    XCTAssertTrue(keepAwake.restoreOnLaunch)
+    // lock fields must be untouched
+    XCTAssertEqual(settings.lastDuration, LockSettings.defaultDuration)
+  }
+
+  func testSaveKeepAwakeLeavesLockSettingsUntouched() {
+    var settings = makeSettings(suiteName: "testSaveKeepAwakeLeavesLock_lock")
+    settings.lastDuration = 90
+    var keepAwake = makeKeepAwakeSettings(suiteName: "testSaveKeepAwakeLeavesLock_ka")
+    let sut = SettingsViewModel(settings: settings, keepAwake: keepAwake)
+
+    sut.keepAwakeDurationCap = 3600
+    sut.saveKeepAwake(to: &keepAwake)
+
+    // lock settings not mutated
+    XCTAssertEqual(settings.lastDuration, 90)
+  }
+
+  func testSaveDoNotTouchKeepAwakeFields() {
+    var settings = makeSettings(suiteName: "testSaveDoNotTouchKA_lock")
+    var keepAwake = makeKeepAwakeSettings(suiteName: "testSaveDoNotTouchKA_ka")
+    keepAwake.durationCap = 28800
+    let sut = SettingsViewModel(settings: settings, keepAwake: keepAwake)
+
+    // Only call lock save — keep-awake must stay at its original value
+    sut.save(to: &settings)
+
+    XCTAssertEqual(keepAwake.durationCap, 28800)
+  }
+
+  func testCapPickerNoLimitMapsToZero() {
+    let settings = makeSettings(suiteName: "testCapNoLimit_lock")
+    let keepAwake = makeKeepAwakeSettings(suiteName: "testCapNoLimit_ka")
+    let sut = SettingsViewModel(settings: settings, keepAwake: keepAwake)
+
+    sut.keepAwakeDurationCap = KeepAwakeSettings.allowedCaps[0]  // 0 = "No limit"
+
+    XCTAssertEqual(sut.keepAwakeDurationCap, 0)
+  }
+
+  func testCapPickerTwoHoursMapsTo7200() {
+    let settings = makeSettings(suiteName: "testCap2h_lock")
+    let keepAwake = makeKeepAwakeSettings(suiteName: "testCap2h_ka")
+    let sut = SettingsViewModel(settings: settings, keepAwake: keepAwake)
+
+    sut.keepAwakeDurationCap = KeepAwakeSettings.allowedCaps[2]  // 7200
+
+    XCTAssertEqual(sut.keepAwakeDurationCap, 7200)
+  }
 }

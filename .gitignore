@@ -34,3 +34,4 @@ fastlane/test_output
 !.remember/
 !.claude/
 .claude/.triage-fix-last-chore_bootstrap.json
+.claude/.triage-fix-last-main.json

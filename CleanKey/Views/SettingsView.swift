@@ -3,6 +3,7 @@ import SwiftUI
 enum SettingsSidebarItem: String, CaseIterable, Identifiable {
   case general = "General"
   case display = "Display"
+  case keepAwake = "Keep Awake"
 
   var id: String { rawValue }
 }
@@ -28,6 +29,8 @@ struct SettingsView: View {
           GeneralSettingsView(viewModel: viewModel)
         case .display:
           DisplaySettingsView(viewModel: viewModel)
+        case .keepAwake:
+          KeepAwakeSettingsView(viewModel: viewModel)
         }
       }
       .safeAreaInset(edge: .bottom) {
@@ -41,13 +44,14 @@ struct SettingsView: View {
         .padding()
       }
     }
-    .frame(minWidth: 520, minHeight: 520)
+    .frame(minWidth: 520, minHeight: 660)
   }
 
   private func systemImage(for item: SettingsSidebarItem) -> String {
     switch item {
     case .general: return "gearshape"
     case .display: return "display"
+    case .keepAwake: return "cup.and.saucer"
     }
   }
 }

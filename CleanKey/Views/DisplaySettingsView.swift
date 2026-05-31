@@ -21,7 +21,6 @@ struct DisplaySettingsView: View {
       }
     }
     .formStyle(.grouped)
-    .padding()
   }
 }
 

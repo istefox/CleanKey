@@ -47,7 +47,6 @@ struct GeneralSettingsView: View {
       }
     }
     .formStyle(.grouped)
-    .padding()
   }
 
   private var escapeIntervalLabel: String {
