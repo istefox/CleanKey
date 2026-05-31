@@ -1,12 +1,13 @@
 manifest_schema_version: "1.3"
-topic: "lock-scope-modes"
-topic_full_title: "Keyboard-only and trackpad-only lock scope modes"
+topic: "triple-escape-interval-settings"
+topic_full_title: "Configurable triple-Escape unlock interval in Settings"
 project_root: "/Users/stefanoferri/Developer/Apple/CleanKey"
 mode: "brownfield"
-anonymize: false
+anonymize: true
+humanize: true
 chain_path: "express"
-created_at: "2026-05-30T20:28:20+00:00"
-last_updated_at: "2026-05-30T20:43:59+00:00"
+created_at: "2026-05-30T14:58:24+00:00"
+last_updated_at: "2026-05-30T15:22:36+00:00"
 current_step: "completed"
 status: "completed"
 
@@ -82,4 +83,4 @@ failure:
   partial_artifacts: []
 
 # Hint for next action (UX)
-next_action: "Run /skill concept-to-code lock-scope-modes to start Step 1 interview"
+next_action: "Run /skill concept-to-code triple-escape-interval-settings to start Step 1 interview"
