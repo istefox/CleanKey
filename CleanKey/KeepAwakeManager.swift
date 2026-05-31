@@ -16,7 +16,7 @@ public final class KeepAwakeManager {
   private let assertions: any SleepAssertionControlling
   private let powerObserver: any PowerSourceObserving
   private let notifier: any BatteryWarningNotifying
-  private let capProvider: @Sendable () -> TimeInterval
+  private let capProvider: () -> TimeInterval
   /// Called after every `enable()` and `disable()`. `MenuBarController` overwrites
   /// this after construction to wire the icon update (ADR-003 D3).
   public var onChange: () -> Void
@@ -37,7 +37,7 @@ public final class KeepAwakeManager {
     assertions: any SleepAssertionControlling,
     powerObserver: any PowerSourceObserving,
     notifier: any BatteryWarningNotifying,
-    capProvider: @escaping @Sendable () -> TimeInterval = { 0 },
+    capProvider: @escaping () -> TimeInterval = { 0 },
     onChange: @escaping () -> Void = {},
     persist: @escaping (Bool) -> Void = { _ in }
   ) {
