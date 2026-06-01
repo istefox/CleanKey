@@ -37,6 +37,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
       powerObserver: powerObserver,
       notifier: notifier,
       capProvider: { [weak self] in self?.keepAwakeSettings.durationCap ?? 0 },
+      modeProvider: { [weak self] in self?.keepAwakeSettings.mode ?? .full },
       persist: { [weak self] value in self?.keepAwakeSettings.lastActiveState = value }
     )
     keepAwakeManager = manager

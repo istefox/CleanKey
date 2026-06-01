@@ -20,22 +20,24 @@ public final class RealSleepAssertionController: SleepAssertionControlling {
 
   // MARK: - SleepAssertionControlling
 
-  public var isHeld: Bool { displayID != nil && systemID != nil }
+  /// `true` when the system-sleep assertion is held (always created in both modes).
+  public var isHeld: Bool { systemID != nil }
 
-  /// Creates `PreventUserIdleDisplaySleep` and `PreventUserIdleSystemSleep`
-  /// assertions with the given reason string. Returns `false` on any failure,
-  /// releasing whichever assertion succeeded first.
-  public func createAssertions(reason: String) -> Bool {
-    var dID = IOPMAssertionID(0)
-    let displayResult = IOPMAssertionCreateWithName(
-      kIOPMAssertionTypePreventUserIdleDisplaySleep as CFString,
-      IOPMAssertionLevel(kIOPMAssertionLevelOn),
-      reason as CFString,
-      &dID
-    )
-
-    guard displayResult == kIOReturnSuccess else {
-      return false
+  /// Creates sleep assertions according to `mode`.
+  /// `.full`: creates `PreventUserIdleDisplaySleep` then `PreventUserIdleSystemSleep`.
+  /// `.systemOnly`: creates `PreventUserIdleSystemSleep` only; display can sleep normally.
+  /// On any failure, any already-created assertion is released before returning `false`.
+  public func createAssertions(reason: String, mode: KeepAwakeMode) -> Bool {
+    if mode == .full {
+      var dID = IOPMAssertionID(0)
+      let displayResult = IOPMAssertionCreateWithName(
+        kIOPMAssertionTypePreventUserIdleDisplaySleep as CFString,
+        IOPMAssertionLevel(kIOPMAssertionLevelOn),
+        reason as CFString,
+        &dID
+      )
+      guard displayResult == kIOReturnSuccess else { return false }
+      displayID = dID
     }
 
     var sID = IOPMAssertionID(0)
@@ -47,11 +49,11 @@ public final class RealSleepAssertionController: SleepAssertionControlling {
     )
 
     guard systemResult == kIOReturnSuccess else {
-      IOPMAssertionRelease(dID)
+      if let dID = displayID { IOPMAssertionRelease(dID) }
+      displayID = nil
       return false
     }
 
-    displayID = dID
     systemID = sID
     return true
   }

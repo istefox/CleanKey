@@ -19,6 +19,7 @@ final class SettingsViewModel {
 
   var keepAwakeDurationCap: TimeInterval
   var keepAwakeRestoreOnLaunch: Bool
+  var keepAwakeMode: KeepAwakeMode
 
   // MARK: - Init
 
@@ -32,6 +33,7 @@ final class SettingsViewModel {
     soundFeedback = settings.soundFeedback
     keepAwakeDurationCap = keepAwake.durationCap
     keepAwakeRestoreOnLaunch = keepAwake.restoreOnLaunch
+    keepAwakeMode = keepAwake.mode
   }
 
   // MARK: - Save
@@ -53,6 +55,7 @@ final class SettingsViewModel {
   func saveKeepAwake(to keepAwake: inout KeepAwakeSettings) {
     keepAwake.durationCap = keepAwakeDurationCap
     keepAwake.restoreOnLaunch = keepAwakeRestoreOnLaunch
+    keepAwake.mode = keepAwakeMode
   }
 
   // MARK: - Cancel

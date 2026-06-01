@@ -288,7 +288,7 @@ private final class KeyablePanel: NSPanel {
 @MainActor
 private final class NoOpSleepAssertionController: SleepAssertionControlling {
   var isHeld: Bool { false }
-  func createAssertions(reason: String) -> Bool { false }
+  func createAssertions(reason: String, mode: KeepAwakeMode) -> Bool { false }
   func releaseAssertions() {}
 }
 

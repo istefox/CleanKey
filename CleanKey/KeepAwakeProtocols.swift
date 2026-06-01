@@ -8,10 +8,12 @@ import Foundation
 /// IOKit directly; tests inject a `FakeSleepAssertionController`.
 @MainActor
 public protocol SleepAssertionControlling: AnyObject {
-  /// Creates display-sleep and idle-system-sleep assertions.
-  /// Returns `false` on failure; on partial failure the succeeded assertion
-  /// is released before returning so the pair is never left half-created.
-  func createAssertions(reason: String) -> Bool
+  /// Creates sleep assertions according to `mode`.
+  /// `.full` creates both display-sleep and idle-system-sleep assertions.
+  /// `.systemOnly` creates only the idle-system-sleep assertion.
+  /// Returns `false` on failure; on partial failure any succeeded assertion
+  /// is released before returning so no half-created pair is left dangling.
+  func createAssertions(reason: String, mode: KeepAwakeMode) -> Bool
   /// Releases both assertions if held. Idempotent.
   func releaseAssertions()
   /// `true` when both assertions are held.

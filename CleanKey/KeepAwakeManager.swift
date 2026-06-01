@@ -17,6 +17,7 @@ public final class KeepAwakeManager {
   private let powerObserver: any PowerSourceObserving
   private let notifier: any BatteryWarningNotifying
   private let capProvider: () -> TimeInterval
+  private let modeProvider: () -> KeepAwakeMode
   /// Called after every `enable()` and `disable()`. `MenuBarController` overwrites
   /// this after construction to wire the icon update (ADR-003 D3).
   public var onChange: () -> Void
@@ -38,6 +39,7 @@ public final class KeepAwakeManager {
     powerObserver: any PowerSourceObserving,
     notifier: any BatteryWarningNotifying,
     capProvider: @escaping () -> TimeInterval = { 0 },
+    modeProvider: @escaping () -> KeepAwakeMode = { .full },
     onChange: @escaping () -> Void = {},
     persist: @escaping (Bool) -> Void = { _ in }
   ) {
@@ -45,6 +47,7 @@ public final class KeepAwakeManager {
     self.powerObserver = powerObserver
     self.notifier = notifier
     self.capProvider = capProvider
+    self.modeProvider = modeProvider
     self.onChange = onChange
     self.persist = persist
   }
@@ -57,7 +60,7 @@ public final class KeepAwakeManager {
 
     notifier.requestAuthorizationIfNeeded()
 
-    guard assertions.createAssertions(reason: "CleanKey Keep Awake") else {
+    guard assertions.createAssertions(reason: "CleanKey Keep Awake", mode: modeProvider()) else {
       // Failed to acquire assertions — stay inactive, no observer, no callback.
       return
     }

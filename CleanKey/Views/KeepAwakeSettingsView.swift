@@ -6,6 +6,21 @@ struct KeepAwakeSettingsView: View {
 
   var body: some View {
     Form {
+      Section("Sleep Prevention") {
+        Picker("Mode", selection: $viewModel.keepAwakeMode) {
+          Text("Screen + System").tag(KeepAwakeMode.full)
+          Text("System only").tag(KeepAwakeMode.systemOnly)
+        }
+        .pickerStyle(.segmented)
+        Text(
+          viewModel.keepAwakeMode == .full
+            ? "Keeps both the display and the Mac awake."
+            : "Keeps the Mac awake but lets the display sleep normally."
+        )
+        .font(.caption)
+        .foregroundStyle(.secondary)
+      }
+
       Section("Duration Cap") {
         Picker("Maximum duration", selection: $viewModel.keepAwakeDurationCap) {
           ForEach(KeepAwakeSettings.allowedCaps, id: \.self) { cap in

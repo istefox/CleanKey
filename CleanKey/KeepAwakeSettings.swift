@@ -1,5 +1,13 @@
 import Foundation
 
+/// Whether keep-awake should also prevent the display from sleeping.
+public enum KeepAwakeMode: String, CaseIterable, Sendable {
+  /// Prevent both display sleep and idle system sleep (default).
+  case full
+  /// Prevent only idle system sleep; the display can still turn off.
+  case systemOnly
+}
+
 /// Persists user preferences for the Keep-Awake feature.
 /// Inject a `UserDefaults(suiteName:)` instance in tests to avoid touching real prefs.
 // @unchecked Sendable is safe: UserDefaults read/write operations are thread-safe,
@@ -24,6 +32,7 @@ public struct KeepAwakeSettings: @unchecked Sendable {
   private static let durationCapKey = "keepAwakeDurationCap"
   private static let restoreOnLaunchKey = "keepAwakeRestoreOnLaunch"
   private static let lastActiveStateKey = "keepAwakeLastActiveState"
+  private static let modeKey = "keepAwakeMode"
 
   // MARK: - Init
 
@@ -58,6 +67,12 @@ public struct KeepAwakeSettings: @unchecked Sendable {
   public var lastActiveState: Bool {
     get { defaults.bool(forKey: Self.lastActiveStateKey) }
     set { defaults.set(newValue, forKey: Self.lastActiveStateKey) }
+  }
+
+  /// Whether to prevent only system sleep or both system and display sleep. Defaults to `.full`.
+  public var mode: KeepAwakeMode {
+    get { KeepAwakeMode(rawValue: defaults.string(forKey: Self.modeKey) ?? "") ?? .full }
+    set { defaults.set(newValue.rawValue, forKey: Self.modeKey) }
   }
 
   // MARK: - Helpers

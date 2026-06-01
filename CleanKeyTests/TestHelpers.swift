@@ -79,7 +79,7 @@ final class FakeSleepAssertionController: SleepAssertionControlling, @unchecked 
     return createCallCount > releaseCallCount
   }
 
-  func createAssertions(reason: String) -> Bool {
+  func createAssertions(reason: String, mode: KeepAwakeMode) -> Bool {
     createCallCount += 1
     return !createShouldFail
   }
