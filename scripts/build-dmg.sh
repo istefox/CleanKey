@@ -27,7 +27,8 @@ xcodebuild archive \
   -configuration "$CONFIGURATION" \
   -destination 'generic/platform=macOS' \
   -archivePath "$ARCHIVE" \
-  CODE_SIGN_STYLE=Automatic \
+  CODE_SIGN_STYLE=Manual \
+  CODE_SIGN_IDENTITY="Developer ID Application" \
   DEVELOPMENT_TEAM=T7H24G7BFW \
   "${EXTRA_FLAGS[@]}"
 
