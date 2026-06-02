@@ -117,13 +117,15 @@ public final class RealEventTapController: EventTapControlling {
       | (1 << CGEventType.keyUp.rawValue)
       | (1 << CGEventType.flagsChanged.rawValue)
 
-    let pointingMask: CGEventMask =
+    let pointingMaskA: CGEventMask =
       (1 << CGEventType.leftMouseDown.rawValue)
       | (1 << CGEventType.leftMouseUp.rawValue)
       | (1 << CGEventType.leftMouseDragged.rawValue)
       | (1 << CGEventType.rightMouseDown.rawValue)
       | (1 << CGEventType.rightMouseUp.rawValue)
       | (1 << CGEventType.rightMouseDragged.rawValue)
+    let pointingMask: CGEventMask =
+      pointingMaskA
       | (1 << CGEventType.otherMouseDown.rawValue)
       | (1 << CGEventType.otherMouseUp.rawValue)
       | (1 << CGEventType.otherMouseDragged.rawValue)

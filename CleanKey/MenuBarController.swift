@@ -327,7 +327,7 @@ final class MenuBarController: NSObject {
     hotkeyObserverToken = NotificationCenter.default.addObserver(
       forName: .cleanKeyHotkeyChanged, object: nil, queue: .main
     ) { [weak self] _ in
-      self?.registerHotkeyFromSettings()
+      Task { @MainActor [weak self] in self?.registerHotkeyFromSettings() }
     }
   }
 
