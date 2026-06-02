@@ -146,6 +146,8 @@ final class MenuBarController: NSObject {
     let radius: CGFloat = 8
     let rayLength: CGFloat = 4
     let gap: CGFloat = 2
+    // Transparent moat punched into the keyboard layer around the sun silhouette.
+    let halo: CGFloat = 1.0
 
     let corner: CGPoint
     let startAngle: CGFloat
@@ -154,22 +156,47 @@ final class MenuBarController: NSObject {
 
     switch position {
     case .bottomRight:
-      // Sun center at bottom-right corner; visible arc covers 90°–180°.
       corner = CGPoint(x: canvasSize.width, y: 0)
       startAngle = .pi / 2
       endAngle = .pi
       rayAngles = [.pi / 2, 2 * .pi / 3, 5 * .pi / 6, .pi]
     case .topRight:
-      // Sun center at top-right corner; visible arc covers 180°–270°.
       corner = CGPoint(x: canvasSize.width, y: canvasSize.height)
       startAngle = .pi
       endAngle = 3 * .pi / 2
       rayAngles = [.pi, 7 * .pi / 6, 4 * .pi / 3, 3 * .pi / 2]
     }
 
+    // Pass 1: erase a halo-sized silhouette from the keyboard layer.
     ctx.saveGState()
+    ctx.setBlendMode(.clear)
+    ctx.setFillColor(CGColor(gray: 0, alpha: 1))
+    ctx.beginPath()
+    ctx.move(to: corner)
+    ctx.addArc(
+      center: corner, radius: radius + halo,
+      startAngle: startAngle, endAngle: endAngle, clockwise: false)
+    ctx.closePath()
+    ctx.fillPath()
+    ctx.setStrokeColor(CGColor(gray: 0, alpha: 1))
+    ctx.setLineWidth(1.5 + 2 * halo)
+    ctx.setLineCap(.round)
+    for angle in rayAngles {
+      let s = CGPoint(
+        x: corner.x + (radius + gap) * cos(angle),
+        y: corner.y + (radius + gap) * sin(angle))
+      let e = CGPoint(
+        x: corner.x + (radius + gap + rayLength) * cos(angle),
+        y: corner.y + (radius + gap + rayLength) * sin(angle))
+      ctx.beginPath()
+      ctx.move(to: s)
+      ctx.addLine(to: e)
+      ctx.strokePath()
+    }
+    ctx.restoreGState()
 
-    // Filled arc body
+    // Pass 2: draw the actual sun on top.
+    ctx.saveGState()
     ctx.setFillColor(CGColor(gray: 0, alpha: 1))
     ctx.beginPath()
     ctx.move(to: corner)
@@ -178,8 +205,6 @@ final class MenuBarController: NSObject {
       startAngle: startAngle, endAngle: endAngle, clockwise: false)
     ctx.closePath()
     ctx.fillPath()
-
-    // Rays
     ctx.setStrokeColor(CGColor(gray: 0, alpha: 1))
     ctx.setLineWidth(1.5)
     ctx.setLineCap(.round)
@@ -195,7 +220,6 @@ final class MenuBarController: NSObject {
       ctx.addLine(to: e)
       ctx.strokePath()
     }
-
     ctx.restoreGState()
   }
 
