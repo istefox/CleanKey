@@ -85,36 +85,118 @@ final class MenuBarController: NSObject {
     statusItem.button?.title = String(format: "%d:%02d", m, s)
   }
 
-  /// Derives the icon asset name from the two independent state flags (ADR-003 D3).
-  static func iconName(locked: Bool, awake: Bool) -> String {
-    switch (locked, awake) {
-    case (false, false): return "menubar-unlocked"
-    case (true, false): return "menubar-locked"
-    case (false, true): return "menubar-awake"
-    case (true, true): return "menubar-locked-awake"
+  private func updateMenuBarIcon() {
+    if !isLocked { statusItem.button?.title = "" }
+    let img: NSImage?
+    switch (isLocked, isAwake) {
+    case (false, false): img = keyboardIcon(lockBadge: false, sun: nil)
+    case (true, false): img = keyboardIcon(lockBadge: true, sun: nil)
+    case (false, true): img = keyboardIcon(lockBadge: false, sun: .bottomRight)
+    case (true, true): img = keyboardIcon(lockBadge: true, sun: .topRight)
+    }
+    if let img {
+      statusItem.button?.image = img
     }
   }
 
-  private func updateMenuBarIcon() {
-    // Clear countdown title when not locked (preserve it while locked).
-    if !isLocked { statusItem.button?.title = "" }
-    let name = MenuBarController.iconName(locked: isLocked, awake: isAwake)
-    if let img = NSImage(named: name) {
-      img.isTemplate = true
-      statusItem.button?.image = img
-    } else {
-      // SF Symbol fallbacks when asset art is not yet available.
-      let symbolName: String
-      switch (isLocked, isAwake) {
-      case (false, false): symbolName = "keyboard"
-      case (true, false): symbolName = "lock"
-      case (false, true): symbolName = "sun.max"
-      case (true, true): symbolName = "lock.circle"
-      }
-      if let img = NSImage(systemSymbolName: symbolName, accessibilityDescription: "CleanKey") {
-        statusItem.button?.image = img
-      }
+  private enum SunCorner { case bottomRight, topRight }
+
+  /// Keyboard base with an optional lock badge and/or a quarter-sun drawn from a corner.
+  /// Locked+awake: lock at bottom-right, sun peeking from top-right.
+  private func keyboardIcon(lockBadge: Bool, sun: SunCorner?) -> NSImage? {
+    let kbCfg = NSImage.SymbolConfiguration(pointSize: 14, weight: .medium)
+    guard
+      let kb = NSImage(systemSymbolName: "keyboard", accessibilityDescription: nil)?
+        .withSymbolConfiguration(kbCfg)
+    else { return nil }
+
+    guard lockBadge || sun != nil else {
+      kb.isTemplate = true
+      return kb
     }
+
+    let size = kb.size
+    let result = NSImage(size: size, flipped: false) { _ in
+      kb.draw(in: NSRect(origin: .zero, size: size))
+
+      if lockBadge {
+        let cfg = NSImage.SymbolConfiguration(pointSize: 9, weight: .semibold)
+        if let lockImg = NSImage(systemSymbolName: "lock.fill", accessibilityDescription: nil)?
+          .withSymbolConfiguration(cfg)
+        {
+          lockImg.draw(
+            in: NSRect(
+              x: size.width - lockImg.size.width, y: 0,
+              width: lockImg.size.width, height: lockImg.size.height))
+        }
+      }
+
+      if let pos = sun, let ctx = NSGraphicsContext.current?.cgContext {
+        self.drawQuarterSun(ctx: ctx, canvasSize: size, position: pos)
+      }
+      return true
+    }
+    result.isTemplate = true
+    return result
+  }
+
+  /// Draws a filled quarter-circle arc with rays from a canvas corner.
+  /// The arc body + rays act as a "peek-in" sun badge for the keep-awake state.
+  private func drawQuarterSun(ctx: CGContext, canvasSize: NSSize, position: SunCorner) {
+    let radius: CGFloat = 8
+    let rayLength: CGFloat = 4
+    let gap: CGFloat = 2
+
+    let corner: CGPoint
+    let startAngle: CGFloat
+    let endAngle: CGFloat
+    let rayAngles: [CGFloat]
+
+    switch position {
+    case .bottomRight:
+      // Sun center at bottom-right corner; visible arc covers 90°–180°.
+      corner = CGPoint(x: canvasSize.width, y: 0)
+      startAngle = .pi / 2
+      endAngle = .pi
+      rayAngles = [.pi / 2, 2 * .pi / 3, 5 * .pi / 6, .pi]
+    case .topRight:
+      // Sun center at top-right corner; visible arc covers 180°–270°.
+      corner = CGPoint(x: canvasSize.width, y: canvasSize.height)
+      startAngle = .pi
+      endAngle = 3 * .pi / 2
+      rayAngles = [.pi, 7 * .pi / 6, 4 * .pi / 3, 3 * .pi / 2]
+    }
+
+    ctx.saveGState()
+
+    // Filled arc body
+    ctx.setFillColor(CGColor(gray: 0, alpha: 1))
+    ctx.beginPath()
+    ctx.move(to: corner)
+    ctx.addArc(
+      center: corner, radius: radius,
+      startAngle: startAngle, endAngle: endAngle, clockwise: false)
+    ctx.closePath()
+    ctx.fillPath()
+
+    // Rays
+    ctx.setStrokeColor(CGColor(gray: 0, alpha: 1))
+    ctx.setLineWidth(1.5)
+    ctx.setLineCap(.round)
+    for angle in rayAngles {
+      let s = CGPoint(
+        x: corner.x + (radius + gap) * cos(angle),
+        y: corner.y + (radius + gap) * sin(angle))
+      let e = CGPoint(
+        x: corner.x + (radius + gap + rayLength) * cos(angle),
+        y: corner.y + (radius + gap + rayLength) * sin(angle))
+      ctx.beginPath()
+      ctx.move(to: s)
+      ctx.addLine(to: e)
+      ctx.strokePath()
+    }
+
+    ctx.restoreGState()
   }
 
   @objc private func statusItemClicked() {

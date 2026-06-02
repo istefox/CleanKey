@@ -32,6 +32,12 @@ public final class KeepAwakeManager {
 
   private var capTimer: Timer?
 
+  // MARK: - Battery state
+
+  /// Tracks the last observed battery state so we notify only on AC→battery transitions,
+  /// not on every power-source event (percentage drops, temperature changes, etc.).
+  private var wasOnBattery = false
+
   // MARK: - Init
 
   public init(
@@ -65,11 +71,13 @@ public final class KeepAwakeManager {
       return
     }
 
+    wasOnBattery = false
     powerObserver.start { [weak self] isOnBattery in
       guard let self, self.isActive else { return }
-      if isOnBattery {
+      if isOnBattery && !self.wasOnBattery {
         self.notifier.postBatteryWarning()
       }
+      self.wasOnBattery = isOnBattery
     }
 
     let cap = capProvider()

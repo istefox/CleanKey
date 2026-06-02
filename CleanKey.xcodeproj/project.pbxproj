@@ -52,7 +52,6 @@
 		KA0000000000012KA000012 /* KeepAwakeManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = KA0000000000011KA000011 /* KeepAwakeManagerTests.swift */; };
 		KA0000000000014KA000014 /* RealPowerSourceObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = KA0000000000013KA000013 /* RealPowerSourceObserver.swift */; };
 		KA0000000000016KA000016 /* KeepAwakeNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = KA0000000000015KA000015 /* KeepAwakeNotifier.swift */; };
-		KA0000000000017KA000017 /* MenuBarIconTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = KA0000000000018KA000018 /* MenuBarIconTests.swift */; };
 		KA0000000000020KA000020 /* KeepAwakeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = KA0000000000019KA000019 /* KeepAwakeSettingsView.swift */; };
 /* End PBXBuildFile section */
 
@@ -114,7 +113,6 @@
 		KA0000000000011KA000011 /* KeepAwakeManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepAwakeManagerTests.swift; sourceTree = "<group>"; };
 		KA0000000000013KA000013 /* RealPowerSourceObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealPowerSourceObserver.swift; sourceTree = "<group>"; };
 		KA0000000000015KA000015 /* KeepAwakeNotifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepAwakeNotifier.swift; sourceTree = "<group>"; };
-		KA0000000000018KA000018 /* MenuBarIconTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarIconTests.swift; sourceTree = "<group>"; };
 		KA0000000000019KA000019 /* KeepAwakeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepAwakeSettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -171,7 +169,6 @@
 				3F2E6B9BE23E44EEA9607BD5 /* SoundFeedbackPresenterTests.swift */,
 				KA00000000000003KA000003 /* KeepAwakeSettingsTests.swift */,
 				KA0000000000011KA000011 /* KeepAwakeManagerTests.swift */,
-				KA0000000000018KA000018 /* MenuBarIconTests.swift */,
 			);
 			path = CleanKeyTests;
 			sourceTree = "<group>";
@@ -350,7 +347,6 @@
 				D378AAA9AAE644DFB4F5EEAD /* SoundFeedbackPresenterTests.swift in Sources */,
 				KA00000000000004KA000004 /* KeepAwakeSettingsTests.swift in Sources */,
 				KA0000000000012KA000012 /* KeepAwakeManagerTests.swift in Sources */,
-				KA0000000000017KA000017 /* MenuBarIconTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
