@@ -19,19 +19,26 @@ DMG_PATH="$DIST/$DMG_NAME"
 echo "Building CleanKey ${VERSION}..."
 
 # Archive
+EXTRA_FLAGS=()
+[ -n "${KEYCHAIN_PATH:-}" ] && EXTRA_FLAGS+=(OTHER_CODE_SIGN_FLAGS="--keychain $KEYCHAIN_PATH")
+
 if command -v xcpretty &>/dev/null; then
   xcodebuild archive \
     -scheme "$SCHEME" \
     -configuration "$CONFIGURATION" \
+    -destination 'generic/platform=macOS' \
     -archivePath "$ARCHIVE" \
     CODE_SIGN_STYLE=Automatic \
+    "${EXTRA_FLAGS[@]}" \
     | xcpretty
 else
   xcodebuild archive \
     -scheme "$SCHEME" \
     -configuration "$CONFIGURATION" \
+    -destination 'generic/platform=macOS' \
     -archivePath "$ARCHIVE" \
-    CODE_SIGN_STYLE=Automatic
+    CODE_SIGN_STYLE=Automatic \
+    "${EXTRA_FLAGS[@]}"
 fi
 
 # Export .app with Developer ID signing
