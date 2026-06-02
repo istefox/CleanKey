@@ -19,19 +19,34 @@ DMG_PATH="$DIST/$DMG_NAME"
 echo "Building CleanKey ${VERSION}..."
 
 # Archive
-xcodebuild archive \
-  -scheme "$SCHEME" \
-  -configuration "$CONFIGURATION" \
-  -archivePath "$ARCHIVE" \
-  CODE_SIGN_STYLE=Automatic \
-  | xcpretty 2>/dev/null || true
+if command -v xcpretty &>/dev/null; then
+  xcodebuild archive \
+    -scheme "$SCHEME" \
+    -configuration "$CONFIGURATION" \
+    -archivePath "$ARCHIVE" \
+    CODE_SIGN_STYLE=Automatic \
+    | xcpretty
+else
+  xcodebuild archive \
+    -scheme "$SCHEME" \
+    -configuration "$CONFIGURATION" \
+    -archivePath "$ARCHIVE" \
+    CODE_SIGN_STYLE=Automatic
+fi
 
 # Export .app with Developer ID signing
-xcodebuild -exportArchive \
-  -archivePath "$ARCHIVE" \
-  -exportOptionsPlist "$EXPORT_OPTIONS" \
-  -exportPath "$EXPORT_DIR" \
-  | xcpretty 2>/dev/null || true
+if command -v xcpretty &>/dev/null; then
+  xcodebuild -exportArchive \
+    -archivePath "$ARCHIVE" \
+    -exportOptionsPlist "$EXPORT_OPTIONS" \
+    -exportPath "$EXPORT_DIR" \
+    | xcpretty
+else
+  xcodebuild -exportArchive \
+    -archivePath "$ARCHIVE" \
+    -exportOptionsPlist "$EXPORT_OPTIONS" \
+    -exportPath "$EXPORT_DIR"
+fi
 
 APP="$EXPORT_DIR/CleanKey.app"
 if [ ! -d "$APP" ]; then
