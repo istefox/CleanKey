@@ -18,6 +18,10 @@ DMG_PATH="$DIST/$DMG_NAME"
 
 echo "Building CleanKey ${VERSION}..."
 
+# Show available signing identities (diagnostic)
+echo "Available signing identities:"
+security find-identity -v -p codesigning || true
+
 # Archive
 EXTRA_FLAGS=()
 [ -n "${KEYCHAIN_PATH:-}" ] && EXTRA_FLAGS+=(OTHER_CODE_SIGN_FLAGS="--keychain $KEYCHAIN_PATH")
@@ -29,6 +33,7 @@ if command -v xcpretty &>/dev/null; then
     -destination 'generic/platform=macOS' \
     -archivePath "$ARCHIVE" \
     CODE_SIGN_STYLE=Automatic \
+    DEVELOPMENT_TEAM=T7H24G7BFW \
     "${EXTRA_FLAGS[@]}" \
     | xcpretty
 else
@@ -38,6 +43,7 @@ else
     -destination 'generic/platform=macOS' \
     -archivePath "$ARCHIVE" \
     CODE_SIGN_STYLE=Automatic \
+    DEVELOPMENT_TEAM=T7H24G7BFW \
     "${EXTRA_FLAGS[@]}"
 fi
 
