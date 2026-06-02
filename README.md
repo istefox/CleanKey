@@ -7,10 +7,13 @@ A macOS menu-bar utility that locks keyboard and trackpad input for a fixed dura
 
 ## Features
 
-- Locks all keyboard and trackpad input system-wide via macOS Accessibility API
+- Locks keyboard and trackpad input system-wide via the macOS Accessibility API
 - Fullscreen dark overlay covers every connected display with a live countdown
-- Duration picker: 30 seconds to 10 minutes via a slider in the menu bar
-- **Emergency unlock:** hold Escape 3 times within 1.5 seconds to exit early
+- Quick-pick menu for instant locks at preset or last-used durations
+- **Global hotkey** — record a shortcut in Settings to start a lock from any app
+- **Keep Awake** — prevent display sleep independently of the lock timer
+- Sound feedback on lock start and unlock
+- **Emergency unlock:** press Escape 3 times quickly (within 1.5 s) to exit early
 - Remembers your last-used duration between sessions
 - Menu bar only — no Dock icon, no clutter
 
@@ -40,19 +43,26 @@ Download the latest DMG from [Releases](../../releases), open it, drag CleanKey 
 
 ## Build from source
 
-Requires Xcode 16+, macOS 14 SDK, and [XcodeGen](https://github.com/yonaskolb/XcodeGen).
+Requires Xcode 16+ and macOS 14 SDK.
 
 ```bash
-git clone https://github.com/stefer/CleanKey.git
+git clone https://github.com/istefox/CleanKey.git
 cd CleanKey
-xcodegen generate
 xcodebuild build -scheme CleanKey -destination 'platform=macOS'
 ```
 
 Run tests:
 
 ```bash
-xcodebuild test -scheme CleanKey -destination 'platform=macOS'
+xcodebuild test -scheme CleanKey -destination 'platform=macOS' \
+  CODE_SIGN_IDENTITY="-" CODE_SIGNING_REQUIRED=NO
+```
+
+Build a signed DMG locally (requires Developer ID certificate in Keychain):
+
+```bash
+bash scripts/build-dmg.sh
+# Output: dist/CleanKey-<version>.dmg
 ```
 
 Verify code signature after build:
@@ -60,6 +70,30 @@ Verify code signature after build:
 ```bash
 codesign --verify --deep --strict CleanKey.app
 spctl --assess --verbose CleanKey.app
+```
+
+## GitHub Actions releases
+
+Pushing a version tag triggers the release workflow, which builds a signed and notarized DMG and uploads it to a GitHub Release automatically:
+
+```bash
+git tag v1.2.0
+git push origin v1.2.0
+```
+
+Configure these repository secrets before using the workflow:
+
+| Secret | Description |
+|---|---|
+| `APPLE_CERTIFICATE` | Base64-encoded Developer ID Application `.p12` certificate |
+| `APPLE_CERTIFICATE_PASSWORD` | Password protecting the `.p12` file |
+| `APPLE_ID` | Apple ID email used for notarization |
+| `NOTARYTOOL_PASSWORD` | App-specific password for `xcrun notarytool` |
+
+Export your certificate from Keychain Access as `.p12`, then encode it:
+
+```bash
+base64 -i DeveloperID.p12 | pbcopy
 ```
 
 ## Troubleshooting
