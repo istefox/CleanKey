@@ -8,4 +8,4 @@ Adds sound feedback, a configurable global hotkey, and a signed DMG release to t
 ### Phase 1 — Polish & Distribution
 - [x] Sound feedback  (completed: 2026-05-30)
 - [x] Global hotkey configurabile  (completed: 2026-06-02)
-- [ ] DMG release
+- [x] DMG release  (completed: 2026-06-02)
