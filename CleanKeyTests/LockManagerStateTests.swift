@@ -242,4 +242,72 @@ final class LockManagerStateTests: XCTestCase {
     XCTAssertFalse(unlocked, "Third press outside the 0.5 s window must not unlock")
     XCTAssertNotEqual(sut.state, .idle)
   }
+
+  // MARK: - extendLock
+
+  func testExtendLockWhileLockedMovesEndsAt() {
+    let clock = ClockBox(Date(timeIntervalSince1970: 1_000))
+    let (sut, _, _, _) = makeSUT(clock: clock)
+    sut.startLock(duration: 60)
+
+    let before = sut.remainingTime
+    sut.extendLock(by: 30)
+
+    XCTAssertEqual(sut.remainingTime, before + 30, accuracy: 0.01)
+  }
+
+  func testExtendLockWhileIdleIsNoOp() {
+    let (sut, _, _, _) = makeSUT()
+    sut.extendLock(by: 60)
+    XCTAssertEqual(sut.state, .idle)
+  }
+
+  func testExtendLockClampsToMaximumDuration() {
+    let clock = ClockBox(Date(timeIntervalSince1970: 1_000))
+    let (sut, _, _, _) = makeSUT(clock: clock)
+    sut.startLock(duration: LockSettings.maximumDuration)
+
+    sut.extendLock(by: LockSettings.maximumDuration)
+
+    XCTAssertLessThanOrEqual(
+      sut.remainingTime, LockSettings.maximumDuration,
+      "extendLock must not push endsAt beyond clock() + maximumDuration")
+  }
+
+  func testExtendLockWithZeroIsNoOp() {
+    let clock = ClockBox(Date(timeIntervalSince1970: 1_000))
+    let (sut, _, _, _) = makeSUT(clock: clock)
+    sut.startLock(duration: 60)
+    let before = sut.remainingTime
+
+    sut.extendLock(by: 0)
+
+    XCTAssertEqual(sut.remainingTime, before, accuracy: 0.01)
+  }
+
+  func testExtendLockWithNegativeIsNoOp() {
+    let clock = ClockBox(Date(timeIntervalSince1970: 1_000))
+    let (sut, _, _, _) = makeSUT(clock: clock)
+    sut.startLock(duration: 60)
+    let before = sut.remainingTime
+
+    sut.extendLock(by: -10)
+
+    XCTAssertEqual(sut.remainingTime, before, accuracy: 0.01)
+  }
+
+  func testExtendLockPreservesEscapeComboState() {
+    let clock = ClockBox(Date(timeIntervalSince1970: 1_000))
+    let (sut, _, _, _) = makeSUT(clock: clock)
+    sut.startLock(duration: 60)
+    _ = sut.evaluateEscapeCombo(keyCode: 53, timestamp: 0)  // 1 Escape press
+
+    sut.extendLock(by: 30)
+
+    guard case .locked(_, let combo) = sut.state else {
+      XCTFail("Expected .locked after extendLock")
+      return
+    }
+    XCTAssertEqual(combo.count, 1, "Escape combo count must survive extendLock")
+  }
 }

@@ -12,6 +12,7 @@ struct SettingsView: View {
 
   @State private var selection: SettingsSidebarItem? = .general
   let viewModel: SettingsViewModel
+  let settings: LockSettings
   let onSave: () -> Void
   let onCancel: () -> Void
 
@@ -26,7 +27,7 @@ struct SettingsView: View {
       Group {
         switch selection {
         case .general, .none:
-          GeneralSettingsView(viewModel: viewModel)
+          GeneralSettingsView(viewModel: viewModel, settings: settings)
         case .display:
           DisplaySettingsView(viewModel: viewModel)
         case .keepAwake:

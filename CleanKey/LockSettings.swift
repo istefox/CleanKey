@@ -1,4 +1,46 @@
+import Carbon
 import Foundation
+
+// MARK: - HotkeyBinding
+
+/// Carbon key code + modifier mask pair for a registered global hotkey.
+public struct HotkeyBinding: Equatable {
+  public let keyCode: UInt32
+  public let modifiers: UInt32
+
+  public init(keyCode: UInt32, modifiers: UInt32) {
+    self.keyCode = keyCode
+    self.modifiers = modifiers
+  }
+
+  /// Human-readable label built from Carbon modifier bits + a key-name table.
+  public var displayString: String {
+    var parts: [String] = []
+    if modifiers & UInt32(controlKey) != 0 { parts.append("⌃") }
+    if modifiers & UInt32(optionKey) != 0 { parts.append("⌥") }
+    if modifiers & UInt32(shiftKey) != 0 { parts.append("⇧") }
+    if modifiers & UInt32(cmdKey) != 0 { parts.append("⌘") }
+    parts.append(Self.keyName(for: keyCode))
+    return parts.joined()
+  }
+
+  private static func keyName(for code: UInt32) -> String {
+    let table: [UInt32: String] = [
+      0: "A", 1: "S", 2: "D", 3: "F", 4: "H", 5: "G", 6: "Z", 7: "X",
+      8: "C", 9: "V", 11: "B", 12: "Q", 13: "W", 14: "E", 15: "R",
+      16: "Y", 17: "T", 18: "1", 19: "2", 20: "3", 21: "4", 22: "6",
+      23: "5", 24: "=", 25: "9", 26: "7", 27: "-", 28: "8", 29: "0",
+      30: "]", 31: "O", 32: "U", 33: "[", 34: "I", 35: "P", 37: "L",
+      38: "J", 39: "'", 40: "K", 41: ";", 42: "\\", 43: ",", 44: "/",
+      45: "N", 46: "M", 47: ".", 48: "⇥", 49: "Space", 50: "`",
+      51: "⌫", 53: "⎋", 117: "⌦", 118: "F4", 119: "F6", 120: "F2",
+      121: "F8", 122: "F1", 123: "←", 124: "→", 125: "↓", 126: "↑",
+    ]
+    return table[code] ?? "(\(code))"
+  }
+}
+
+// MARK: -
 
 public enum OverlayMode: String {
   case blackScreen
@@ -48,6 +90,9 @@ public struct LockSettings: @unchecked Sendable {
   private static let escapeIntervalKey = "escapeInterval"
   private static let launchAtLoginKey = "launchAtLogin"
   private static let soundFeedbackDisabledKey = "soundFeedbackDisabled"
+  private static let hotkeyCodeKey = "hotkeyKeyCode"
+  private static let hotkeyModifiersKey = "hotkeyModifiers"
+  private static let hotkeyEnabledKey = "hotkeyEnabled"
 
   // MARK: - Init
 
@@ -141,6 +186,29 @@ public struct LockSettings: @unchecked Sendable {
   public var soundFeedback: Bool {
     get { !defaults.bool(forKey: Self.soundFeedbackDisabledKey) }
     set { defaults.set(!newValue, forKey: Self.soundFeedbackDisabledKey) }
+  }
+
+  /// Persisted global hotkey binding. `nil` means no shortcut is set.
+  /// Live-persisted (bypasses the SettingsViewModel draft flow — hotkey
+  /// recording happens outside the Save/Cancel window lifecycle).
+  public var hotkeyBinding: HotkeyBinding? {
+    get {
+      guard defaults.bool(forKey: Self.hotkeyEnabledKey) else { return nil }
+      let code = UInt32(defaults.integer(forKey: Self.hotkeyCodeKey))
+      let mods = UInt32(defaults.integer(forKey: Self.hotkeyModifiersKey))
+      return HotkeyBinding(keyCode: code, modifiers: mods)
+    }
+    set {
+      if let b = newValue {
+        defaults.set(true, forKey: Self.hotkeyEnabledKey)
+        defaults.set(Int(b.keyCode), forKey: Self.hotkeyCodeKey)
+        defaults.set(Int(b.modifiers), forKey: Self.hotkeyModifiersKey)
+      } else {
+        defaults.removeObject(forKey: Self.hotkeyEnabledKey)
+        defaults.removeObject(forKey: Self.hotkeyCodeKey)
+        defaults.removeObject(forKey: Self.hotkeyModifiersKey)
+      }
+    }
   }
 
   // MARK: - Helpers

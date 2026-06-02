@@ -3,6 +3,7 @@ import SwiftUI
 struct GeneralSettingsView: View {
 
   @Bindable var viewModel: SettingsViewModel
+  @State var settings: LockSettings
 
   var body: some View {
     Form {
@@ -31,6 +32,24 @@ struct GeneralSettingsView: View {
 
       Section("Sound") {
         Toggle("Sound feedback on lock and unlock", isOn: $viewModel.soundFeedback)
+      }
+
+      Section("Global Hotkey") {
+        HStack {
+          HotkeyRecorderView(settings: $settings)
+            .frame(minWidth: 140, minHeight: 28)
+            .background(Color(nsColor: .controlBackgroundColor))
+            .clipShape(RoundedRectangle(cornerRadius: 6))
+            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color(nsColor: .separatorColor)))
+          Button("Clear") {
+            settings.hotkeyBinding = nil
+            NotificationCenter.default.post(name: .cleanKeyHotkeyChanged, object: nil)
+          }
+          .disabled(settings.hotkeyBinding == nil)
+        }
+        Text("When locked: extends the current lock duration")
+          .font(.caption)
+          .foregroundStyle(.secondary)
       }
 
       Section("Emergency unlock") {

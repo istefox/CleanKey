@@ -35,6 +35,7 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
 
     let settingsView = SettingsView(
       viewModel: viewModel,
+      settings: settings,
       onSave: { [weak self] in
         guard let self else { return }
         viewModel.save(to: &self.settings)

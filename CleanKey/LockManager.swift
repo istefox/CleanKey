@@ -71,6 +71,15 @@ public final class LockManager {
     startWatchdogTimer()
   }
 
+  /// Extends an active lock's end time by `extra` seconds. No-op if idle or extra ≤ 0.
+  /// Clamps the new end time to `clock() + LockSettings.maximumDuration`.
+  public func extendLock(by extra: TimeInterval) {
+    guard extra > 0, case .locked(let endsAt, let combo) = state else { return }
+    let ceiling = clock().addingTimeInterval(LockSettings.maximumDuration)
+    let newEndsAt = min(endsAt.addingTimeInterval(extra), ceiling)
+    state = .locked(endsAt: newEndsAt, escapeCombo: combo)
+  }
+
   /// Unlocks immediately, tearing down in the required order. Idempotent.
   public func unlock() {
     guard case .locked = state else { return }

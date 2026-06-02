@@ -238,3 +238,114 @@ Tapping any item calls `LockManager.startLock(duration:)` immediately; no furthe
 6. In HUD mode, a compact countdown window appears on every connected display, positioned at the configured corner.
 7. In Trackpad Free mode, cursor movement, clicks, and scrolls are not suppressed; keyboard events are.
 8. All existing success criteria from v1 (triple-Escape, overlay accuracy, memory limits) continue to pass.
+
+---
+
+## Feature Spec: Global Hotkey Configurabile (v1.2)
+
+### Objective
+
+Add a user-configurable global keyboard shortcut that triggers an immediate lock from any app,
+without requiring the user to interact with the CleanKey menu bar icon.
+
+### Behavior
+
+**Trigger action:** pressing the configured hotkey calls `LockManager.startLock(duration: settings.lastDuration)`.
+
+**Already locked (hotkey pressed while lock active):**
+Extends the current lock by adding `settings.lastDuration` to the remaining time.
+Implemented as a new `LockManager.extendLock(by: TimeInterval)` method that updates `endsAt` and resets the countdown.
+
+**Accessibility permission missing:**
+Show a macOS HUD/alert "CleanKey needs Accessibility access to lock input" — same messaging as the existing onboarding flow. No lock is started.
+
+**Default hotkey:** none — disabled until the user explicitly records one. Prevents conflicts at first launch.
+
+**Scope:** always-on global shortcut (registered at system level via KeyboardShortcuts). Active even when the lock overlay is visible.
+
+### Framework
+
+**KeyboardShortcuts** by sindresorhus (SPM, MIT license).
+URL: `https://github.com/sindresorhus/KeyboardShortcuts`
+
+Chosen over Carbon `RegisterEventHotKey` (verbose, no SwiftUI recorder widget) and
+CGEventTap reuse (would couple hotkey logic to the input-blocking layer).
+
+KeyboardShortcuts persists the binding in `UserDefaults` automatically under a named key.
+No separate storage layer needed.
+
+### Architecture
+
+**New shortcut name:** `KeyboardShortcuts.Name("lockHotkey", default: nil)` declared in a new
+`HotkeyManager.swift` (or a small extension file).
+
+**Registration:** in `AppDelegate.applicationDidFinishLaunching`, after `LockManager` is
+ready:
+```swift
+KeyboardShortcuts.onKeyDown(for: .lockHotkey) { [weak self] in
+  self?.handleHotkeyTriggered()
+}
+```
+
+**Handler (`AppDelegate`):**
+```swift
+private func handleHotkeyTriggered() {
+  guard PermissionGuard.isAccessibilityGranted else {
+    // show alert/HUD
+    return
+  }
+  if lockManager.isLocked {
+    lockManager.extendLock(by: lockSettings.lastDuration)
+  } else {
+    lockManager.startLock(duration: lockSettings.lastDuration)
+  }
+}
+```
+
+**`LockManager.extendLock(by:)`:** thread-safe update of `endsAt += extra`. Fires `onChange` so the countdown view refreshes.
+
+### UI
+
+Section in `GeneralSettingsView` (no new tab):
+
+```
+── Global Hotkey ─────────────────
+  Lock shortcut:  [ Recorder field ]  [Clear]
+  When locked:    Extends duration
+───────────────────────────────────
+```
+
+`KeyboardShortcuts.Recorder("Lock shortcut", name: .lockHotkey)` provides the native macOS recorder UI (click to record, Escape to cancel, Delete to clear).
+
+### Files Modified / Created
+
+| File | Change |
+|---|---|
+| `CleanKey.xcodeproj` | Add KeyboardShortcuts SPM package dependency |
+| `HotkeyManager.swift` (new) | `KeyboardShortcuts.Name` declaration + registration helper |
+| `AppDelegate.swift` | Register handler in `applicationDidFinishLaunching` |
+| `LockManager.swift` | Add `extendLock(by:)` method |
+| `LockManagerProtocols.swift` | Add `extendLock(by:)` to `LockManaging` protocol |
+| `Views/GeneralSettingsView.swift` | Add "Global Hotkey" section with Recorder |
+
+### Edge Cases
+
+| Scenario | Handling |
+|---|---|
+| No hotkey set (nil) | Handler not registered; no-op |
+| Hotkey pressed, Accessibility missing | Show alert, no lock started |
+| Hotkey pressed, lock active | Extend lock by `lastDuration` |
+| Hotkey pressed, `lastDuration == 0` | Guard against zero; use minimum (5 s) |
+| System hotkey conflict | KeyboardShortcuts refuses to record reserved combos |
+| App relaunched | KeyboardShortcuts restores binding from UserDefaults automatically |
+| Hotkey recorded while lock active | Recording is possible; new binding takes effect on next press |
+
+### Success Criteria
+
+1. Pressing the configured shortcut from any app triggers lock within 200 ms (when not already locked).
+2. Pressing the shortcut while locked extends `endsAt` by `lastDuration`; countdown display updates within 1 s.
+3. With no Accessibility permission, pressing the shortcut shows an alert (no crash, no silent failure).
+4. Recorder field in GeneralSettingsView shows the current binding; Clear removes it.
+5. Binding survives app restart (UserDefaults persistence via KeyboardShortcuts).
+6. No default binding at first launch; no conflict with system shortcuts.
+7. All existing tests pass (harness green); new unit tests cover `extendLock(by:)` and handler guard logic.

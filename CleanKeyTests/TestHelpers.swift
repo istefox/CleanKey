@@ -141,6 +141,34 @@ final class FakeBatteryWarningNotifier: BatteryWarningNotifying {
   }
 }
 
+// MARK: - FakeHotkeyRegistrar
+
+@MainActor
+final class FakeHotkeyRegistrar: HotkeyRegistering {
+  var onTrigger: (() -> Void)?
+  var registerCallCount = 0
+  var unregisterCallCount = 0
+  var lastRegisteredKeyCode: UInt32?
+  var lastRegisteredModifiers: UInt32?
+  var shouldSucceed = true
+
+  @discardableResult
+  func register(keyCode: UInt32, modifiers: UInt32) -> Bool {
+    registerCallCount += 1
+    lastRegisteredKeyCode = keyCode
+    lastRegisteredModifiers = modifiers
+    return shouldSucceed
+  }
+
+  func unregister() {
+    unregisterCallCount += 1
+  }
+
+  func fireTrigger() {
+    onTrigger?()
+  }
+}
+
 // MARK: - LockState test-only Equatable
 // WARNING: ignores escapeCombo — .locked states with different combo progress compare equal.
 // Use pattern matching (guard case .locked = state) when combo content matters.

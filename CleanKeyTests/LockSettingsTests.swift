@@ -1,3 +1,4 @@
+import Carbon
 import XCTest
 
 @testable import CleanKey
@@ -186,5 +187,34 @@ final class LockSettingsTests: XCTestCase {
     defaults.set("invalid", forKey: "hudCorner")
     let sut = LockSettings(defaults: defaults)
     XCTAssertEqual(sut.hudCorner, .bottomRight)
+  }
+
+  // MARK: - hotkeyBinding
+
+  func testHotkeyBindingDefaultIsNil() {
+    let sut = makeSUT()
+    XCTAssertNil(sut.hotkeyBinding)
+  }
+
+  func testHotkeyBindingRoundTrip() {
+    var sut = makeSUT()
+    let binding = HotkeyBinding(keyCode: 45, modifiers: UInt32(cmdKey | shiftKey))
+    sut.hotkeyBinding = binding
+    XCTAssertEqual(sut.hotkeyBinding, binding)
+  }
+
+  func testHotkeyBindingClear() {
+    var sut = makeSUT()
+    sut.hotkeyBinding = HotkeyBinding(keyCode: 45, modifiers: UInt32(cmdKey))
+    sut.hotkeyBinding = nil
+    XCTAssertNil(sut.hotkeyBinding)
+  }
+
+  func testHotkeyBindingDisplayStringIncludesModifiersAndKey() {
+    let binding = HotkeyBinding(keyCode: 45, modifiers: UInt32(cmdKey | shiftKey))
+    let display = binding.displayString
+    XCTAssertTrue(display.contains("⌘"), "Expected cmd symbol")
+    XCTAssertTrue(display.contains("⇧"), "Expected shift symbol")
+    XCTAssertTrue(display.contains("N"), "Expected key label N for keyCode 45")
   }
 }

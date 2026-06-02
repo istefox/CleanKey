@@ -2,6 +2,10 @@ import AppKit
 import OSLog
 import SwiftUI
 
+extension Notification.Name {
+  static let cleanKeyHotkeyChanged = Notification.Name("cleanKeyHotkeyChanged")
+}
+
 /// Owns the NSStatusItem, LockManager, KeepAwakeManager, and permission guard.
 @MainActor
 final class MenuBarController: NSObject {
@@ -12,6 +16,8 @@ final class MenuBarController: NSObject {
   private let settings: LockSettings
   private let permissionGuard: PermissionGuard
   private let keepAwakeManager: KeepAwakeManager
+  private let hotkeyRegistrar: HotkeyRegistering
+  private var hotkeyObserverToken: (any NSObjectProtocol)?
   weak var settingsWindowController: SettingsWindowController?
 
   // 4-state icon flags (ADR-003 D3)
@@ -25,9 +31,11 @@ final class MenuBarController: NSObject {
       assertions: NoOpSleepAssertionController(),
       powerObserver: NoOpPowerSourceObserver(),
       notifier: NoOpBatteryWarningNotifier()
-    )
+    ),
+    hotkeyRegistrar: HotkeyRegistering = CarbonHotkeyRegistrar()
   ) {
     self.keepAwakeManager = keepAwakeManager
+    self.hotkeyRegistrar = hotkeyRegistrar
     tapController = RealEventTapController()
     lockManager = LockManager(
       tapController: tapController,
@@ -66,6 +74,7 @@ final class MenuBarController: NSObject {
       self.updateMenuBarIcon()
     }
     setupStatusItem()
+    setupHotkey()
   }
 
   private func setupStatusItem() {
@@ -308,6 +317,44 @@ final class MenuBarController: NSObject {
   private func startLock(duration: TimeInterval) {
     lockManager.presenter.configure(settings: settings)
     lockManager.startLock(duration: duration)
+  }
+
+  // MARK: - Global hotkey
+
+  private func setupHotkey() {
+    hotkeyRegistrar.onTrigger = { [weak self] in self?.handleHotkeyTriggered() }
+    registerHotkeyFromSettings()
+    hotkeyObserverToken = NotificationCenter.default.addObserver(
+      forName: .cleanKeyHotkeyChanged, object: nil, queue: .main
+    ) { [weak self] _ in
+      self?.registerHotkeyFromSettings()
+    }
+  }
+
+  // deinit intentionally omitted: MenuBarController is a process-lifetime singleton.
+  // hotkeyObserverToken uses [weak self], so the registered block is a no-op after
+  // deallocation. Both the token and the Carbon registration are reclaimed by the OS
+  // on process exit. Swift 6 nonisolated-deinit restrictions make explicit cleanup
+  // of @MainActor properties and non-Sendable tokens unsafe without workarounds.
+
+  private func registerHotkeyFromSettings() {
+    if let binding = settings.hotkeyBinding {
+      hotkeyRegistrar.register(keyCode: binding.keyCode, modifiers: binding.modifiers)
+    } else {
+      hotkeyRegistrar.unregister()
+    }
+  }
+
+  private func handleHotkeyTriggered() {
+    guard permissionGuard.check() == .granted else {
+      showPermissionAlert()
+      return
+    }
+    if isLocked {
+      lockManager.extendLock(by: settings.lastDuration)
+    } else {
+      startLock(duration: settings.lastDuration)
+    }
   }
 
   private func showPermissionAlert() {

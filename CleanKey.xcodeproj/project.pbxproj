@@ -14,6 +14,9 @@
 		29D0E1F2030400012900E1F2 /* DisplaySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D0E1F203040000290DE1F2 /* DisplaySettingsView.swift */; };
 		2DD179E8C276CB5B83348699 /* PermissionGuardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F175155719238B1F282C46 /* PermissionGuardTests.swift */; };
 		56BDA646D0637CE69524B938 /* LockSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E14C28844CDFE6FDB51D8F /* LockSettings.swift */; };
+		A9CFB602EB8143B6919ED31B /* HotkeyRegistering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EAD99D13234312B09103E9 /* HotkeyRegistering.swift */; };
+		4704ABE9175147EEB405E534 /* CarbonHotkeyRegistrar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5771588FFE2349B9AF7DA863 /* CarbonHotkeyRegistrar.swift */; };
+		6442C28625AB4C46A7F4D0B1 /* HotkeyRecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121D8945C33848CCA10586AA /* HotkeyRecorderView.swift */; };
 		60A226845773371D7045988C /* MenuBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E8A05E890CBF138C2A4AC65 /* MenuBarController.swift */; };
 		633285CEA0075F805CD88236 /* LockManagerStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC324F48F8185C10CE879A57 /* LockManagerStateTests.swift */; };
 		7298DE3F45835C0E1254CDCB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCA7467367ECB02679B2C630 /* Assets.xcassets */; };
@@ -75,6 +78,9 @@
 		29D0E1F203040000290DE1F2 /* DisplaySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplaySettingsView.swift; sourceTree = "<group>"; };
 		33D4E4FF0FB0F11BD29EA517 /* CleanKeyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanKeyTests.swift; sourceTree = "<group>"; };
 		35E14C28844CDFE6FDB51D8F /* LockSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockSettings.swift; sourceTree = "<group>"; };
+		41EAD99D13234312B09103E9 /* HotkeyRegistering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyRegistering.swift; sourceTree = "<group>"; };
+		5771588FFE2349B9AF7DA863 /* CarbonHotkeyRegistrar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarbonHotkeyRegistrar.swift; sourceTree = "<group>"; };
+		121D8945C33848CCA10586AA /* HotkeyRecorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyRecorderView.swift; sourceTree = "<group>"; };
 		423766F7D16736B68811E4B1 /* LockState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockState.swift; sourceTree = "<group>"; };
 		44E82E6A629CD2F4B5CB08B9 /* TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
 		464E14750DE2AEA9C591E20A /* RealTrustChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealTrustChecker.swift; sourceTree = "<group>"; };
@@ -129,6 +135,8 @@
 				BAD631A543B43998363DD8CD /* LockOverlayController.swift */,
 				A8B38D49580B47639DE1B993 /* LaunchAtLoginManager.swift */,
 				35E14C28844CDFE6FDB51D8F /* LockSettings.swift */,
+				41EAD99D13234312B09103E9 /* HotkeyRegistering.swift */,
+				5771588FFE2349B9AF7DA863 /* CarbonHotkeyRegistrar.swift */,
 				KA00000000000001KA000001 /* KeepAwakeSettings.swift */,
 				KA00000000000005KA000005 /* KeepAwakeProtocols.swift */,
 				KA00000000000007KA000007 /* RealSleepAssertionController.swift */,
@@ -197,6 +205,7 @@
 				8250B78CA3D2581CC6330996 /* CountdownView.swift */,
 				F6A7B8C9D0E10000F6A7B8C9 /* SettingsView.swift */,
 				07B8C9D0E1F200000789C9D0 /* GeneralSettingsView.swift */,
+				121D8945C33848CCA10586AA /* HotkeyRecorderView.swift */,
 				29D0E1F203040000290DE1F2 /* DisplaySettingsView.swift */,
 				KA0000000000019KA000019 /* KeepAwakeSettingsView.swift */,
 			);
@@ -303,6 +312,9 @@
 				F41149DBA10D00D3E3F69BD2 /* LockManagerProtocols.swift in Sources */,
 				E82CB40CE609213945274554 /* LockOverlayController.swift in Sources */,
 				56BDA646D0637CE69524B938 /* LockSettings.swift in Sources */,
+				A9CFB602EB8143B6919ED31B /* HotkeyRegistering.swift in Sources */,
+				4704ABE9175147EEB405E534 /* CarbonHotkeyRegistrar.swift in Sources */,
+				6442C28625AB4C46A7F4D0B1 /* HotkeyRecorderView.swift in Sources */,
 				KA00000000000002KA000002 /* KeepAwakeSettings.swift in Sources */,
 				KA00000000000006KA000006 /* KeepAwakeProtocols.swift in Sources */,
 				KA00000000000008KA000008 /* RealSleepAssertionController.swift in Sources */,
