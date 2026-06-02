@@ -44,6 +44,9 @@ jobs:
           security list-keychain -d user -s "$KEYCHAIN_PATH"
           echo "KEYCHAIN_PATH=$KEYCHAIN_PATH" >> "$GITHUB_ENV"
 
+      - name: Check signing identities
+        run: security find-identity -v -p codesigning
+
       - name: Build DMG
         env:
           APPLE_ID: ${{ secrets.APPLE_ID }}

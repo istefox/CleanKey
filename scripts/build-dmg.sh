@@ -18,48 +18,24 @@ DMG_PATH="$DIST/$DMG_NAME"
 
 echo "Building CleanKey ${VERSION}..."
 
-# Show available signing identities (diagnostic)
-echo "Available signing identities:"
-security find-identity -v -p codesigning || true
-
 # Archive
 EXTRA_FLAGS=()
-[ -n "${KEYCHAIN_PATH:-}" ] && EXTRA_FLAGS+=(OTHER_CODE_SIGN_FLAGS="--keychain $KEYCHAIN_PATH")
+[ -n "${KEYCHAIN_PATH:-}" ] && EXTRA_FLAGS+=(OTHER_CODE_SIGN_FLAGS="--keychain ${KEYCHAIN_PATH}")
 
-if command -v xcpretty &>/dev/null; then
-  xcodebuild archive \
-    -scheme "$SCHEME" \
-    -configuration "$CONFIGURATION" \
-    -destination 'generic/platform=macOS' \
-    -archivePath "$ARCHIVE" \
-    CODE_SIGN_STYLE=Automatic \
-    DEVELOPMENT_TEAM=T7H24G7BFW \
-    "${EXTRA_FLAGS[@]}" \
-    | xcpretty
-else
-  xcodebuild archive \
-    -scheme "$SCHEME" \
-    -configuration "$CONFIGURATION" \
-    -destination 'generic/platform=macOS' \
-    -archivePath "$ARCHIVE" \
-    CODE_SIGN_STYLE=Automatic \
-    DEVELOPMENT_TEAM=T7H24G7BFW \
-    "${EXTRA_FLAGS[@]}"
-fi
+xcodebuild archive \
+  -scheme "$SCHEME" \
+  -configuration "$CONFIGURATION" \
+  -destination 'generic/platform=macOS' \
+  -archivePath "$ARCHIVE" \
+  CODE_SIGN_STYLE=Automatic \
+  DEVELOPMENT_TEAM=T7H24G7BFW \
+  "${EXTRA_FLAGS[@]}"
 
 # Export .app with Developer ID signing
-if command -v xcpretty &>/dev/null; then
-  xcodebuild -exportArchive \
-    -archivePath "$ARCHIVE" \
-    -exportOptionsPlist "$EXPORT_OPTIONS" \
-    -exportPath "$EXPORT_DIR" \
-    | xcpretty
-else
-  xcodebuild -exportArchive \
-    -archivePath "$ARCHIVE" \
-    -exportOptionsPlist "$EXPORT_OPTIONS" \
-    -exportPath "$EXPORT_DIR"
-fi
+xcodebuild -exportArchive \
+  -archivePath "$ARCHIVE" \
+  -exportOptionsPlist "$EXPORT_OPTIONS" \
+  -exportPath "$EXPORT_DIR"
 
 APP="$EXPORT_DIR/CleanKey.app"
 if [ ! -d "$APP" ]; then
