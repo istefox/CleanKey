@@ -117,6 +117,12 @@ quickly (within 1.5 s) to trigger the emergency unlock, then re-launch the app.
 Press Escape three times quickly (within 1.5 s) to force an emergency unlock.
 The triple-Escape combo is always available while the tap is active.
 
+## Support
+
+CleanKey is free and open source. If it saves you time, you can sponsor development on GitHub.
+
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/istefox?label=Sponsor&logo=GitHub)](https://github.com/sponsors/istefox)
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
