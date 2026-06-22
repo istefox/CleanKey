@@ -350,6 +350,68 @@ final class SettingsViewModelTests: XCTestCase {
     XCTAssertNotNil(keepAwake.scheduleStartDate)
   }
 
+  // MARK: - saveUpdates
+
+  private func makeUpdateSettings(suiteName: String = #function) -> UpdateSettings {
+    let defaults = UserDefaults(suiteName: suiteName)!
+    defaults.removePersistentDomain(forName: suiteName)
+    return UpdateSettings(defaults: defaults)
+  }
+
+  func testInitHydratesUpdateFrequencyFromSettings() {
+    let settings = makeSettings(suiteName: "testInitHydratesUpdate_lock")
+    let keepAwake = makeKeepAwakeSettings(suiteName: "testInitHydratesUpdate_ka")
+    var updates = makeUpdateSettings(suiteName: "testInitHydratesUpdate_upd")
+    updates.frequency = .weekly
+
+    let sut = SettingsViewModel(settings: settings, keepAwake: keepAwake, updates: updates)
+
+    XCTAssertEqual(sut.updateFrequency, .weekly)
+  }
+
+  func testInitDefaultUpdateFrequencyIsDaily() {
+    let settings = makeSettings(suiteName: "testInitDefaultUpdate_lock")
+    let updates = makeUpdateSettings(suiteName: "testInitDefaultUpdate_upd")
+
+    let sut = SettingsViewModel(settings: settings, updates: updates)
+
+    XCTAssertEqual(sut.updateFrequency, .daily)
+  }
+
+  func testSaveUpdatesWritesFrequency() {
+    let settings = makeSettings(suiteName: "testSaveUpdatesWritesFreq_lock")
+    var updates = makeUpdateSettings(suiteName: "testSaveUpdatesWritesFreq_upd")
+    let sut = SettingsViewModel(settings: settings, updates: updates)
+
+    sut.updateFrequency = .never
+    sut.saveUpdates(to: &updates)
+
+    XCTAssertEqual(updates.frequency, .never)
+  }
+
+  func testSaveUpdatesLeavesLockSettingsUntouched() {
+    var settings = makeSettings(suiteName: "testSaveUpdatesLeavesLock_lock")
+    settings.lastDuration = 90
+    var updates = makeUpdateSettings(suiteName: "testSaveUpdatesLeavesLock_upd")
+    let sut = SettingsViewModel(settings: settings, updates: updates)
+
+    sut.updateFrequency = .weekly
+    sut.saveUpdates(to: &updates)
+
+    XCTAssertEqual(settings.lastDuration, 90)
+  }
+
+  func testSaveLockDoesNotTouchUpdateSettings() {
+    var settings = makeSettings(suiteName: "testSaveLockDoesNotTouchUpdates_lock")
+    var updates = makeUpdateSettings(suiteName: "testSaveLockDoesNotTouchUpdates_upd")
+    updates.frequency = .onLaunch
+    let sut = SettingsViewModel(settings: settings, updates: updates)
+
+    sut.save(to: &settings)
+
+    XCTAssertEqual(updates.frequency, .onLaunch)
+  }
+
   func testExistingSaveAndSaveKeepAwakeCallSitesUnchanged() {
     // Regression: saveKeepAwakeSchedule is a NEW method; existing call-sites must not change.
     var settings = makeSettings(suiteName: "testCallSites_lock")

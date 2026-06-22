@@ -30,9 +30,13 @@ final class SettingsViewModel {
   /// true when a schedule is currently persisted (scheduleEndDate non-nil).
   var keepAwakeScheduleArmed: Bool
 
+  // MARK: - Update fields
+
+  var updateFrequency: UpdateCheckFrequency
+
   // MARK: - Init
 
-  init(settings: LockSettings, keepAwake: KeepAwakeSettings = .inert) {
+  init(settings: LockSettings, keepAwake: KeepAwakeSettings = .inert, updates: UpdateSettings = .inert) {
     sliderPosition = TwoZoneSlider.positionForDuration(settings.lastDuration)
     overlayMode = settings.overlayMode
     lockScope = settings.lockScope
@@ -51,6 +55,7 @@ final class SettingsViewModel {
     keepAwakeScheduleEndTime = keepAwake.scheduleEndDate ?? defaultEndTime
     keepAwakeScheduleDurationHours = 1
     keepAwakeScheduleArmed = keepAwake.scheduleEndDate != nil
+    updateFrequency = updates.frequency
   }
 
   // MARK: - Save
@@ -94,6 +99,12 @@ final class SettingsViewModel {
     }
     keepAwake.scheduleStartDate = schedule.startDate
     keepAwake.scheduleEndDate = schedule.endDate
+  }
+
+  /// Writes update draft fields to the provided UpdateSettings instance.
+  /// Separate from save(to:) and saveKeepAwake(to:) per ADR-002 discipline.
+  func saveUpdates(to updates: inout UpdateSettings) {
+    updates.frequency = updateFrequency
   }
 
   // MARK: - Cancel
