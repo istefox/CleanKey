@@ -303,4 +303,64 @@ final class SettingsViewModelTests: XCTestCase {
 
     XCTAssertEqual(sut.keepAwakeDurationCap, 7200)
   }
+
+  // MARK: - saveKeepAwakeSchedule
+
+  func testSaveScheduleDisarmedClearsSettings() {
+    let settings = makeSettings(suiteName: "testSaveScheduleDisarmed_lock")
+    var keepAwake = makeKeepAwakeSettings(suiteName: "testSaveScheduleDisarmed_ka")
+    keepAwake.scheduleEndDate = Date().addingTimeInterval(3600)
+
+    let sut = SettingsViewModel(settings: settings, keepAwake: keepAwake)
+    sut.keepAwakeScheduleArmed = false
+    sut.saveKeepAwakeSchedule(to: &keepAwake)
+
+    XCTAssertNil(keepAwake.scheduleEndDate)
+    XCTAssertNil(keepAwake.scheduleStartDate)
+  }
+
+  func testSaveScheduleEndOnlyArmedWritesEndDate() {
+    let settings = makeSettings(suiteName: "testSaveScheduleEndOnly_lock")
+    var keepAwake = makeKeepAwakeSettings(suiteName: "testSaveScheduleEndOnly_ka")
+    let sut = SettingsViewModel(settings: settings, keepAwake: keepAwake)
+
+    let endTime = Date().addingTimeInterval(7200)  // well in the future
+    sut.keepAwakeScheduleMode = .endOnly
+    sut.keepAwakeScheduleEndTime = endTime
+    sut.keepAwakeScheduleArmed = true
+    sut.saveKeepAwakeSchedule(to: &keepAwake)
+
+    XCTAssertNotNil(keepAwake.scheduleEndDate)
+    XCTAssertNil(keepAwake.scheduleStartDate)
+  }
+
+  func testSaveScheduleStartAndDurationWritesBothDates() {
+    let settings = makeSettings(suiteName: "testSaveScheduleStartAndDuration_lock")
+    var keepAwake = makeKeepAwakeSettings(suiteName: "testSaveScheduleStartAndDuration_ka")
+    let sut = SettingsViewModel(settings: settings, keepAwake: keepAwake)
+
+    let startTime = Date().addingTimeInterval(3600)  // 1h from now
+    sut.keepAwakeScheduleMode = .startAndDuration
+    sut.keepAwakeScheduleStartTime = startTime
+    sut.keepAwakeScheduleDurationHours = 2
+    sut.keepAwakeScheduleArmed = true
+    sut.saveKeepAwakeSchedule(to: &keepAwake)
+
+    XCTAssertNotNil(keepAwake.scheduleEndDate)
+    XCTAssertNotNil(keepAwake.scheduleStartDate)
+  }
+
+  func testExistingSaveAndSaveKeepAwakeCallSitesUnchanged() {
+    // Regression: saveKeepAwakeSchedule is a NEW method; existing call-sites must not change.
+    var settings = makeSettings(suiteName: "testCallSites_lock")
+    var keepAwake = makeKeepAwakeSettings(suiteName: "testCallSites_ka")
+    let sut = SettingsViewModel(settings: settings, keepAwake: keepAwake)
+
+    // These 7 call-sites must compile and behave identically to before.
+    sut.save(to: &settings)
+    sut.saveKeepAwake(to: &keepAwake)
+    // Confirming no crash and fields unchanged.
+    XCTAssertEqual(keepAwake.durationCap, 0)
+    XCTAssertFalse(keepAwake.restoreOnLaunch)
+  }
 }

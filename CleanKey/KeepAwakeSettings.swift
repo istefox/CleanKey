@@ -33,6 +33,8 @@ public struct KeepAwakeSettings: @unchecked Sendable {
   private static let restoreOnLaunchKey = "keepAwakeRestoreOnLaunch"
   private static let lastActiveStateKey = "keepAwakeLastActiveState"
   private static let modeKey = "keepAwakeMode"
+  private static let scheduleStartDateKey = "keepAwakeScheduleStartDate"
+  private static let scheduleEndDateKey = "keepAwakeScheduleEndDate"
 
   // MARK: - Init
 
@@ -73,6 +75,36 @@ public struct KeepAwakeSettings: @unchecked Sendable {
   public var mode: KeepAwakeMode {
     get { KeepAwakeMode(rawValue: defaults.string(forKey: Self.modeKey) ?? "") ?? .full }
     set { defaults.set(newValue.rawValue, forKey: Self.modeKey) }
+  }
+
+  /// Persisted absolute start date of the armed schedule. nil means no start gate.
+  public var scheduleStartDate: Date? {
+    get { defaults.object(forKey: Self.scheduleStartDateKey) as? Date }
+    set {
+      if let date = newValue {
+        defaults.set(date, forKey: Self.scheduleStartDateKey)
+      } else {
+        defaults.removeObject(forKey: Self.scheduleStartDateKey)
+      }
+    }
+  }
+
+  /// Persisted absolute end date of the armed schedule. Non-nil means a schedule is armed.
+  public var scheduleEndDate: Date? {
+    get { defaults.object(forKey: Self.scheduleEndDateKey) as? Date }
+    set {
+      if let date = newValue {
+        defaults.set(date, forKey: Self.scheduleEndDateKey)
+      } else {
+        defaults.removeObject(forKey: Self.scheduleEndDateKey)
+      }
+    }
+  }
+
+  /// Clears both persisted schedule dates.
+  public mutating func clearSchedule() {
+    scheduleStartDate = nil
+    scheduleEndDate = nil
   }
 
   // MARK: - Helpers

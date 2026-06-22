@@ -9,6 +9,7 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
   private var settings: LockSettings
   private var keepAwakeSettings: KeepAwakeSettings
   private let launchAtLogin: LaunchAtLoginControlling
+  var onScheduleChanged: (() -> Void)?
 
   init(
     settings: LockSettings,
@@ -40,7 +41,9 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
         guard let self else { return }
         viewModel.save(to: &self.settings)
         viewModel.saveKeepAwake(to: &self.keepAwakeSettings)
+        viewModel.saveKeepAwakeSchedule(to: &self.keepAwakeSettings)
         self.launchAtLogin.apply(self.settings.launchAtLogin)
+        self.onScheduleChanged?()
         self.window?.close()
       },
       onCancel: { [weak self] in

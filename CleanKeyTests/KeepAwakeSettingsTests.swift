@@ -78,4 +78,61 @@ final class KeepAwakeSettingsTests: XCTestCase {
     XCTAssertEqual(sut.durationCap, nearest)
     XCTAssertTrue(KeepAwakeSettings.allowedCaps.contains(sut.durationCap))
   }
+
+  // MARK: - Schedule dates
+
+  func testScheduleEndDateDefaultIsNil() {
+    let sut = makeSUT()
+    XCTAssertNil(sut.scheduleEndDate)
+  }
+
+  func testScheduleStartDateDefaultIsNil() {
+    let sut = makeSUT()
+    XCTAssertNil(sut.scheduleStartDate)
+  }
+
+  func testScheduleEndDateRoundTrips() throws {
+    let suiteName = "testScheduleEndDateRoundTrips"
+    let defaults = UserDefaults(suiteName: suiteName)!
+    defaults.removePersistentDomain(forName: suiteName)
+
+    let date = Date(timeIntervalSince1970: 1_750_000_000)
+    var sut = KeepAwakeSettings(defaults: defaults)
+    sut.scheduleEndDate = date
+
+    let sut2 = KeepAwakeSettings(defaults: defaults)
+    let stored = try XCTUnwrap(sut2.scheduleEndDate)
+    XCTAssertEqual(stored.timeIntervalSince1970, date.timeIntervalSince1970, accuracy: 1)
+  }
+
+  func testScheduleStartDateRoundTrips() throws {
+    let suiteName = "testScheduleStartDateRoundTrips"
+    let defaults = UserDefaults(suiteName: suiteName)!
+    defaults.removePersistentDomain(forName: suiteName)
+
+    let date = Date(timeIntervalSince1970: 1_749_000_000)
+    var sut = KeepAwakeSettings(defaults: defaults)
+    sut.scheduleStartDate = date
+
+    let sut2 = KeepAwakeSettings(defaults: defaults)
+    let stored = try XCTUnwrap(sut2.scheduleStartDate)
+    XCTAssertEqual(stored.timeIntervalSince1970, date.timeIntervalSince1970, accuracy: 1)
+  }
+
+  func testClearScheduleNilsBothDates() {
+    var sut = makeSUT()
+    sut.scheduleStartDate = Date()
+    sut.scheduleEndDate = Date().addingTimeInterval(3600)
+    sut.clearSchedule()
+    XCTAssertNil(sut.scheduleStartDate)
+    XCTAssertNil(sut.scheduleEndDate)
+  }
+
+  func testSettingScheduleEndDateToNilRemovesKey() {
+    var sut = makeSUT()
+    sut.scheduleEndDate = Date()
+    XCTAssertNotNil(sut.scheduleEndDate)
+    sut.scheduleEndDate = nil
+    XCTAssertNil(sut.scheduleEndDate)
+  }
 }

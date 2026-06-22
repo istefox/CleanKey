@@ -9,6 +9,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
   // Keep-awake stack — held strongly so ARC doesn't reclaim before teardown.
   private var keepAwakeSettings = KeepAwakeSettings()
   private var keepAwakeManager: KeepAwakeManager?
+  private var keepAwakeScheduler: KeepAwakeScheduler?
   private var keepAwakeSleepController: RealSleepAssertionController?
   private var keepAwakePowerObserver: RealPowerSourceObserver?
   private var keepAwakeNotifier: KeepAwakeNotifier?
@@ -47,25 +48,53 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
       manager?.disable()
     }
 
-    // 4. Build MenuBarController with the real KeepAwakeManager.
+    // 4. Build KeepAwakeScheduler as a parallel peer of KeepAwakeManager.
+    let scheduler = KeepAwakeScheduler(
+      onStart: { [weak manager] in manager?.enable() },
+      onEnd: { [weak manager] in manager?.disable() }
+    )
+    keepAwakeScheduler = scheduler
+
+    // 5. Build MenuBarController with the real KeepAwakeManager.
     menuBarController = MenuBarController(
       settings: settings,
       settingsWindowController: swc,
       keepAwakeManager: manager
     )
 
-    // 5. Restore-on-launch (SPEC §4.5, §7).
+    // 6. Wire the schedule-changed callback from Settings.
+    swc.onScheduleChanged = { [weak self] in self?.rearmScheduleFromSettings() }
+
+    // 7. Restore-on-launch (SPEC §4.5, §7).
     //    Cap timer restarts fresh from launch — elapsed cap time is not persisted
     //    across launches (accepted v1.1 behaviour, documented in ADR-003 Consequences).
     if keepAwakeSettings.restoreOnLaunch && keepAwakeSettings.lastActiveState {
       manager.enable()
     }
+
+    // 8. Rearm any persisted schedule from a prior session.
+    rearmScheduleFromSettings()
+  }
+
+  private func rearmScheduleFromSettings() {
+    guard let scheduler = keepAwakeScheduler else { return }
+    guard let endDate = keepAwakeSettings.scheduleEndDate, endDate > Date() else {
+      keepAwakeSettings.clearSchedule()
+      scheduler.clear()
+      return
+    }
+    let schedule = KeepAwakeSchedule(
+      startDate: keepAwakeSettings.scheduleStartDate,
+      endDate: endDate
+    )
+    scheduler.arm(schedule)
   }
 
   func applicationWillTerminate(_ notification: Notification) {
     // Release IOPMAssertions cleanly on quit (SPEC §7).
     // The kernel also reaps assertions on process death, but explicit release
     // ensures clean state for pmset diagnostics.
+    keepAwakeScheduler?.clear()
     keepAwakeManager?.disable()
   }
 }
