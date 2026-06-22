@@ -122,6 +122,7 @@ The triple-Escape combo is always available while the tap is active.
 CleanKey is free and open source. If it saves you time, you can sponsor development on GitHub.
 
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/istefox?label=Sponsor&logo=GitHub)](https://github.com/sponsors/istefox)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-stefox-ff5e5b?logo=ko-fi&logoColor=white)](https://ko-fi.com/stefox)
 
 ## License
 
