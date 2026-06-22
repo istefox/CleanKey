@@ -21,6 +21,15 @@ final class SettingsViewModel {
   var keepAwakeRestoreOnLaunch: Bool
   var keepAwakeMode: KeepAwakeMode
 
+  // MARK: - Schedule fields
+
+  var keepAwakeScheduleMode: KeepAwakeScheduleMode
+  var keepAwakeScheduleStartTime: Date
+  var keepAwakeScheduleEndTime: Date
+  var keepAwakeScheduleDurationHours: Double
+  /// true when a schedule is currently persisted (scheduleEndDate non-nil).
+  var keepAwakeScheduleArmed: Bool
+
   // MARK: - Init
 
   init(settings: LockSettings, keepAwake: KeepAwakeSettings = .inert) {
@@ -34,6 +43,14 @@ final class SettingsViewModel {
     keepAwakeDurationCap = keepAwake.durationCap
     keepAwakeRestoreOnLaunch = keepAwake.restoreOnLaunch
     keepAwakeMode = keepAwake.mode
+
+    // Schedule — seed from persisted dates, falling back to sensible defaults.
+    let defaultEndTime = Calendar.current.date(byAdding: .hour, value: 1, to: Date()) ?? Date()
+    keepAwakeScheduleMode = .endOnly
+    keepAwakeScheduleStartTime = keepAwake.scheduleStartDate ?? Date()
+    keepAwakeScheduleEndTime = keepAwake.scheduleEndDate ?? defaultEndTime
+    keepAwakeScheduleDurationHours = 1
+    keepAwakeScheduleArmed = keepAwake.scheduleEndDate != nil
   }
 
   // MARK: - Save
@@ -56,6 +73,27 @@ final class SettingsViewModel {
     keepAwake.durationCap = keepAwakeDurationCap
     keepAwake.restoreOnLaunch = keepAwakeRestoreOnLaunch
     keepAwake.mode = keepAwakeMode
+  }
+
+  /// Resolves and persists the schedule draft, or clears it if disarmed.
+  /// Separate from saveKeepAwake(to:) to keep existing test call-sites green (ADR-002).
+  func saveKeepAwakeSchedule(to keepAwake: inout KeepAwakeSettings) {
+    guard keepAwakeScheduleArmed else {
+      keepAwake.clearSchedule()
+      return
+    }
+    guard let schedule = KeepAwakeScheduleBuilder.resolve(
+      mode: keepAwakeScheduleMode,
+      startTime: keepAwakeScheduleStartTime,
+      endTime: keepAwakeScheduleEndTime,
+      durationHours: keepAwakeScheduleDurationHours,
+      now: Date()
+    ) else {
+      keepAwake.clearSchedule()
+      return
+    }
+    keepAwake.scheduleStartDate = schedule.startDate
+    keepAwake.scheduleEndDate = schedule.endDate
   }
 
   // MARK: - Cancel

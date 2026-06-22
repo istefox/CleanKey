@@ -56,6 +56,10 @@
 		KA0000000000014KA000014 /* RealPowerSourceObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = KA0000000000013KA000013 /* RealPowerSourceObserver.swift */; };
 		KA0000000000016KA000016 /* KeepAwakeNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = KA0000000000015KA000015 /* KeepAwakeNotifier.swift */; };
 		KA0000000000020KA000020 /* KeepAwakeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = KA0000000000019KA000019 /* KeepAwakeSettingsView.swift */; };
+		KA0000000000022KA000022 /* KeepAwakeSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = KA0000000000021KA000021 /* KeepAwakeSchedule.swift */; };
+		KA0000000000024KA000024 /* KeepAwakeScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = KA0000000000023KA000023 /* KeepAwakeScheduler.swift */; };
+		KA0000000000026KA000026 /* KeepAwakeScheduleBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = KA0000000000025KA000025 /* KeepAwakeScheduleBuilderTests.swift */; };
+		KA0000000000028KA000028 /* KeepAwakeSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = KA0000000000027KA000027 /* KeepAwakeSchedulerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -120,6 +124,10 @@
 		KA0000000000013KA000013 /* RealPowerSourceObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealPowerSourceObserver.swift; sourceTree = "<group>"; };
 		KA0000000000015KA000015 /* KeepAwakeNotifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepAwakeNotifier.swift; sourceTree = "<group>"; };
 		KA0000000000019KA000019 /* KeepAwakeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepAwakeSettingsView.swift; sourceTree = "<group>"; };
+		KA0000000000021KA000021 /* KeepAwakeSchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepAwakeSchedule.swift; sourceTree = "<group>"; };
+		KA0000000000023KA000023 /* KeepAwakeScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepAwakeScheduler.swift; sourceTree = "<group>"; };
+		KA0000000000025KA000025 /* KeepAwakeScheduleBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepAwakeScheduleBuilderTests.swift; sourceTree = "<group>"; };
+		KA0000000000027KA000027 /* KeepAwakeSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepAwakeSchedulerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -143,6 +151,8 @@
 				KA0000000000013KA000013 /* RealPowerSourceObserver.swift */,
 				KA0000000000015KA000015 /* KeepAwakeNotifier.swift */,
 				KA0000000000009KA000009 /* KeepAwakeManager.swift */,
+				KA0000000000021KA000021 /* KeepAwakeSchedule.swift */,
+				KA0000000000023KA000023 /* KeepAwakeScheduler.swift */,
 				80F0AC4690414BADAC35EC66 /* SoundFeedbackPresenter.swift */,
 				423766F7D16736B68811E4B1 /* LockState.swift */,
 				E3F714A18EFF5CC0A6D003E4 /* main.swift */,
@@ -177,6 +187,8 @@
 				3F2E6B9BE23E44EEA9607BD5 /* SoundFeedbackPresenterTests.swift */,
 				KA00000000000003KA000003 /* KeepAwakeSettingsTests.swift */,
 				KA0000000000011KA000011 /* KeepAwakeManagerTests.swift */,
+				KA0000000000025KA000025 /* KeepAwakeScheduleBuilderTests.swift */,
+				KA0000000000027KA000027 /* KeepAwakeSchedulerTests.swift */,
 			);
 			path = CleanKeyTests;
 			sourceTree = "<group>";
@@ -321,6 +333,8 @@
 				KA0000000000014KA000014 /* RealPowerSourceObserver.swift in Sources */,
 				KA0000000000016KA000016 /* KeepAwakeNotifier.swift in Sources */,
 				KA0000000000010KA000010 /* KeepAwakeManager.swift in Sources */,
+				KA0000000000022KA000022 /* KeepAwakeSchedule.swift in Sources */,
+				KA0000000000024KA000024 /* KeepAwakeScheduler.swift in Sources */,
 				C02504E55A534CD795C28E2F /* LockState.swift in Sources */,
 				60A226845773371D7045988C /* MenuBarController.swift in Sources */,
 				865E13739A14CAC3C8187EA5 /* PermissionGuard.swift in Sources */,
@@ -359,6 +373,8 @@
 				D378AAA9AAE644DFB4F5EEAD /* SoundFeedbackPresenterTests.swift in Sources */,
 				KA00000000000004KA000004 /* KeepAwakeSettingsTests.swift in Sources */,
 				KA0000000000012KA000012 /* KeepAwakeManagerTests.swift in Sources */,
+				KA0000000000026KA000026 /* KeepAwakeScheduleBuilderTests.swift in Sources */,
+				KA0000000000028KA000028 /* KeepAwakeSchedulerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
