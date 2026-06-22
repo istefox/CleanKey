@@ -49,15 +49,21 @@ echo "Verifying code signature..."
 codesign --verify --deep --strict "$APP"
 spctl --assess --type exec "$APP" 2>/dev/null || echo "Note: spctl assessment failed (normal without notarization)"
 
-# Create DMG
+# Create DMG with Applications alias for drag-to-install
+STAGING=$(mktemp -d)
+cp -R "$APP" "$STAGING/CleanKey.app"
+ln -s /Applications "$STAGING/Applications"
+
 mkdir -p "$DIST"
 echo "Creating $DMG_NAME..."
 hdiutil create \
   -volname "CleanKey" \
-  -srcfolder "$APP" \
+  -srcfolder "$STAGING" \
   -ov \
   -format UDZO \
   "$DMG_PATH"
+
+rm -rf "$STAGING"
 
 # Notarize (optional — skipped when APPLE_ID is not set)
 if [ -n "${APPLE_ID:-}" ]; then
