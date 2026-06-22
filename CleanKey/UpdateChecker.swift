@@ -20,9 +20,16 @@ struct UpdateChecker: Sendable {
     fetch: @escaping @Sendable (URL) async throws -> Data = { url in
       var request = URLRequest(url: url)
       request.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+      request.setValue("CleanKey/macOS", forHTTPHeaderField: "User-Agent")
       let (data, response) = try await URLSession.shared.data(for: request)
-      guard let http = response as? HTTPURLResponse, http.statusCode == 200 else {
+      guard let http = response as? HTTPURLResponse else {
         throw URLError(.badServerResponse)
+      }
+      guard http.statusCode == 200 else {
+        throw URLError(
+          .badServerResponse,
+          userInfo: [NSLocalizedDescriptionKey: "GitHub API returned HTTP \(http.statusCode)"]
+        )
       }
       return data
     }
