@@ -8,16 +8,23 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
   private var window: NSWindow?
   private var settings: LockSettings
   private var keepAwakeSettings: KeepAwakeSettings
+  var updateSettings: UpdateSettings
+  let updateManager: UpdateManager
   private let launchAtLogin: LaunchAtLoginControlling
   var onScheduleChanged: (() -> Void)?
+  var onUpdateSettingsChanged: (() -> Void)?
 
   init(
     settings: LockSettings,
     keepAwakeSettings: KeepAwakeSettings,
+    updateSettings: UpdateSettings,
+    updateManager: UpdateManager,
     launchAtLogin: LaunchAtLoginControlling = LaunchAtLoginManager()
   ) {
     self.settings = settings
     self.keepAwakeSettings = keepAwakeSettings
+    self.updateSettings = updateSettings
+    self.updateManager = updateManager
     self.launchAtLogin = launchAtLogin
   }
 
@@ -32,18 +39,21 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
     window?.close()
     window = nil
 
-    let viewModel = SettingsViewModel(settings: settings, keepAwake: keepAwakeSettings)
+    let viewModel = SettingsViewModel(settings: settings, keepAwake: keepAwakeSettings, updates: updateSettings)
 
     let settingsView = SettingsView(
       viewModel: viewModel,
       settings: settings,
+      updateManager: updateManager,
       onSave: { [weak self] in
         guard let self else { return }
         viewModel.save(to: &self.settings)
         viewModel.saveKeepAwake(to: &self.keepAwakeSettings)
         viewModel.saveKeepAwakeSchedule(to: &self.keepAwakeSettings)
+        viewModel.saveUpdates(to: &self.updateSettings)
         self.launchAtLogin.apply(self.settings.launchAtLogin)
         self.onScheduleChanged?()
+        self.onUpdateSettingsChanged?()
         self.window?.close()
       },
       onCancel: { [weak self] in

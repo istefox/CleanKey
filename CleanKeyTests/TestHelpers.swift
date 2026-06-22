@@ -169,6 +169,21 @@ final class FakeHotkeyRegistrar: HotkeyRegistering {
   }
 }
 
+// MARK: - Update fakes
+
+@MainActor
+final class FakeUpdateNotifier: UpdateNotifying {
+  var requestAuthorizationCallCount = 0
+  var notifyUpdateAvailableCallCount = 0
+  var lastNotifiedRelease: ReleaseInfo?
+
+  func requestAuthorizationIfNeeded() { requestAuthorizationCallCount += 1 }
+  func notifyUpdateAvailable(_ release: ReleaseInfo) {
+    notifyUpdateAvailableCallCount += 1
+    lastNotifiedRelease = release
+  }
+}
+
 // MARK: - LockState test-only Equatable
 // WARNING: ignores escapeCombo — .locked states with different combo progress compare equal.
 // Use pattern matching (guard case .locked = state) when combo content matters.

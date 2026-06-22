@@ -14,11 +14,32 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
   private var keepAwakePowerObserver: RealPowerSourceObserver?
   private var keepAwakeNotifier: KeepAwakeNotifier?
 
+  // Update stack
+  private var updateSettings = UpdateSettings()
+  private var updateManager: UpdateManager?
+
   func applicationDidFinishLaunching(_ notification: Notification) {
     // --- Lock stack ---
     let settings = LockSettings()
     LaunchAtLoginManager().apply(settings.launchAtLogin)
-    let swc = SettingsWindowController(settings: settings, keepAwakeSettings: keepAwakeSettings)
+
+    // --- Update stack ---
+    let currentVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.0.0"
+    let checker = UpdateChecker(currentVersion: currentVersion)
+    let updateNotifier = UpdateNotifier()
+    let uMgr = UpdateManager(
+      checker: checker,
+      persistLastCheck: { [weak self] date in self?.updateSettings.lastCheckDate = date },
+      notifier: updateNotifier
+    )
+    updateManager = uMgr
+
+    let swc = SettingsWindowController(
+      settings: settings,
+      keepAwakeSettings: keepAwakeSettings,
+      updateSettings: updateSettings,
+      updateManager: uMgr
+    )
     settingsWindowController = swc
 
     // --- Keep-awake stack (ADR-003 D2, construction order per plan Task 7) ---
@@ -62,8 +83,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
       keepAwakeManager: manager
     )
 
-    // 6. Wire the schedule-changed callback from Settings.
+    // 6. Wire callbacks from Settings.
     swc.onScheduleChanged = { [weak self] in self?.rearmScheduleFromSettings() }
+    swc.onUpdateSettingsChanged = { [weak self, weak uMgr] in
+      guard let self, let uMgr else { return }
+      uMgr.rearm(frequency: self.updateSettings.frequency)
+    }
 
     // 7. Restore-on-launch (SPEC §4.5, §7).
     //    Cap timer restarts fresh from launch — elapsed cap time is not persisted
@@ -74,6 +99,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     // 8. Rearm any persisted schedule from a prior session.
     rearmScheduleFromSettings()
+
+    // 9. Rearm update timer and fire a launch check unless frequency is .never.
+    uMgr.rearm(frequency: updateSettings.frequency)
+    if updateSettings.frequency != .never {
+      Task { await uMgr.checkNow(userTriggered: false) }
+    }
   }
 
   private func rearmScheduleFromSettings() {
@@ -96,5 +127,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     // ensures clean state for pmset diagnostics.
     keepAwakeScheduler?.clear()
     keepAwakeManager?.disable()
+    updateManager?.stop()
   }
 }
