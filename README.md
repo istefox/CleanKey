@@ -109,6 +109,23 @@ Accessibility permission may have been revoked since launch. CleanKey posts a
 notification and restores input within ~5 seconds if it detects this. Re-grant
 permission in System Settings, then start a new lock.
 
+**Accessibility permission is requested again after updating.**
+If you first installed CleanKey from an older build that carried a different
+signing identity, macOS saved a permission record tied to that old build. The
+current release uses a stable Developer ID identity, which does not match the
+old record, so macOS treats it as a new app and asks again. Clear the stale
+record once:
+
+```bash
+tccutil reset Accessibility it.stefer.CleanKey
+```
+
+Then re-launch CleanKey and grant Accessibility access one more time. From this
+version on, as long as the same Developer ID certificate signs the app, updates
+keep the grant and macOS will not ask again. The one exception: if that
+certificate is ever replaced, you grant access once more. That is a macOS
+limit, not a CleanKey bug.
+
 **Overlay does not appear but input is blocked.**
 This should not occur in normal operation. If it does, triple-press Escape
 quickly (within 1.5 s) to trigger the emergency unlock, then re-launch the app.
