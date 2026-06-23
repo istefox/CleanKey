@@ -68,10 +68,15 @@ public final class KeepAwakeNotifier: NSObject,
     )
     center.setNotificationCategories([category])
 
-    center.requestAuthorization(options: [.alert, .sound]) { [weak self] granted, _ in
-      Task { @MainActor in
-        self?.authorizationGranted = granted
-      }
+    // Use the async variant rather than the completion-handler form. The ObjC
+    // completion is imported without @Sendable, so a closure written inside this
+    // @MainActor type is inferred main-actor-isolated; UserNotifications invokes
+    // it on its private call-out queue, tripping the Swift 6 executor check and
+    // trapping. The Task body stays main-actor-isolated and the await suspends
+    // instead of running a closure off-main.
+    Task { [weak self] in
+      let granted = (try? await center.requestAuthorization(options: [.alert, .sound])) ?? false
+      self?.authorizationGranted = granted
     }
   }
 
