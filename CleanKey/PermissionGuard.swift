@@ -27,6 +27,10 @@ public final class PermissionGuard {
   /// Opens System Settings > Privacy > Accessibility.
   public func requestPermission() {
     guard check() == .missing else { return }
+    // Register the app in the Accessibility list (and show the system prompt)
+    // before opening Settings, so the user lands on a list that contains a
+    // CleanKey row to toggle rather than an empty one.
+    trustChecker.promptForTrust()
     openSettingsAction()
   }
 }
