@@ -35,4 +35,11 @@ public protocol Notifying: AnyObject {
 /// The real implementation calls `AXIsProcessTrusted()`.
 public protocol TrustChecking: AnyObject {
   var isTrusted: Bool { get }
+
+  /// Actively requests Accessibility trust: shows the system prompt and, as a
+  /// side effect, registers the app in System Settings > Accessibility so it
+  /// appears as a toggleable row. Use only on an explicit user action — never
+  /// for passive gating. Returns the current trust state (false until granted).
+  @discardableResult
+  func promptForTrust() -> Bool
 }

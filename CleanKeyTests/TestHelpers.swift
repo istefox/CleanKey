@@ -44,7 +44,14 @@ final class FakeNotifier: Notifying, @unchecked Sendable {
 // @unchecked Sendable is safe: only ever mutated from @MainActor test methods.
 final class FakeTrustChecker: TrustChecking, @unchecked Sendable {
   var trusted: Bool = true
+  var promptForTrustCallCount = 0
   var isTrusted: Bool { trusted }
+
+  @discardableResult
+  func promptForTrust() -> Bool {
+    promptForTrustCallCount += 1
+    return trusted
+  }
 }
 
 // MARK: - Sound fake

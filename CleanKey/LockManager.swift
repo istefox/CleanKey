@@ -195,4 +195,6 @@ public final class LockManager {
 
 private final class AlwaysTrusted: TrustChecking {
   var isTrusted: Bool { true }
+  @discardableResult
+  func promptForTrust() -> Bool { true }
 }
